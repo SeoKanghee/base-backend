@@ -1,0 +1,127 @@
+# dependency 확인 - https://docs.spring.io/spring-boot/3.5/appendix/dependency-versions/index.html
+[versions]
+spring-boot = "3.5.6"
+spring-dependency = "1.1.7"
+
+xml-bind-api = "4.0.2"
+annotation-api = "2.1.1"
+persistence-api = "3.1.0"
+querydsl = "5.1.0"
+snakeyaml = "2.4"
+awaitility = "4.2.2"
+spring-cloud-dependencies = "2024.0.1"
+spring-cloud-starter-gateway = "4.2.2"
+commons-io = "2.18.0"
+
+openapi-gradle-plugin = "1.6.0"
+maven-settings = "0.5"
+sonarqube = "3.5.0.2730"
+
+jasypt = "3.0.5"
+springdoc = "2.8.3"
+jjwt = "0.12.6"
+jsoup = "1.18.3"
+mustache-java-compiler = "0.9.14"
+dcm4che = "5.29.2"
+guava = "33.4.0-jre"
+zip4j = "2.11.5"
+pdfbox = "3.0.3"
+jaiimageio = "1.2-pre-dr-b04"
+bouncycastle = "1.79"
+modelmapper = "3.2.2"
+csv = "1.13.0"
+zt-zip = "1.17"
+logstash-logback-encoder = "8.0"
+mapdb = "3.1.0"
+caffeine-cache = "3.1.8"
+nanoid = "1.0.1"
+mockwebserver = "4.12.0"
+nimbus-jose-jwt = "10.5"
+
+# Vulnerability 보완 적용 ( 아래에 작성후 bundle -> clear-vulnerabilities 에 업데이트 )
+
+
+[plugins]
+spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
+spring-dependency = { id = "io.spring.dependency-management", version.ref = "spring-dependency" }
+openapi-gradle-plugin = { id = "org.springdoc.openapi-gradle-plugin", version.ref = "openapi-gradle-plugin" }
+maven-settings = { id = "net.linguica.maven-settings", version.ref = "maven-settings" }
+sonarqube = { id = "org.sonarqube", version.ref = "sonarqube" }
+
+[bundles]
+clear-vulnerabilities = []
+
+[libraries]
+# spring version dependency - automatic
+spring-boot-starter-web = { group = "org.springframework.boot", name = "spring-boot-starter-web" }
+spring-boot-starter-security = { group = "org.springframework.boot", name = "spring-boot-starter-security" }
+spring-boot-starter-validation = { group = "org.springframework.boot", name = "spring-boot-starter-validation" }
+spring-boot-starter-data-jpa = { group = "org.springframework.boot", name = "spring-boot-starter-data-jpa" }
+spring-boot-starter-data-redis = { group = "org.springframework.boot", name = "spring-boot-starter-data-redis" }
+spring-boot-starter-webflux = { group = "org.springframework.boot", name = "spring-boot-starter-webflux" }
+spring-boot-starter-actuator = { group = "org.springframework.boot", name = "spring-boot-starter-actuator" }
+spring-boot-starter-integration = { group = "org.springframework.boot", name = "spring-boot-starter-integration" }
+spring-boot-starter-cache = { group = "org.springframework.boot", name = "spring-boot-starter-cache" }
+spring-boot-configuration-processor = { group = "org.springframework.boot", name = "spring-boot-configuration-processor" }
+spring-integration-http = { group = "org.springframework.integration", name = "spring-integration-http" }
+spring-boot-starter-test = { group = "org.springframework.boot", name = "spring-boot-starter-test" }
+spring-security-test = { group = "org.springframework.security", name = "spring-security-test" }
+spring-integration-test = { group = "org.springframework.integration", name = "spring-integration-test" }
+spring-boot-devtools = { group = "org.springframework.boot", name = "spring-boot-devtools" }
+junit-platform-launcher = { group = "org.junit.platform", name = "junit-platform-launcher" }
+lombok = { group = "org.projectlombok", name = "lombok" }
+mariadb-java-client = { group = "org.mariadb.jdbc", name = "mariadb-java-client" }
+h2 = { group = "com.h2database", name = "h2" }
+flyway-mysql = { group = "org.flywaydb", name = "flyway-mysql" }
+flyway-core = { group = "org.flywaydb", name = "flyway-core" }
+jakarta-validation-api = { group = "jakarta.validation", name = "jakarta.validation-api" }
+
+# user-defined versioning
+jasypt = { group = "com.github.ulisesbocchio", name = "jasypt-spring-boot-starter", version.ref = "jasypt" }
+springdoc = { group = "org.springdoc", name = "springdoc-openapi-starter-webmvc-ui", version.ref = "springdoc" }
+jjwt-api = { group = "io.jsonwebtoken", name = "jjwt-api", version.ref = "jjwt" }
+jjwt-impl = { group = "io.jsonwebtoken", name = "jjwt-impl", version.ref = "jjwt" }
+jjwt-jackson = { group = "io.jsonwebtoken", name = "jjwt-jackson", version.ref = "jjwt" }
+jsoup = { group = "org.jsoup", name = "jsoup", version.ref = "jsoup" }
+mustache-java-compiler = { group = "com.github.spullara.mustache.java", name = "compiler", version.ref = "mustache-java-compiler" }
+zip4j = { group = "net.lingala.zip4j", name = "zip4j", version.ref = "zip4j" }
+dcm4che-core = { group = "org.dcm4che", name = "dcm4che-core", version.ref = "dcm4che" }
+dcm4che-json = { group = "org.dcm4che", name = "dcm4che-json", version.ref = "dcm4che" }
+dcm4che-image = { group = "org.dcm4che", name = "dcm4che-image", version.ref = "dcm4che" }
+dcm4che-imageio = { group = "org.dcm4che", name = "dcm4che-imageio", version.ref = "dcm4che" }
+dcm4che-imageio-opencv = { group = "org.dcm4che", name = "dcm4che-imageio-opencv", version.ref = "dcm4che" }
+dcm4che-imageio-rle = { group = "org.dcm4che", name = "dcm4che-imageio-rle", version.ref = "dcm4che" }
+dcm4che-net = { group = "org.dcm4che", name = "dcm4che-net", version.ref = "dcm4che" }
+guava = { group = "com.google.guava", name = "guava", version.ref = "guava" }
+pdfbox = { group = "org.apache.pdfbox", name = "pdfbox-tools", version.ref = "pdfbox" }
+pdfbox-io = { group = "org.apache.pdfbox", name = "pdfbox-io", version.ref = "pdfbox" }
+jai-imageio = { group = "com.sun.media", name = "jai_imageio", version.ref = "jaiimageio" }
+clib-jiio = { group = "com.sun.media", name = "clibwrapper_jiio", version.ref = "jaiimageio" }
+bcpkix-jdk18on = { group = "org.bouncycastle", name = "bcpkix-jdk18on", version.ref = "bouncycastle" }
+bcprov-jdk18on = { group = "org.bouncycastle", name = "bcprov-jdk18on", version.ref = "bouncycastle" }
+bcutil-jdk18on = { group = "org.bouncycastle", name = "bcutil-jdk18on", version.ref = "bouncycastle" }
+modelmapper = { group = "org.modelmapper", name = "modelmapper", version.ref = "modelmapper" }
+common-csv = { group = "org.apache.commons", name = "commons-csv", version.ref = "csv" }
+zt-zip = { group = "org.zeroturnaround", name = "zt-zip", version.ref = "zt-zip" }
+logstash-logback-encoder = { group = "net.logstash.logback", name = "logstash-logback-encoder", version.ref = "logstash-logback-encoder" }
+mapdb = { group = "org.mapdb", name = "mapdb", version.ref = "mapdb" }
+caffeine-cache = { group = "com.github.ben-manes.caffeine", name = "caffeine", version.ref = "caffeine-cache" }
+nanoid = { group = "io.viascom.nanoid", name = "nanoid", version.ref = "nanoid" }
+mockwebserver = { group = "com.squareup.okhttp3", name = "mockwebserver", version.ref = "mockwebserver" }
+nimbus-jose-jwt = { group = "com.nimbusds", name = "nimbus-jose-jwt", version.ref = "nimbus-jose-jwt" }
+
+# special versioning targets
+## 아래 항목들은 spring boot 버전의 dependency 에 맞게 업데이트 필요함
+xml-bind-api = { group = "jakarta.xml.bind", name = "jakarta.xml.bind-api", version.ref = "xml-bind-api" }
+annotation-api = { group = "jakarta.annotation", name = "jakarta.annotation-api", version.ref = "annotation-api" }
+persistence-api = { group = "jakarta.persistence", name = "jakarta.persistence-api", version.ref = "persistence-api" }
+querydsl-jpa = { group = "com.querydsl", name = "querydsl-jpa", version.ref = "querydsl" }
+querydsl-apt = { group = "com.querydsl", name = "querydsl-apt", version.ref = "querydsl" }
+snakeyaml = { group = "org.yaml", name = "snakeyaml", version.ref = "snakeyaml" }
+awaitility = { group = "org.awaitility", name = "awaitility", version.ref = "awaitility" }
+spring-cloud-dependencies = { group = "org.springframework.cloud", name = "spring-cloud-dependencies", version.ref = "spring-cloud-dependencies" }
+spring-cloud-starter-gateway = { group = "org.springframework.cloud", name = "spring-cloud-starter-gateway", version.ref = "spring-cloud-starter-gateway" }
+### spring 에서 보는 commons-lang3 버전에 dependency 가 있는 버전으로 유지
+commons-io = { group = "commons-io", name = "commons-io", version.ref = "commons-io" }
+
+# Vulnerability 보완 부분 ( 아래에 작성 )

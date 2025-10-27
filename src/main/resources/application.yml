@@ -1,0 +1,66 @@
+--- #default
+config:
+  options:
+    use-default-async: true # web library 에 선언된 async executor 를 사용할지 여부
+  constants:
+    application-name: ${APPLICATION_NAME:base-backend}
+    application-version: ${APPLICATION_VERSION:0.0.1}
+
+spring:
+  application:
+    name: ${config.constants.application-name}
+  config:
+    import: optional:file:.env[.properties]
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://localhost:${DATABASE_SERVER_PORT:3306}/base_backend
+    username: ${SPRING_DATASOURCE_USERNAME:root}
+    password: ${SPRING_DATASOURCE_PASSWORD:root}
+  jpa:
+    hibernate:
+      ddl-auto: ${JPA_DDL_AUTO:validate}
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MariaDBDialect
+        format_sql: false
+        globally_quoted_identifiers: true   # 예약어 컬럼, 테이블 이름에 대한 예외 처리 ( id.. )
+        globally_quoted_identifiers_skip_column_definitions: true   # 예약어 컬럼, 테이블 이름에 대한 예외 처리 ( id.. )
+    open-in-view: false   # OSIV 를 적용하지 않음 - 영속성 컨텍스트를 실제 트랜잭션 범위로만 한정 시킴
+    show-sql: false
+    defer-datasource-initialization: true
+  sql:
+    init:
+      encoding: UTF-8
+
+server:
+  port: ${APP_SERVER_PORT:7479}
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+    session:
+      timeout: 60s
+
+jasypt:
+  encryptor:
+    bean: "commonJasyptEncryptor"
+
+springdoc:
+  api-docs:
+    groups:
+      enabled: true
+  swagger-ui:
+    path: "api.html"   # http://localhost:{port}/api.html
+    operations-sorter: "method"
+
+management:
+  endpoints:
+    web:
+      base-path: "/monitor"
+      exposure:
+        include: health, info
+
+logging:
+  level:
+    com.neurophet: ${NEUROPHET_LOG_LEVEL:INFO}
