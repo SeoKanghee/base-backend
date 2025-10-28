@@ -1,4 +1,4 @@
-package com.kelly.base.auth;
+package com.kelly.base.product.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kelly.base.product.auth.AuthController;

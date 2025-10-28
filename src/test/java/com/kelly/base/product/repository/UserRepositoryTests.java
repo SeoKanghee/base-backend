@@ -1,8 +1,7 @@
-package com.kelly.base.repository;
+package com.kelly.base.product.repository;
 
 import com.kelly.base.product.domain.users.User;
 import com.kelly.base.product.domain.users.UserStatus;
-import com.kelly.base.product.repository.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

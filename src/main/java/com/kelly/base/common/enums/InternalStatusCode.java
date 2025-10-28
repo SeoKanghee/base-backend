@@ -6,6 +6,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum InternalStatusCode {
+    // 9(error) + xxx(http status code) + yyyy(unique code)
     ISC_94000001(94000001, "error - invalid parameter"),
     ISC_95030001(95030001, "error - thread usage is not possible");
 

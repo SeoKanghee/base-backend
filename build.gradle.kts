@@ -8,7 +8,7 @@ plugins {
     alias(libs.plugins.maven.settings)
 }
 
-group = "com.neurophet.mwa"
+group = "com.kelly.base"
 version = "0.0.1"
 description = "Base Project from Common Backend"
 
@@ -79,7 +79,7 @@ tasks.withType<Test> {
 }
 
 jacoco {
-    toolVersion = "0.8.11"
+    toolVersion = "0.8.14"
 }
 
 // querydsl 처리를 위한 선언

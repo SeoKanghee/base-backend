@@ -18,7 +18,7 @@ maven-settings = "0.5"
 sonarqube = "3.5.0.2730"
 
 jasypt = "3.0.5"
-springdoc = "2.8.3"
+springdoc = "2.8.13"
 jjwt = "0.12.6"
 jsoup = "1.18.3"
 mustache-java-compiler = "0.9.14"
@@ -39,6 +39,8 @@ mockwebserver = "4.12.0"
 nimbus-jose-jwt = "10.5"
 
 # Vulnerability 보완 적용 ( 아래에 작성후 bundle -> clear-vulnerabilities 에 업데이트 )
+logback = "1.5.20"  # logback-core, logback-classic
+commons-lang3 = "3.19.0"
 
 
 [plugins]
@@ -49,7 +51,7 @@ maven-settings = { id = "net.linguica.maven-settings", version.ref = "maven-sett
 sonarqube = { id = "org.sonarqube", version.ref = "sonarqube" }
 
 [bundles]
-clear-vulnerabilities = []
+clear-vulnerabilities = ["logback-classic", "logback-core", "commons-lang3"]
 
 [libraries]
 # spring version dependency - automatic
@@ -125,3 +127,6 @@ spring-cloud-starter-gateway = { group = "org.springframework.cloud", name = "sp
 commons-io = { group = "commons-io", name = "commons-io", version.ref = "commons-io" }
 
 # Vulnerability 보완 부분 ( 아래에 작성 )
+logback-classic = { group = "ch.qos.logback", name = "logback-classic", version.ref = "logback" }
+logback-core = { group = "ch.qos.logback", name = "logback-core", version.ref = "logback" }
+commons-lang3 = { group = "org.apache.commons", name = "commons-lang3", version.ref = "commons-lang3" }
