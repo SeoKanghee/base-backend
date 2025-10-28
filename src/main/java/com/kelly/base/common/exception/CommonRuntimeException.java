@@ -7,7 +7,7 @@ import org.springframework.lang.NonNull;
 
 @Getter
 @ToString
-public class CommonRuntimeException extends RuntimeException {
+public class CommonRuntimeException extends RuntimeException implements ICommonException {
     // AOP 에서 반환되는 Exception 은 checked 로 처리되지 않음
     // RuntimeException 의 extends 로 선언 해서 처리
     // - reference : https://www.baeldung.com/java-undeclaredthrowableexception
