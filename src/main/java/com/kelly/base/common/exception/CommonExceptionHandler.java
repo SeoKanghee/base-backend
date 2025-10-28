@@ -25,25 +25,11 @@ import static com.kelly.base.common.Constants.OrderInfo.EXCEPTION_HANDLER_ORDER_
 @RestControllerAdvice
 @Order(EXCEPTION_HANDLER_ORDER_COMMON)
 public class CommonExceptionHandler {
-    @ExceptionHandler(CommonException.class)
+    @ExceptionHandler({ CommonException.class, CommonRuntimeException.class })
     public ResponseEntity<CommonResponse<Void>> handleCommonException(
-            HttpServletRequest req, final CommonException e
+            HttpServletRequest req, final ICommonException e
     ) {
-        log.error("URI : {}, CommonException info : {}", req.getRequestURI(), e.toString());
-
-        // extra code 및 message 가 존재할 경우 교체
-        final Integer code = e.getExtraCode() != null ? e.getExtraCode() : e.getResultCode().getCode();
-        final String message = e.getExtraMessage() != null ? e.getExtraMessage() : e.getResultCode().getMessage();
-        final CommonResponse<Void> response = new CommonResponse<>(code, message);
-
-        return new ResponseEntity<>(response, e.getResultCode().getHttpStatus());
-    }
-
-    @ExceptionHandler(CommonRuntimeException.class)
-    public ResponseEntity<CommonResponse<Void>> handleCommonRuntimeException(
-            HttpServletRequest req, final CommonRuntimeException e
-    ) {
-        log.error("URI : {}, CommonRuntimeException info : {}", req.getRequestURI(), e.toString());
+        log.error("URI : {}, {} info : {}", req.getRequestURI(), e.getClass().getSimpleName(), e.toString());
 
         // extra code 및 message 가 존재할 경우 교체
         final Integer code = e.getExtraCode() != null ? e.getExtraCode() : e.getResultCode().getCode();
@@ -79,7 +65,7 @@ public class CommonExceptionHandler {
     public CommonResponse<Void> handleConstraintViolationException(
             HttpServletRequest req, ConstraintViolationException e
     ) {
-        log.error("URI : {}, Error Message : {}, Violations : {}",
+        log.error("ConstraintViolationException - URI : {}, Error Message : {}, Violations : {}",
                   req.getRequestURI(), e.getMessage(), e.getConstraintViolations());
         return new CommonResponse<>(CommonResultCode.INVALID_PARAMETER);
     }

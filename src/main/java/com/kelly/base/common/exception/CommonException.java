@@ -7,7 +7,7 @@ import org.springframework.lang.NonNull;
 
 @Getter
 @ToString
-public class CommonException extends Exception {
+public class CommonException extends Exception implements ICommonException {
     private final CommonResultCode resultCode;
     private final Integer extraCode;
     private final String extraMessage;
