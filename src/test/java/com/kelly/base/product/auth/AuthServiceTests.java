@@ -1,4 +1,4 @@
-package com.kelly.base.auth;
+package com.kelly.base.product.auth;
 
 import com.kelly.base.product.auth.AuthService;
 import com.kelly.base.product.auth.dto.PostLoginRequest;

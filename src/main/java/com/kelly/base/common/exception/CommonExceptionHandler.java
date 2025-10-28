@@ -26,29 +26,29 @@ import static com.kelly.base.common.Constants.OrderInfo.EXCEPTION_HANDLER_ORDER_
 @Order(EXCEPTION_HANDLER_ORDER_COMMON)
 public class CommonExceptionHandler {
     @ExceptionHandler(CommonException.class)
-    public ResponseEntity<CommonResponse<CommonResultCode>> handleCommonException(
+    public ResponseEntity<CommonResponse<Void>> handleCommonException(
             HttpServletRequest req, final CommonException e
     ) {
         log.error("URI : {}, CommonException info : {}", req.getRequestURI(), e.toString());
 
         // extra code 및 message 가 존재할 경우 교체
-        final Integer code = e.getExtraCode()!=null ? e.getExtraCode():e.getResultCode().getCode();
-        final String message = e.getExtraMessage()!=null ? e.getExtraMessage():e.getResultCode().getMessage();
-        final CommonResponse<CommonResultCode> response = new CommonResponse<>(code, message);
+        final Integer code = e.getExtraCode() != null ? e.getExtraCode() : e.getResultCode().getCode();
+        final String message = e.getExtraMessage() != null ? e.getExtraMessage() : e.getResultCode().getMessage();
+        final CommonResponse<Void> response = new CommonResponse<>(code, message);
 
         return new ResponseEntity<>(response, e.getResultCode().getHttpStatus());
     }
 
     @ExceptionHandler(CommonRuntimeException.class)
-    public ResponseEntity<CommonResponse<CommonResultCode>> handleCommonRuntimeException(
+    public ResponseEntity<CommonResponse<Void>> handleCommonRuntimeException(
             HttpServletRequest req, final CommonRuntimeException e
     ) {
         log.error("URI : {}, CommonRuntimeException info : {}", req.getRequestURI(), e.toString());
 
         // extra code 및 message 가 존재할 경우 교체
-        final Integer code = e.getExtraCode()!=null ? e.getExtraCode():e.getResultCode().getCode();
-        final String message = e.getExtraMessage()!=null ? e.getExtraMessage():e.getResultCode().getMessage();
-        final CommonResponse<CommonResultCode> response = new CommonResponse<>(code, message);
+        final Integer code = e.getExtraCode() != null ? e.getExtraCode() : e.getResultCode().getCode();
+        final String message = e.getExtraMessage() != null ? e.getExtraMessage() : e.getResultCode().getMessage();
+        final CommonResponse<Void> response = new CommonResponse<>(code, message);
 
         return new ResponseEntity<>(response, e.getResultCode().getHttpStatus());
     }
@@ -59,7 +59,7 @@ public class CommonExceptionHandler {
             HttpServletRequest req, MethodArgumentNotValidException e
     ) {
         List<String> errors = e.getBindingResult().getFieldErrors().stream()
-                .map(DefaultMessageSourceResolvable::getDefaultMessage).toList();
+                               .map(DefaultMessageSourceResolvable::getDefaultMessage).toList();
         log.error("MethodArgumentNotValidException - URI : {}, Error Message : {}", req.getRequestURI(), errors);
         return new CommonResponse<>(CommonResultCode.INVALID_PARAMETER);
     }
@@ -80,7 +80,7 @@ public class CommonExceptionHandler {
             HttpServletRequest req, ConstraintViolationException e
     ) {
         log.error("URI : {}, Error Message : {}, Violations : {}",
-                req.getRequestURI(), e.getMessage(), e.getConstraintViolations());
+                  req.getRequestURI(), e.getMessage(), e.getConstraintViolations());
         return new CommonResponse<>(CommonResultCode.INVALID_PARAMETER);
     }
 
