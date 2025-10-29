@@ -1,5 +1,6 @@
 package com.kelly.base.common.enums;
 
+import com.kelly.base.common.interfaces.IStatusCode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
@@ -14,10 +15,10 @@ public enum CommonResultCode {
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR),
 
     // specific - 4xx
-    INVALID_PARAMETER(HttpStatus.BAD_REQUEST, InternalStatusCode.ISC_94000001),
+    INVALID_PARAMETER(HttpStatus.BAD_REQUEST, SpecificStatusCode.ISC_94000001),
 
     // specific - 5xx
-    TASK_REJECTED(HttpStatus.SERVICE_UNAVAILABLE, InternalStatusCode.ISC_95030001);
+    TASK_REJECTED(HttpStatus.SERVICE_UNAVAILABLE, SpecificStatusCode.ISC_95030001);
 
 
     CommonResultCode(final HttpStatus httpStatus) {
@@ -26,10 +27,10 @@ public enum CommonResultCode {
         this.message = httpStatus.getReasonPhrase();
     }
 
-    CommonResultCode(final HttpStatus httpStatus, final InternalStatusCode internalStatusCode) {
+    CommonResultCode(final HttpStatus httpStatus, final IStatusCode statusCode) {
         this.httpStatus = httpStatus;
-        this.code = internalStatusCode.getCode();
-        this.message = internalStatusCode.getMessage();
+        this.code = statusCode.getCode();
+        this.message = statusCode.getMessage();
     }
 
     private final HttpStatus httpStatus;

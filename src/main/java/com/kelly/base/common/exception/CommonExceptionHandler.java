@@ -2,6 +2,7 @@ package com.kelly.base.common.exception;
 
 import com.kelly.base.common.dto.CommonResponse;
 import com.kelly.base.common.enums.CommonResultCode;
+import com.kelly.base.common.interfaces.ICommonException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +20,7 @@ import org.springframework.web.method.annotation.HandlerMethodValidationExceptio
 
 import java.util.List;
 
-import static com.kelly.base.common.Constants.OrderInfo.EXCEPTION_HANDLER_ORDER_COMMON;
+import static com.kelly.base.common.CommonConstants.OrderInfo.EXCEPTION_HANDLER_ORDER_COMMON;
 
 @Slf4j
 @RestControllerAdvice

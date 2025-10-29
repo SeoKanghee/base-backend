@@ -1,6 +1,7 @@
 package com.kelly.base.common.exception;
 
 import com.kelly.base.common.enums.CommonResultCode;
+import com.kelly.base.common.interfaces.ICommonException;
 import lombok.Getter;
 import lombok.ToString;
 import org.springframework.lang.NonNull;

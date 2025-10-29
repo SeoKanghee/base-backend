@@ -3,12 +3,10 @@ package com.kelly.base.common.dto;
 import com.kelly.base.common.enums.CommonResultCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
 import org.springframework.lang.NonNull;
 
 @Getter
-@Setter
 @NoArgsConstructor
 @ToString
 public class CommonResponse<T> {
@@ -26,8 +24,8 @@ public class CommonResponse<T> {
         this.message = message;
     }
 
-    public CommonResponse(@NonNull CommonResultCode webRespCode, final T result) {
-        this(webRespCode);
+    public CommonResponse(@NonNull CommonResultCode resultCode, final T result) {
+        this(resultCode);
         this.result = result;
     }
 }
