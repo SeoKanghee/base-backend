@@ -1,4 +1,4 @@
-package com.kelly.base.common.config;
+package com.kelly.base.product.config;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,8 +1,6 @@
 package com.kelly.base.product.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kelly.base.product.auth.AuthController;
-import com.kelly.base.product.auth.AuthService;
 import com.kelly.base.product.auth.dto.PostLoginRequest;
 import com.kelly.base.common.config.CommonBeanConfig;
 import org.junit.jupiter.api.DisplayName;
@@ -17,7 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static com.kelly.base.common.Constants.UrlInfo.URI_ROOT_AUTH;
+import static com.kelly.base.product.Constants.UrlInfo.URI_ROOT_AUTH;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 

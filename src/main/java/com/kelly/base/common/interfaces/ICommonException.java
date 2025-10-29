@@ -1,4 +1,4 @@
-package com.kelly.base.common.exception;
+package com.kelly.base.common.interfaces;
 
 import com.kelly.base.common.enums.CommonResultCode;
 
