@@ -82,8 +82,11 @@ jacoco {
     toolVersion = "0.8.14"
 }
 
-// querydsl 처리를 위한 선언
-val jacocoExcludes = listOf("**/Q*.class")
+// 커버리지 예외 처리를 위한 선언
+val jacocoExcludes = listOf(
+        "**/Q*.class",  // querydsl 에 의한 생성 파일
+        "**/NativeVault*.class" // static 에서 jacoco 테스트 커버리지 정상 체크 안되는 문제 있음
+)
 
 tasks.jacocoTestReport {
     reports {
@@ -91,7 +94,7 @@ tasks.jacocoTestReport {
         xml.required.set(true)
         csv.required.set(false)
     }
-    // querydsl - Q class 를 test report 에서 제외
+    // jacocoExcludes 에 선언된 파일들을 test report 에서 제외
     classDirectories.setFrom(
         sourceSets.main.get().output.asFileTree.matching {
             exclude(jacocoExcludes)
