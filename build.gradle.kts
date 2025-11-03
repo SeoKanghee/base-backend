@@ -84,8 +84,7 @@ jacoco {
 
 // 커버리지 예외 처리를 위한 선언
 val jacocoExcludes = listOf(
-        "**/Q*.class",  // querydsl 에 의한 생성 파일
-        "**/NativeVault*.class" // static 에서 jacoco 테스트 커버리지 정상 체크 안되는 문제 있음
+        "**/Q*.class"   // querydsl 에 의한 생성 파일
 )
 
 tasks.jacocoTestReport {

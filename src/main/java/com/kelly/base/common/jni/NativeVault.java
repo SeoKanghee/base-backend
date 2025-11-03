@@ -1,6 +1,10 @@
 package com.kelly.base.common.jni;
 
+import com.kelly.base.common.interfaces.IInternalLibLoader;
+import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -9,20 +13,26 @@ import java.io.OutputStream;
 import java.util.Objects;
 
 @Slf4j
+@Component
+@RequiredArgsConstructor
 public class NativeVault {
+    private final IInternalLibLoader internalLibLoader;
+
+    private static final String LIB_PATH = "native";
     private static final String LIB_NAME = "native_vault";
 
-    static {
+    @PostConstruct
+    void init() {
         loadLibrary();
     }
 
-    private static void loadLibrary() {
-        final String libNameExt = System.mapLibraryName(LIB_NAME);
+    private void loadLibrary() {
+        final String libNameWithExt = System.mapLibraryName(LIB_NAME);
         try {
-            File targetFile = File.createTempFile("temp_", "_" + libNameExt);
+            File targetFile = File.createTempFile("temp_", "_" + libNameWithExt);
             targetFile.deleteOnExit();
 
-            try (InputStream is = InternalLibLoader.getLibInputStream(libNameExt)) {
+            try (InputStream is = internalLibLoader.getLibInputStream(LIB_PATH, libNameWithExt)) {
                 try (OutputStream os = new FileOutputStream(targetFile)) {
                     byte[] buf = new byte[4096];
                     int bytesRead;
