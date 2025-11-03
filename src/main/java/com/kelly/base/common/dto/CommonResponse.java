@@ -19,7 +19,7 @@ public class CommonResponse<T> {
         this.message = resultCode.getMessage();
     }
 
-    public CommonResponse(final int code, @NonNull final String message) {
+    public CommonResponse(final int code, final String message) {
         this.code = code;
         this.message = message;
     }
