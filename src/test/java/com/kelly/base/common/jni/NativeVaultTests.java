@@ -1,6 +1,6 @@
 package com.kelly.base.common.jni;
 
-import com.kelly.base.common.interfaces.IInternalLibLoader;
+import com.kelly.base.common.interfaces.ILibLoader;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.ClassOrderer;
@@ -11,8 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestClassOrder;
 
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @TestClassOrder(ClassOrderer.OrderAnnotation.class)
 @DisplayName("NativeVaultTests")
@@ -25,7 +24,7 @@ class NativeVaultTests {
     class LibraryLoadingSuccessfulTests {
         @BeforeEach
         void init() {
-            final IInternalLibLoader internalLibLoader = new InternalLibLoader();
+            final ILibLoader internalLibLoader = new InternalLibLoader();
             nativeVault = new NativeVault(internalLibLoader);
             nativeVault.init();
         }
@@ -33,7 +32,7 @@ class NativeVaultTests {
         @Test
         @DisplayName("getJasyptSeed test")
         void getJasyptSeedTest() {
-            // given
+            // given - 개발용 jasypt key
             final String expectedSeed = "oXe/6YLvAKrjLadJIvUsv90JbFO4cxSZRFMAAR8mjoY";
 
             // when
@@ -49,19 +48,19 @@ class NativeVaultTests {
     @Order(999)
     @DisplayName("LibraryLoadingFailedTests")
     class LibraryLoadingFailedTests {
-        private IInternalLibLoader mockInternalLibLoader;
+        private ILibLoader mockLibLoader;
 
         @BeforeEach
         void init() {
-            mockInternalLibLoader = mock(IInternalLibLoader.class);
-            nativeVault = new NativeVault(mockInternalLibLoader);
+            mockLibLoader = mock(ILibLoader.class);
+            nativeVault = new NativeVault(mockLibLoader);
         }
 
         @Test
         @DisplayName("loadLibrary test - exception")
         void loadLibraryExceptionTest() {
             // given - resource stream 읽을 때 NullPointerException 발생
-            when(mockInternalLibLoader.getLibInputStream(anyString(), anyString()))
+            when(mockLibLoader.getLibInputStream(anyString(), anyString()))
                     .thenThrow(NullPointerException.class);
 
             // when, then - exception 은 내부적으로 처리되므로 bean 초기화에는 영향 없음

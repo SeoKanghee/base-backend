@@ -54,6 +54,9 @@ dependencies {
     // swaager
     implementation(libs.springdoc)
 
+    // enc-dec
+    implementation(libs.jasypt)
+
     compileOnly(libs.lombok)
 
     runtimeOnly(libs.mariadb.java.client)
