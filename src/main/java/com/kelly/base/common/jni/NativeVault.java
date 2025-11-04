@@ -1,10 +1,10 @@
 package com.kelly.base.common.jni;
 
-import com.kelly.base.common.interfaces.IInternalLibLoader;
+import com.kelly.base.common.interfaces.ILibLoader;
+import com.kelly.base.common.interfaces.IVault;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -13,10 +13,9 @@ import java.io.OutputStream;
 import java.util.Objects;
 
 @Slf4j
-@Component
 @RequiredArgsConstructor
-public class NativeVault {
-    private final IInternalLibLoader internalLibLoader;
+public class NativeVault implements IVault {
+    private final ILibLoader libLoader;
 
     private static final String LIB_PATH = "native";
     private static final String LIB_NAME = "native_vault";
@@ -32,7 +31,7 @@ public class NativeVault {
             File targetFile = File.createTempFile("temp_", "_" + libNameWithExt);
             targetFile.deleteOnExit();
 
-            try (InputStream is = internalLibLoader.getLibInputStream(LIB_PATH, libNameWithExt)) {
+            try (InputStream is = libLoader.getLibInputStream(LIB_PATH, libNameWithExt)) {
                 try (OutputStream os = new FileOutputStream(targetFile)) {
                     byte[] buf = new byte[4096];
                     int bytesRead;
@@ -49,5 +48,6 @@ public class NativeVault {
         }
     }
 
+    @Override
     public native byte[] getJasyptSeed();
 }
