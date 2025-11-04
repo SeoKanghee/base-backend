@@ -66,4 +66,4 @@ management:
 
 logging:
   level:
-    com.neurophet: ${NEUROPHET_LOG_LEVEL:INFO}
+    com.kelly.base: ${KELLY_LOG_LEVEL:INFO}
