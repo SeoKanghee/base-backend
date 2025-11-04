@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+    <!-- 로그 파일 설정 -->
+    <property name="LOG_FILE" value="${LOG_FILE:-logs/${APPLICATION_NAME}.log}"/>
+    <property name="LOG_FILE_MAX_SIZE" value="${LOG_FILE_MAX_SIZE:-100MB}"/>
+    <property name="LOG_FILE_MAX_HISTORY" value="${LOG_FILE_MAX_HISTORY:-90}"/>
+    <property name="LOG_FILE_TOTAL_SIZE_CAP" value="${LOG_FILE_TOTAL_SIZE_CAP:-1GB}"/>
+
+    <!-- 로그 패턴 설정 -->
+    <property name="CONSOLE_LOG_PATTERN"
+              value="%d{yy-MM-dd HH:mm:ss.SSS} %-5level ${PID:-} - [%thread] [%logger{100}:%line] - %msg%n"/>
+    <property name="FILE_LOG_PATTERN"
+              value="%d{yy-MM-dd HH:mm:ss.SSS} %-5level ${PID:-} - [%thread] [%logger{0}:%line] - %msg%n"/>
+
+    <!-- 콘솔 Appender -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN:-%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{100} - %msg%n}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- 파일 Appender (Rolling) -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_FILE}</file>
+        <encoder>
+            <pattern>${FILE_LOG_PATTERN:-%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{0} - %msg%n}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_FILE}.%d{yyyy-MM-dd}.%i.gz</fileNamePattern>
+            <maxFileSize>${LOG_FILE_MAX_SIZE}</maxFileSize>
+            <maxHistory>${LOG_FILE_MAX_HISTORY}</maxHistory>
+            <totalSizeCap>${LOG_FILE_TOTAL_SIZE_CAP}</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+
+    <!-- local profile - console + file -->
+    <springProfile name="local">
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="FILE"/>
+        </root>
+    </springProfile>
+
+    <!-- !local profile - file only -->
+    <springProfile name="!local">
+        <root level="INFO">
+            <appender-ref ref="FILE"/>
+        </root>
+    </springProfile>
+</configuration>
