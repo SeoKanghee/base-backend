@@ -2,19 +2,25 @@
 <configuration>
     <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
 
-    <!-- 로그 파일 설정 -->
+    <!-- 일반 log : file 설정 -->
     <property name="LOG_FILE" value="${LOG_FILE:-logs/${APPLICATION_NAME}.log}"/>
     <property name="LOG_FILE_MAX_SIZE" value="${LOG_FILE_MAX_SIZE:-100MB}"/>
     <property name="LOG_FILE_MAX_HISTORY" value="${LOG_FILE_MAX_HISTORY:-90}"/>
     <property name="LOG_FILE_TOTAL_SIZE_CAP" value="${LOG_FILE_TOTAL_SIZE_CAP:-1GB}"/>
 
-    <!-- 로그 패턴 설정 -->
+    <!-- audit log : file 설정 -->
+    <property name="AUDIT_LOG_FILE" value="${AUDIT_LOG_FILE:-logs/${APPLICATION_NAME}-audit.log}"/>
+    <property name="AUDIT_LOG_FILE_MAX_SIZE" value="${AUDIT_LOG_FILE_MAX_SIZE:-100MB}"/>
+    <property name="AUDIT_LOG_FILE_MAX_HISTORY" value="${AUDIT_LOG_FILE_MAX_HISTORY:-730}"/>
+    <property name="AUDIT_LOG_FILE_TOTAL_SIZE_CAP" value="${AUDIT_LOG_FILE_TOTAL_SIZE_CAP:-1GB}"/>
+
+    <!-- 일반 log : pattern 설정 -->
     <property name="CONSOLE_LOG_PATTERN"
               value="%d{yy-MM-dd HH:mm:ss.SSS} %-5level ${PID:-} - [%thread] [%logger{100}:%line] - %msg%n"/>
     <property name="FILE_LOG_PATTERN"
               value="%d{yy-MM-dd HH:mm:ss.SSS} %-5level ${PID:-} - [%thread] [%logger{0}:%line] - %msg%n"/>
 
-    <!-- 콘솔 Appender -->
+    <!-- 일반 log : Console Appender -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>${CONSOLE_LOG_PATTERN:-%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{100} - %msg%n}</pattern>
@@ -22,7 +28,7 @@
         </encoder>
     </appender>
 
-    <!-- 파일 Appender (Rolling) -->
+    <!-- 일반 log : File Appender -->
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_FILE}</file>
         <encoder>
@@ -36,6 +42,26 @@
             <totalSizeCap>${LOG_FILE_TOTAL_SIZE_CAP}</totalSizeCap>
         </rollingPolicy>
     </appender>
+
+    <!-- audit log : File Appender -->
+    <appender name="AUDIT_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${AUDIT_LOG_FILE}</file>
+        <encoder>
+            <pattern>%msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${AUDIT_LOG_FILE}.%d{yyyy-MM-dd}.%i.gz</fileNamePattern>
+            <maxFileSize>${AUDIT_LOG_FILE_MAX_SIZE}</maxFileSize>
+            <maxHistory>${AUDIT_LOG_FILE_MAX_HISTORY}</maxHistory>
+            <totalSizeCap>${AUDIT_LOG_FILE_TOTAL_SIZE_CAP}</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+
+    <!-- audit log : logger 설정 ( common/AuditLogService 의 logger 생성 name 확인 ) -->
+    <logger name="AUDIT_LOGGER" level="INFO" additivity="false">
+        <appender-ref ref="AUDIT_FILE"/>
+    </logger>
 
     <!-- local profile - console + file -->
     <springProfile name="local">

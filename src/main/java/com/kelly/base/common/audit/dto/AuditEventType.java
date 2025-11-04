@@ -1,10 +1,8 @@
 package com.kelly.base.common.audit.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Generated;
 import lombok.Getter;
 
-@Generated  // jacoco 제외 - 임시
 @AllArgsConstructor
 @Getter
 public enum AuditEventType {
