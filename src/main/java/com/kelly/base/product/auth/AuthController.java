@@ -1,6 +1,6 @@
 package com.kelly.base.product.auth;
 
-import com.kelly.base.common.dto.CommonResponse;
+import com.kelly.base.common.response.CommonResponse;
 import com.kelly.base.product.auth.dto.PostLoginRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

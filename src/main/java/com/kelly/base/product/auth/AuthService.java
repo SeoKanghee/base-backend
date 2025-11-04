@@ -1,7 +1,7 @@
 package com.kelly.base.product.auth;
 
-import com.kelly.base.common.dto.CommonResponse;
-import com.kelly.base.common.enums.CommonResultCode;
+import com.kelly.base.common.response.CommonResponse;
+import com.kelly.base.common.response.CommonResultCode;
 import com.kelly.base.product.auth.dto.PostLoginRequest;
 import com.kelly.base.product.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

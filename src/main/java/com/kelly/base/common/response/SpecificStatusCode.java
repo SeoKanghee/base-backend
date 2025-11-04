@@ -1,4 +1,4 @@
-package com.kelly.base.common.enums;
+package com.kelly.base.common.response;
 
 import com.kelly.base.common.interfaces.IStatusCode;
 import lombok.AllArgsConstructor;

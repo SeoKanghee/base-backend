@@ -1,7 +1,7 @@
 package com.kelly.base.common.exception;
 
-import com.kelly.base.common.dto.CommonResponse;
-import com.kelly.base.common.enums.CommonResultCode;
+import com.kelly.base.common.response.CommonResponse;
+import com.kelly.base.common.response.CommonResultCode;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.*;

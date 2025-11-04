@@ -1,6 +1,5 @@
-package com.kelly.base.common.dto;
+package com.kelly.base.common.response;
 
-import com.kelly.base.common.enums.CommonResultCode;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

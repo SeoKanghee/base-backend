@@ -1,6 +1,5 @@
-package com.kelly.base.common.dto;
+package com.kelly.base.common.response;
 
-import com.kelly.base.common.enums.CommonResultCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;

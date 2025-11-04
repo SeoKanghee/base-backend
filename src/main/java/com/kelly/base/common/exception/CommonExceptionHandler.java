@@ -1,7 +1,7 @@
 package com.kelly.base.common.exception;
 
-import com.kelly.base.common.dto.CommonResponse;
-import com.kelly.base.common.enums.CommonResultCode;
+import com.kelly.base.common.response.CommonResponse;
+import com.kelly.base.common.response.CommonResultCode;
 import com.kelly.base.common.interfaces.ICommonException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
