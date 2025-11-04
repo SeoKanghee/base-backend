@@ -42,16 +42,23 @@ class CommonJasyptConfigTests {
         }
 
         @Test
-        @DisplayName("getPassword test - fail")
-        void getPasswordFailTest() {
+        @DisplayName("getPassword test - exception")
+        void getPasswordExceptionTest() {
+            // given
+            when(mockVault.getJasyptSeed()).thenThrow(NullPointerException.class);
+
+            // when, then - 발생한 exception 을 그대로 상위로 전달
+            Assertions.assertThrows(NullPointerException.class, commonJasyptConfig::getPassword);
+        }
+
+        @Test
+        @DisplayName("getPassword test - UnsatisfiedLinkError")
+        void getPasswordUnsatisfiedLinkErrorTest() {
             // given
             when(mockVault.getJasyptSeed()).thenThrow(UnsatisfiedLinkError.class);
 
-            // when - getJasyptSeed 에서는 exception 이 발생해도, getPassword 는 임의의 값을 반환해야 함
-            final String result = Assertions.assertDoesNotThrow(commonJasyptConfig::getPassword);
-
-            // then
-            Assertions.assertNotNull(result);
+            // when, then - 발생한 exception 을 그대로 상위로 전달
+            Assertions.assertThrows(UnsatisfiedLinkError.class, commonJasyptConfig::getPassword);
         }
     }
 
