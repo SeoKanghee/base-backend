@@ -9,8 +9,6 @@ import org.jasypt.encryption.pbe.config.SimpleStringPBEConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.UUID;
-
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
@@ -23,7 +21,7 @@ public class CommonJasyptConfig {
         SimpleStringPBEConfig config = new SimpleStringPBEConfig();
         config.setPassword(getPassword());  // key for encrypt
         config.setAlgorithm("PBEWITHHMACSHA512ANDAES_256");
-        config.setKeyObtentionIterations("1000");
+        config.setKeyObtentionIterations("210000");
         config.setPoolSize("1");
         config.setProviderName("SunJCE");
         config.setSaltGeneratorClassName("org.jasypt.salt.RandomSaltGenerator");
@@ -34,15 +32,13 @@ public class CommonJasyptConfig {
     }
 
     String getPassword() {
-        String password;
         try {
             byte[] bytesSeed = vault.getJasyptSeed();
-            password = new String(bytesSeed);
-        } catch (UnsatisfiedLinkError | NullPointerException e) {
-            // JNI 로 라이브러리 로딩이 실패하면 임의로 아무 값이나 넣어서 초기화 시킴
-            password = UUID.randomUUID().toString();
-            log.error("[{}] library loading failed - {}", e.getClass().getSimpleName(), password);
+            return new String(bytesSeed);
+        } catch (Exception | UnsatisfiedLinkError e) {
+            // Native Library 를 사용할 경우 LinkError 발생 가능성 존재
+            log.error("[{}] library loading failed", e.getClass().getSimpleName());
+            throw e;
         }
-        return password;
     }
 }
