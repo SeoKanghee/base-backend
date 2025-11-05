@@ -14,6 +14,6 @@ public final class CommonConstants {
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     public static final class DateTimePattern {
         // audit log 에서 출력되는 시간에 대한 pattern 정의
-        public static final String AUDIT_LOG_PATTERN = "yyyy-MM-dd HH:mm:ss.SSS";
+        public static final String AUDIT_LOG_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSX";
     }
 }

@@ -1,6 +1,8 @@
 package com.kelly.base.common.audit.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.kelly.base.common.CommonConstants;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -8,6 +10,7 @@ import java.time.ZonedDateTime;
 import java.util.Map;
 
 @Schema(description = "log - audit")
+@JsonNaming(PropertyNamingStrategies.UpperCamelCaseStrategy.class)  // json 처리시 첫글자 대문자로 변경
 public record AuditLogFormat(
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = CommonConstants.DateTimePattern.AUDIT_LOG_PATTERN)
         ZonedDateTime creationDateTime,
@@ -15,12 +18,12 @@ public record AuditLogFormat(
         String ipAddress,
         String activity,
         Map<String, Object> activityDetail,
-        String applicationInfo
+        String productVersion
 ) {
     // creationDateTime : 시간 정보
     // eventType : 이벤트 분류 정보
     // ipAddress : 호출 대상 IP
     // activity : 동작 정보
     // activityDetail : 동작 상세 정보 ( payload.. )
-    // applicationInfo : 앱 정보
+    // productVersion : 앱 정보
 }

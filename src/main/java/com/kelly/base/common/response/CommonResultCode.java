@@ -18,6 +18,7 @@ public enum CommonResultCode {
     INVALID_PARAMETER(HttpStatus.BAD_REQUEST, SpecificStatusCode.ISC_94000001),
 
     // specific - 5xx
+    SYSTEM_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, SpecificStatusCode.ISC_95000001),
     TASK_REJECTED(HttpStatus.SERVICE_UNAVAILABLE, SpecificStatusCode.ISC_95030001);
 
 
