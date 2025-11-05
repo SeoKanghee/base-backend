@@ -4,7 +4,7 @@ config:
     use-default-async: true # web library 에 선언된 async executor 를 사용할지 여부
     vault-type: random  # random, native, cloud
   constants:
-    application-name: ad-identity
+    application-name: base-backend
     application-version: 0.0.1
 
 spring:

@@ -9,6 +9,7 @@ import lombok.Getter;
 public enum SpecificStatusCode implements IStatusCode {
     // 9(error) + xxx(http status code) + yyyy(unique code)
     ISC_94000001(94000001, "error - invalid parameter"),
+    ISC_95000001(95000001, "error - system error"),
     ISC_95030001(95030001, "error - thread usage is not possible");
 
     private final Integer code;
