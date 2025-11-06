@@ -58,9 +58,17 @@
         </rollingPolicy>
     </appender>
 
+    <!-- audit log : appender 설정 ( 비동기로 동작하여 메인 로직 동작에 서로 영향이 없도록 정의 ) -->
+    <appender name="ASYNC_AUDIT" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="AUDIT_FILE"/>
+        <queueSize>8192</queueSize> <!-- neverBlock 이 true 이므로 8192 로 변경 (기본값 : 256)  -->
+        <discardingThreshold>0</discardingThreshold>    <!-- queue 의 사용량에 상관없이 log 유지 -->
+        <neverBlock>true</neverBlock>   <!-- log 생성이 성능에 영향을 주지 않도록 설정 ( 손실 가능 ) -->
+    </appender>
+
     <!-- audit log : logger 설정 ( common/AuditLogService 의 logger 생성 name 확인 ) -->
     <logger name="AUDIT_LOGGER" level="INFO" additivity="false">
-        <appender-ref ref="AUDIT_FILE"/>
+        <appender-ref ref="ASYNC_AUDIT"/>
     </logger>
 
     <!-- local profile - console + file -->
