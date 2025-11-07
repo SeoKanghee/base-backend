@@ -10,6 +10,8 @@ public final class Constants {
         public static final String URI_PREFIX_API = "/api";
         public static final String WITH_SUB_PATHS = "/**";
 
+        public static final String URI_ROOT_SSE = URI_PREFIX_API + "/sse";  // API - sse
+
         public static final String URI_ROOT_AUTH = URI_PREFIX_API + "/auth";    // API - auth
         public static final String URI_ROOT_USERS = URI_PREFIX_API + "/users";  // API - users
     }

@@ -12,4 +12,5 @@ import org.springframework.context.annotation.Configuration;
 public class CommonPropertiesConfig {
     private String applicationName;             // application-name
     private String applicationVersion;          // application-version
+    private Long sseEmitterTimeoutMs;           // sse-emitter-timeout-ms
 }

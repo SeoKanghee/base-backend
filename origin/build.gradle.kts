@@ -57,6 +57,9 @@ dependencies {
     // enc-dec
     implementation(libs.jasypt)
 
+    // nano id
+    implementation(libs.nanoid)
+
     compileOnly(libs.lombok)
 
     runtimeOnly(libs.mariadb.java.client)
