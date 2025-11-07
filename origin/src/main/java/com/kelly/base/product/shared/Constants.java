@@ -1,4 +1,4 @@
-package com.kelly.base.product;
+package com.kelly.base.product.shared;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

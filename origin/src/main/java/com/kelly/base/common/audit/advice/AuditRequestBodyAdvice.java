@@ -13,7 +13,7 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestBodyAdviceAd
 
 import java.lang.reflect.Type;
 
-import static com.kelly.base.common.CommonConstants.AttributeInfo.ATTR_AUDIT_REQ_BODY;
+import static com.kelly.base.common.CommonConstants.AuditConstants.ATTR_AUDIT_REQ_BODY;
 
 @Component
 @ControllerAdvice

@@ -1,0 +1,14 @@
+{
+    "properties": [
+        {
+            "name": "config.options.use-default-async",
+            "type": "java.lang.String",
+            "description": "web library 에 선언된 async executor 를 사용할지 여부"
+        },
+        {
+            "name": "config.options.vault-type",
+            "type": "java.lang.String",
+            "description": "secret key 를 획득할 수 있는 vault 의 선택지"
+        }
+    ]
+}

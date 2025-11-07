@@ -1,7 +1,7 @@
-package com.kelly.base.product.auth;
+package com.kelly.base.product.identity.auth;
 
 import com.kelly.base.common.response.CommonResponse;
-import com.kelly.base.product.auth.dto.PostLoginRequest;
+import com.kelly.base.product.identity.auth.dto.PostLoginRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.kelly.base.product.Constants.UrlInfo.URI_ROOT_AUTH;
+import static com.kelly.base.product.shared.Constants.UrlInfo.URI_ROOT_AUTH;
 
 @Slf4j
 @RequiredArgsConstructor

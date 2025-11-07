@@ -15,7 +15,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.lang.reflect.Type;
 
-import static com.kelly.base.common.CommonConstants.AttributeInfo.ATTR_AUDIT_REQ_BODY;
+import static com.kelly.base.common.CommonConstants.AuditConstants.ATTR_AUDIT_REQ_BODY;
 import static org.mockito.Mockito.*;
 
 @DisplayName("AuditRequestBodyAdviceTests")

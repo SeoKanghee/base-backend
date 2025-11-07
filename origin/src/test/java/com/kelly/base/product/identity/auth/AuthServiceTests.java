@@ -1,8 +1,7 @@
-package com.kelly.base.product.auth;
+package com.kelly.base.product.identity.auth;
 
-import com.kelly.base.product.auth.AuthService;
-import com.kelly.base.product.auth.dto.PostLoginRequest;
-import com.kelly.base.product.repository.UserRepository;
+import com.kelly.base.product.identity.auth.dto.PostLoginRequest;
+import com.kelly.base.product.identity.repository.UserRepository;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;

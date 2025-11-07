@@ -24,7 +24,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import java.lang.reflect.Method;
 import java.util.Map;
 
-import static com.kelly.base.common.CommonConstants.AttributeInfo.ATTR_AUDIT_REQ_BODY;
+import static com.kelly.base.common.CommonConstants.AuditConstants.*;
 import static com.kelly.base.common.audit.advice.AuditResponseBodyAdvice.*;
 import static org.mockito.Mockito.*;
 
@@ -41,7 +41,7 @@ class AuditResponseBodyAdviceTests {
         servletRequest = new MockHttpServletRequest();
         final ServletRequestAttributes requestAttributes = new ServletRequestAttributes(servletRequest);
 
-        // mocking 된 AuditLogService 로 초기화
+        // mocking 된 객체들로 초기화
         mockAuditLogService = mock(AuditLogService.class);
         auditResponseBodyAdvice = new AuditResponseBodyAdvice(mockAuditLogService);
 
@@ -126,6 +126,35 @@ class AuditResponseBodyAdviceTests {
             servletRequest.setRemoteAddr(ip);
             servletRequest.setQueryString(query);
             servletRequest.setAttribute(ATTR_AUDIT_REQ_BODY, requestBody);
+        }
+
+        @Test
+        @DisplayName("beforeBodyWrite test - excluded uri")
+        void beforeBodyWriteExcludedTest() throws NoSuchMethodException {
+            // given
+            setRequest("GET", "/swagger-ui/index.html", "192.168.1.119", null, null);
+            final String responseBody = "response body";
+
+            Method method = TestController.class.getMethod("auditMethod");
+            MethodParameter methodParameter = new MethodParameter(method, -1);
+
+            // when
+            final Object result = Assertions.assertDoesNotThrow(
+                    () -> auditResponseBodyAdvice.beforeBodyWrite(
+                            responseBody,
+                            methodParameter,
+                            MediaType.APPLICATION_JSON,
+                            JsonbHttpMessageConverter.class,
+                            new ServletServerHttpRequest(servletRequest),
+                            mock(ServerHttpResponse.class)
+                    )
+            );
+
+            // then - body 반환 확인
+            Assertions.assertEquals(responseBody, result);
+
+            // then - auditLogService.logApiCall 이 호출되지 않았는지 확인
+            verify(mockAuditLogService, never()).logApiCall(anyString(), anyString(), anyMap());
         }
 
         @ParameterizedTest
