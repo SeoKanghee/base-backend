@@ -12,19 +12,25 @@ import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static com.kelly.base.common.CommonConstants.AttributeInfo.ATTR_AUDIT_REQ_BODY;
+import static com.kelly.base.common.CommonConstants.AuditConstants.*;
 
 @Component
 @ControllerAdvice
 @RequiredArgsConstructor
 public class AuditResponseBodyAdvice implements ResponseBodyAdvice<Object> {
+    // https://github.com/spring-projects/spring-framework/blob/main/spring-webmvc/src/main/java/org/springframework/web/servlet/mvc/method/annotation/package-info.java
+    // 패키지 내의 모든 method 에 @NullMarked 가 적용되어 해당 parameter 및 return 에 @NonNull 이 적용되어 있음
+
     private final AuditLogService auditLogService;
+
+    private static final AntPathMatcher PATH_MATCHER = new AntPathMatcher();
 
     static final String DETAIL_KEY_QUERY = "query";
     static final String DETAIL_KEY_REQ_BODY = "requestPayload";
@@ -44,9 +50,13 @@ public class AuditResponseBodyAdvice implements ResponseBodyAdvice<Object> {
                                   @NonNull Class<? extends HttpMessageConverter<?>> selectedConverterType,
                                   @NonNull ServerHttpRequest request, @NonNull ServerHttpResponse response) {
         final HttpServletRequest httpReq = ((ServletServerHttpRequest) request).getServletRequest();
+        final String uri = httpReq.getRequestURI();
+
+        if (isAuditExcluded(uri)) {
+            return body;
+        }
 
         final String method = httpReq.getMethod();
-        final String uri = httpReq.getRequestURI();
         final String activity = method + " " + uri;
         final String ip = httpReq.getRemoteAddr();
 
@@ -57,6 +67,10 @@ public class AuditResponseBodyAdvice implements ResponseBodyAdvice<Object> {
 
         auditLogService.logApiCall(ip, activity, detail);
         return body;
+    }
+
+    private boolean isAuditExcluded(final String uri) {
+        return EXCLUDED_URI_PATTERNS.stream().anyMatch(pattern -> PATH_MATCHER.match(pattern, uri));
     }
 
     private void updateQuery(final Map<String, Object> detail, final String queryString) {

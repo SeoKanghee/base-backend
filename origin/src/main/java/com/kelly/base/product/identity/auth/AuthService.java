@@ -1,9 +1,9 @@
-package com.kelly.base.product.auth;
+package com.kelly.base.product.identity.auth;
 
 import com.kelly.base.common.response.CommonResponse;
 import com.kelly.base.common.response.CommonResultCode;
-import com.kelly.base.product.auth.dto.PostLoginRequest;
-import com.kelly.base.product.repository.UserRepository;
+import com.kelly.base.product.identity.auth.dto.PostLoginRequest;
+import com.kelly.base.product.identity.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;

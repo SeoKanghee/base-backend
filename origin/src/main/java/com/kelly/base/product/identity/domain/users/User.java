@@ -1,4 +1,4 @@
-package com.kelly.base.product.domain.users;
+package com.kelly.base.product.identity.domain.users;
 
 import jakarta.persistence.*;
 import lombok.*;
