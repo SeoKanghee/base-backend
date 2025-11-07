@@ -16,4 +16,10 @@ public final class CommonConstants {
         // audit log 에서 출력되는 시간에 대한 pattern 정의
         public static final String AUDIT_LOG_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSX";
     }
+
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    public static final class AttributeInfo {
+        // audit log 저장을 위해 사용하는 request body 저장용 attribute
+        public static final String ATTR_AUDIT_REQ_BODY = "ATTR_AUDIT_REQ_BODY";
+    }
 }
