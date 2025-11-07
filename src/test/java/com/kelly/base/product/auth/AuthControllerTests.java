@@ -1,6 +1,7 @@
 package com.kelly.base.product.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kelly.base.common.audit.AuditLogService;
 import com.kelly.base.product.auth.dto.PostLoginRequest;
 import com.kelly.base.common.config.CommonBeanConfig;
 import org.junit.jupiter.api.DisplayName;
@@ -31,6 +32,9 @@ class AuthControllerTests {
 
     @MockitoBean
     private AuthService authService;
+
+    @MockitoBean
+    private AuditLogService auditLogService;
 
     @Nested
     @DisplayName("PostLoginTests")
