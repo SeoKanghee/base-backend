@@ -1,3 +1,20 @@
+fun loadEnvFile(): Map<String, String> {
+    val envFile = file("../.env")
+    if (!envFile.exists()) {
+        println(".env file not found, using defaults")
+        return emptyMap()
+    }
+
+    return envFile.readLines()
+            .filter { it.isNotBlank() && !it.startsWith("#") && it.contains("=") }
+            .associate { line ->
+                val parts = line.split("=", limit = 2)
+                parts[0].trim() to parts[1].trim()
+            }
+}
+
+val env = loadEnvFile()
+
 plugins {
     java
     jacoco
@@ -8,9 +25,9 @@ plugins {
     alias(libs.plugins.maven.settings)
 }
 
-group = "com.kelly.base"
-version = "0.0.1"
-description = "Base Project from Common Backend"
+group = env["APPLICATION_GROUP"] ?: "com.kelly.base"
+version = env["APPLICATION_VERSION"] ?: "0.0.1"
+description = "Make Application Great Again"
 
 java {
     toolchain {
