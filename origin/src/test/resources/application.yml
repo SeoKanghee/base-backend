@@ -1,7 +1,7 @@
 --- #default
 config:
   options:
-    use-default-async: true # web library 에 선언된 async executor 를 사용할지 여부
+    use-default-async: false  # common 에 선언된 async executor 를 사용할지 여부
     vault-type: random  # random, native, cloud
   constants:
     application-name: base-backend
