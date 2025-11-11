@@ -143,11 +143,14 @@ public class SseEmitterManager {
     /**
      * DISCONNECT 이벤트를 전송하고 연결 종료
      *
-     * @param userId 사용자 ID
+     * @param userId          사용자 ID
+     * @param disconnectEvent 전송할 disconnect 이벤트
      */
     public void disconnect(final long userId, final SseEvent disconnectEvent) {
-        sendToUser(userId, disconnectEvent);    // disconnect event 전송
-        removeEmitter(userId);
+        final boolean sent = sendToUser(userId, disconnectEvent);   // disconnect event 전송
+        if (sent) {
+            removeEmitter(userId);
+        }
     }
 
     // SseEmitter 의 기존 연결을 해제하고 신규로 등록
