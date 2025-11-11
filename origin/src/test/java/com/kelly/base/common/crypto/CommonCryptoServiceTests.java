@@ -17,8 +17,11 @@ class CommonCryptoServiceTests {
 
     @BeforeEach
     void initService() {
+        final String cryptoKey = "valid-key-length-just-16";
+
         final CommonPropertiesConfig mockCommonPropertiesConfig = mock(CommonPropertiesConfig.class);
-        when(mockCommonPropertiesConfig.getCommonCryptoKey()).thenReturn("valid-key-length-more-16");
+        when(mockCommonPropertiesConfig.getCommonCryptoKey()).thenReturn(cryptoKey);
+
         commonCryptoService = new CommonCryptoService(mockCommonPropertiesConfig);
     }
 
@@ -37,6 +40,7 @@ class CommonCryptoServiceTests {
                     () -> commonCryptoService.encrypt(testSource.getBytes(StandardCharsets.UTF_8))
             );
             Assertions.assertNotNull(encStr);
+            System.out.println(testSource + " -> " + encStr);
 
             // when, then - decrypt
             final byte[] decBytes = Assertions.assertDoesNotThrow(
@@ -74,7 +78,7 @@ class CommonCryptoServiceTests {
         @Test
         @DisplayName("encrypt test - fail : key length less than 16")
         void encFailWrongKeyTest() {
-            // given - AES128 의 key 최소 길이는 16 bytes
+            // given
             commonCryptoService.setCryptoKey("123456789012345");
             final String testSource = "TEST";
 

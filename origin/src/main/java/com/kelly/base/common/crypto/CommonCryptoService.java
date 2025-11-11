@@ -29,6 +29,8 @@ public class CommonCryptoService implements ICryptoService<byte[]> {
 
     @PostConstruct
     void init() {
+        // ASE key 길이 제한
+        // - AES-128 : 16 / AES-192 : 24 / AES-256 : 32
         setCryptoKey(commonPropertiesConfig.getCommonCryptoKey());
     }
 
