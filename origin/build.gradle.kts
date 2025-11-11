@@ -68,7 +68,7 @@ dependencies {
     // clear vulnerabilities
     implementation(libs.bundles.clear.vulnerabilities)
 
-    // swaager
+    // swagger
     implementation(libs.springdoc)
 
     // enc-dec
@@ -118,9 +118,9 @@ tasks.jacocoTestReport {
     }
     // jacocoExcludes 에 선언된 파일들을 test report 에서 제외
     classDirectories.setFrom(
-        sourceSets.main.get().output.asFileTree.matching {
-            exclude(jacocoExcludes)
-        }
+            sourceSets.main.get().output.asFileTree.matching {
+                exclude(jacocoExcludes)
+            }
     )
     finalizedBy(tasks.jacocoTestCoverageVerification)
 }
@@ -138,9 +138,9 @@ tasks.jacocoTestCoverageVerification {
     }
     // querydsl - Q class 를 coverage 에서 제외
     classDirectories.setFrom(
-        sourceSets.main.get().output.asFileTree.matching {
-            exclude(jacocoExcludes)
-        }
+            sourceSets.main.get().output.asFileTree.matching {
+                exclude(jacocoExcludes)
+            }
     )
 }
 
