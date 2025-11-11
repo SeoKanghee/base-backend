@@ -24,6 +24,14 @@ public class AuditLogService {
 
     private final CommonPropertiesConfig commonPropertiesConfig;
 
+    /**
+     * API 호출에 대한 audit log 저장
+     *
+     * @param ipAddress 호출한 클라이언트의 IP address
+     * @param activity 호출된 API 의 method + uri
+     * @param activityDetail API 호출시 전달된 request body
+     * @author kelly
+     */
     public void logApiCall(final String ipAddress, final String activity, final Map<String, Object> activityDetail) {
         final String productVersion = getProductVersion();
         final AuditLogFormat auditLog = new AuditLogFormat(
@@ -32,6 +40,13 @@ public class AuditLogService {
         logAudit(auditLog);
     }
 
+    /**
+     * 시스템 이벤트 발생에 따른 audit log 저장
+     *
+     * @param activity 발생한 이벤트
+     * @param activityDetail 발생한 이벤트의 추가 정보
+     * @author kelly
+     */
     public void logSystemEvent(final String activity, final Map<String, Object> activityDetail) {
         final String productVersion = getProductVersion();
         final AuditLogFormat auditLog = new AuditLogFormat(
@@ -41,10 +56,20 @@ public class AuditLogService {
         logAudit(auditLog);
     }
 
+    /**
+     * audit log 저장 요청 - 어플리케이션 시작
+     *
+     * @author kelly
+     */
     public void logSystemEventAppStart() {
         logSystemEvent("Server Start", Map.of("message", "application started successfully"));
     }
 
+    /**
+     * audit log 저장 요청 - 어플리케이션 종료
+     *
+     * @author kelly
+     */
     public void logSystemEventAppShutdown() {
         logSystemEvent("Server Shutdown", Map.of("message", "application shutdown initiated"));
     }

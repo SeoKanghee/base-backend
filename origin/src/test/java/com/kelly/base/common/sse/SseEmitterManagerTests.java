@@ -122,7 +122,7 @@ class SseEmitterManagerTests {
 
     @Nested
     @DisplayName("SendToUserTests")
-    class SendToUserTests {
+    class SendToAccountTests {
         @Test
         @DisplayName("sendToUser - no emitter")
         void sendToUserNoEmitterTest() {

@@ -47,7 +47,7 @@ server:
       enabled: true
       force: true
     session:
-      timeout: 60s
+      timeout: 30m  # 세션 타임아웃: 30분
 
 jasypt:
   encryptor:
@@ -71,4 +71,3 @@ management:
 logging:
   level:
     com.kelly.base: ${KELLY_LOG_LEVEL:INFO}
-

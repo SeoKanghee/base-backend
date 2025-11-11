@@ -1,5 +1,6 @@
 package com.kelly.base.common.exception;
 
+import com.kelly.base.common.interfaces.IResultCode;
 import com.kelly.base.common.response.CommonResultCode;
 import com.kelly.base.common.interfaces.ICommonException;
 import lombok.Getter;
@@ -13,7 +14,7 @@ public class CommonRuntimeException extends RuntimeException implements ICommonE
     // RuntimeException 의 extends 로 선언 해서 처리
     // - reference : https://www.baeldung.com/java-undeclaredthrowableexception
 
-    private final CommonResultCode resultCode;
+    private final IResultCode resultCode;
     private final Integer extraCode;
     private final String extraMessage;
 
@@ -24,15 +25,15 @@ public class CommonRuntimeException extends RuntimeException implements ICommonE
         this.extraMessage = null;
     }
 
-    public CommonRuntimeException(@NonNull CommonResultCode resultCode) {
+    public CommonRuntimeException(@NonNull IResultCode resultCode) {
         this(resultCode, null, null);
     }
 
-    public CommonRuntimeException(@NonNull CommonResultCode resultCode, String extraMessage) {
+    public CommonRuntimeException(@NonNull IResultCode resultCode, String extraMessage) {
         this(resultCode, null, extraMessage);
     }
 
-    public CommonRuntimeException(@NonNull CommonResultCode resultCode, Integer extraCode, String extraMessage) {
+    public CommonRuntimeException(@NonNull IResultCode resultCode, Integer extraCode, String extraMessage) {
         super(resultCode.getMessage());
         this.resultCode = resultCode;
         this.extraCode = extraCode;

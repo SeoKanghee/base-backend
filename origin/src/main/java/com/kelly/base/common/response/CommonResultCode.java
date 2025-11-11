@@ -1,5 +1,6 @@
 package com.kelly.base.common.response;
 
+import com.kelly.base.common.interfaces.IResultCode;
 import com.kelly.base.common.interfaces.IStatusCode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,7 +8,7 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 @AllArgsConstructor
-public enum CommonResultCode {
+public enum CommonResultCode implements IResultCode {
     // normal
     SUCCESS(HttpStatus.OK),
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED),
@@ -15,11 +16,11 @@ public enum CommonResultCode {
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR),
 
     // specific - 4xx
-    INVALID_PARAMETER(HttpStatus.BAD_REQUEST, SpecificStatusCode.ISC_94000001),
+    INVALID_PARAMETER(HttpStatus.BAD_REQUEST, SpecificStatusCode.SSC_94000001),
 
     // specific - 5xx
-    SYSTEM_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, SpecificStatusCode.ISC_95000001),
-    TASK_REJECTED(HttpStatus.SERVICE_UNAVAILABLE, SpecificStatusCode.ISC_95030001);
+    SYSTEM_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, SpecificStatusCode.SSC_95000001),
+    TASK_REJECTED(HttpStatus.SERVICE_UNAVAILABLE, SpecificStatusCode.SSC_95030001);
 
 
     CommonResultCode(final HttpStatus httpStatus) {

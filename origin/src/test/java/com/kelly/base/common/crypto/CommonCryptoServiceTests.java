@@ -70,6 +70,31 @@ class CommonCryptoServiceTests {
             );
             Assertions.assertEquals(0, decBytes.length);
         }
+
+        @Test
+        @DisplayName("encDec test - one-time crypto key")
+        void encDecOneTimeCryptoKeyTest() {
+            // given
+            final String testSource = "TEST";
+            final String oneTimeCryptoKey = "oneTimeCryptoKey";
+
+            // when, then - encrypt
+            final String encStr = Assertions.assertDoesNotThrow(
+                    () -> commonCryptoService.encrypt(testSource.getBytes(StandardCharsets.UTF_8),
+                                                      oneTimeCryptoKey)
+            );
+            Assertions.assertNotNull(encStr);
+            System.out.println("key : " + oneTimeCryptoKey + ", " + testSource + " -> " + encStr);
+
+            // when, then - decrypt
+            final byte[] decBytes = Assertions.assertDoesNotThrow(
+                    () -> commonCryptoService.decrypt(encStr, oneTimeCryptoKey)
+            );
+            Assertions.assertNotEquals(0, decBytes.length);
+
+            // then - 암복호화 전후 결과 비교
+            Assertions.assertEquals(testSource, new String(decBytes, StandardCharsets.UTF_8));
+        }
     }
 
     @Nested

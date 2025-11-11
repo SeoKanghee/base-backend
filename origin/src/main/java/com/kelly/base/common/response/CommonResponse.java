@@ -1,5 +1,6 @@
 package com.kelly.base.common.response;
 
+import com.kelly.base.common.interfaces.IResultCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -13,7 +14,7 @@ public class CommonResponse<T> {
     private String message;
     private T result;
 
-    public CommonResponse(@NonNull CommonResultCode resultCode) {
+    public CommonResponse(@NonNull IResultCode resultCode) {
         this.code = resultCode.getCode();
         this.message = resultCode.getMessage();
     }
@@ -23,7 +24,7 @@ public class CommonResponse<T> {
         this.message = message;
     }
 
-    public CommonResponse(@NonNull CommonResultCode resultCode, final T result) {
+    public CommonResponse(@NonNull IResultCode resultCode, final T result) {
         this(resultCode);
         this.result = result;
     }
