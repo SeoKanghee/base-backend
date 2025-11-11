@@ -30,6 +30,8 @@ spring:
         format_sql: false
         globally_quoted_identifiers: true   # 예약어 컬럼, 테이블 이름에 대한 예외 처리 ( id.. )
         globally_quoted_identifiers_skip_column_definitions: true   # 예약어 컬럼, 테이블 이름에 대한 예외 처리 ( id.. )
+        jdbc:
+          time_zone: UTC  # DB timezone 정보를 UTC 로 설정
     open-in-view: false # OSIV 를 적용하지 않음 - 영속성 컨텍스트를 실제 트랜잭션 범위로만 한정 시킴
     show-sql: false
     defer-datasource-initialization: true

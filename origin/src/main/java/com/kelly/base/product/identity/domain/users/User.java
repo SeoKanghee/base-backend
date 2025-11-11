@@ -33,19 +33,31 @@ public class User {
 
     @Builder.Default
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
-    private UserStatus status = UserStatus.ACTIVE;
+    @Column(name = "role", nullable = false)
+    private UserRole role = UserRole.GENERAL_USER;
 
     @Builder.Default
     @Enumerated(EnumType.STRING)
-    @Column(name = "role", nullable = false)
-    private UserRole role = UserRole.GENERAL_USER;
+    @Column(name = "status", nullable = false)
+    private UserStatus status = UserStatus.ACTIVE;
+
+    @Column(name ="fail_count", nullable = false)
+    private Long failCount;
+
+    @Column(name ="is_temp", nullable = false)
+    private Boolean isTemp;
 
     @Column(name = "department", length = 128)
     private String department;
 
     @Column(name = "memo")
     private String memo;
+
+    @Column(name = "locked_at")
+    private ZonedDateTime lockedAt;
+
+    @Column(name = "password_expired_at", nullable = false)
+    private ZonedDateTime passwordExpiredAt;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
