@@ -14,6 +14,15 @@ public final class CommonConstants {
     }
 
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    public static final class CommonAsync {
+        public static final String COMMON_ASYNC_NAME = "commonAsync";   // async 이름
+        public static final String COMMON_ASYNC_THREAD_PREFIX = "common-async-";    // thread prefix 값
+        public static final int COMMON_ASYNC_CORE_POOL_SIZE = 10;   // 항상 활성 상태로 유지할 thread 개수
+        public static final int COMMON_ASYNC_QUEUE_CAPACITY = 500;  // thread 가 full 일 경우 작업들을 쌓아둘 queue 크기
+        public static final int COMMON_ASYNC_MAX_POOL_SIZE = 10;
+    }
+
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
     public static final class DateTimePattern {
         // audit log 에서 출력되는 시간에 대한 pattern 정의
         public static final String AUDIT_LOG_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSX";
@@ -31,6 +40,5 @@ public final class CommonConstants {
         public static final List<String> EXCLUDED_URI_PATTERNS = List.of(
                 "/swagger-ui/**", "/v3/api-docs/**", "/actuator/**"
         );
-
     }
 }

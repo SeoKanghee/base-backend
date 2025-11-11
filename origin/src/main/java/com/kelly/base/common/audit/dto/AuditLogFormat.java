@@ -12,7 +12,7 @@ import java.util.Map;
 @Schema(description = "log - audit")
 @JsonNaming(PropertyNamingStrategies.UpperCamelCaseStrategy.class)  // json 처리시 첫글자 대문자로 변경
 public record AuditLogFormat(
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = CommonConstants.DateTimePattern.AUDIT_LOG_PATTERN)
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = CommonConstants.AuditConstants.LOG_PATTERN)
         ZonedDateTime creationDateTime,
         AuditEventType eventType,
         String ipAddress,
