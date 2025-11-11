@@ -6,6 +6,7 @@ config:
   constants:
     application-name: ${APPLICATION_NAME:base-backend}
     application-version: ${APPLICATION_VERSION:0.0.1}
+    sse-emitter-timeout-ms: ${SSE_EMITTER_TIMEOUT_MS:60000}
 
 spring:
   profiles:
@@ -25,10 +26,10 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MariaDBDialect
-        format_sql: false
-        globally_quoted_identifiers: true   # 예약어 컬럼, 테이블 이름에 대한 예외 처리 ( id.. )
-        globally_quoted_identifiers_skip_column_definitions: true   # 예약어 컬럼, 테이블 이름에 대한 예외 처리 ( id.. )
-    open-in-view: false   # OSIV 를 적용하지 않음 - 영속성 컨텍스트를 실제 트랜잭션 범위로만 한정 시킴
+        format-sql: false
+        globally-quoted-identifiers: true # 예약어 컬럼, 테이블 이름에 대한 예외 처리 ( id.. )
+        globally-quoted-identifiers-skip-column-definitions: true # 예약어 컬럼, 테이블 이름에 대한 예외 처리 ( id.. )
+    open-in-view: false # OSIV 를 적용하지 않음 - 영속성 컨텍스트를 실제 트랜잭션 범위로만 한정 시킴
     show-sql: false
     defer-datasource-initialization: true
   sql:
@@ -54,7 +55,7 @@ springdoc:
     groups:
       enabled: true
   swagger-ui:
-    path: "api.html"   # http://localhost:{port}/api.html
+    path: "api.html" # http://localhost:{port}/api.html
     operations-sorter: "method"
 
 management:
@@ -67,3 +68,4 @@ management:
 logging:
   level:
     com.kelly.base: ${KELLY_LOG_LEVEL:INFO}
+
