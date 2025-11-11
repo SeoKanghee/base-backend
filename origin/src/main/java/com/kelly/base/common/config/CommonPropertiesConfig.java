@@ -12,5 +12,6 @@ import org.springframework.context.annotation.Configuration;
 public class CommonPropertiesConfig {
     private String applicationName;             // application-name
     private String applicationVersion;          // application-version
+    private String commonCryptoKey;             // common-crypto-key
     private Long sseEmitterTimeoutMs;           // sse-emitter-timeout-ms
 }
