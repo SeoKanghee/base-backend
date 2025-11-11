@@ -16,7 +16,6 @@ spring:
     url: jdbc:h2:mem:test_dummy;MODE=MariaDB;IGNORECASE=TRUE;CASE_INSENSITIVE_IDENTIFIERS=TRUE;DATABASE_TO_UPPER=FALSE
     username: sa
     password:
-    initialization-mode: always
   jpa:
     hibernate:
       ddl-auto: create
@@ -33,9 +32,6 @@ spring:
     init:
       encoding: UTF-8
       mode: always
-
-jooq:
-  sql-dialect: H2
 
 server:
   port: 7499
