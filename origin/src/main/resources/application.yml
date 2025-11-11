@@ -6,6 +6,7 @@ config:
   constants:
     application-name: ${APPLICATION_NAME:base-backend}
     application-version: ${APPLICATION_VERSION:0.0.1}
+    common-crypto-key: ${COMMON_CRYPTO_KEY:temporary_crypto_key}
     sse-emitter-timeout-ms: ${SSE_EMITTER_TIMEOUT_MS:60000}
 
 spring:

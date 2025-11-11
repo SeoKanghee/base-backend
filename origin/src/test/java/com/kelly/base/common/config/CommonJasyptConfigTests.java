@@ -65,12 +65,11 @@ class CommonJasyptConfigTests {
     @Nested
     @DisplayName("EncDecTests")
     class EncDecTests {
-        private final String jasyptSeed = "oXe/6YLvAKrjLadJIvUsv90JbFO4cxSZRFMAAR8mjoY";
-
         @Test
         @DisplayName("encryption test")
         void encryptionTest() {
             // given
+            final String jasyptSeed = "oXe/6YLvAKrjLadJIvUsv90JbFO4cxSZRFMAAR8mjoY";
             when(mockVault.getJasyptSeed()).thenReturn(jasyptSeed.getBytes(StandardCharsets.UTF_8));
             final StringEncryptor encryptor = commonJasyptConfig.commonJasyptEncryptor();
             final String source = "root";
