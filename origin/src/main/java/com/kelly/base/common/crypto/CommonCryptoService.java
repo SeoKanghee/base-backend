@@ -34,24 +34,53 @@ public class CommonCryptoService implements ICryptoService<byte[]> {
         setCryptoKey(commonPropertiesConfig.getCommonCryptoKey());
     }
 
+    /**
+     * 암호화 키 설정
+     *
+     * @param key 저장할 암호화 키
+     * @author kelly
+     */
     @Override
     public void setCryptoKey(final String key) {
         cryptoKey = key.getBytes(StandardCharsets.UTF_8);
     }
 
+    /**
+     * 내장된 키로 암호화
+     *
+     * @param source 암호화할 byte 배열
+     * @return 암호화된 문자열
+     * @author kelly
+     */
     @Override
     public String encrypt(@NonNull final byte[] source) {
         if (isInvalidCryptoKey()) {
             log.error("cryptoKey is missing, making encryption impossible");
             return null;
         }
+        return dispatchEncryption(source, cryptoKey);
+    }
 
+    /**
+     * 일회용 암호화 키로 암호화
+     *
+     * @param source 암호화할 byte 배열
+     * @param oneTimeCryptoKey 일회용 암호화 키
+     * @return 암호화된 문자열
+     * @author kelly
+     */
+    public String encrypt(@NonNull final byte[] source, @NonNull final String oneTimeCryptoKey) {
+        final byte[] customCryptoKey = oneTimeCryptoKey.getBytes(StandardCharsets.UTF_8);
+        return dispatchEncryption(source, customCryptoKey);
+    }
+
+    String dispatchEncryption(@NonNull final byte[] source, @NonNull final byte[] customCryptoKey) {
         try {
             byte[] iv = new byte[IV_LENGTH];
             SecureRandom secureRandom = new SecureRandom(); // 동기화 문제가 혹시 있을 수 있으니 매번 new 로 생성
             secureRandom.nextBytes(iv);
 
-            SecretKeySpec secretKey = new SecretKeySpec(cryptoKey, KEY_ALGORITHM);
+            SecretKeySpec secretKey = new SecretKeySpec(customCryptoKey, KEY_ALGORITHM);
             Cipher cipher = Cipher.getInstance(ALGORITHM);
             GCMParameterSpec gcmParameterSpec = new GCMParameterSpec(128, iv);
             cipher.init(Cipher.ENCRYPT_MODE, secretKey, gcmParameterSpec);
@@ -68,21 +97,44 @@ public class CommonCryptoService implements ICryptoService<byte[]> {
         }
     }
 
+    /**
+     * 내장된 키로 복호화
+     *
+     * @param source 암호화된 문자열
+     * @return 복호화된 byte 배열
+     * @author kelly
+     */
     @Override
     public byte[] decrypt(@NonNull final String source) {
         if (isInvalidCryptoKey()) {
             log.error("cryptoKey is missing, making decryption impossible");
             return new byte[0];
         }
+        return dispatchDecryption(source, cryptoKey);
+    }
 
+    /**
+     * 일회용 암호화 키로 복호화
+     *
+     * @param source 암호화된 문자열
+     * @param oneTimeCryptoKey 일회용 암호화 키
+     * @return 복호화된 byte 배열
+     * @author kelly
+     */
+    public byte[] decrypt(@NonNull final String source, @NonNull final String oneTimeCryptoKey) {
+        final byte[] customCryptoKey = oneTimeCryptoKey.getBytes(StandardCharsets.UTF_8);
+        return dispatchDecryption(source, customCryptoKey);
+    }
+
+    byte[] dispatchDecryption(@NonNull final String source, @NonNull final byte[] customCryptoKey) {
         try {
             byte[] combinedDecoded = DatatypeConverter.parseBase64Binary(source);
-            byte[] iv = new byte[12];
+            byte[] iv = new byte[IV_LENGTH];
             byte[] encBytes = new byte[combinedDecoded.length - iv.length];
             System.arraycopy(combinedDecoded, 0, iv, 0, iv.length);
             System.arraycopy(combinedDecoded, iv.length, encBytes, 0, encBytes.length);
 
-            SecretKeySpec secretKey = new SecretKeySpec(cryptoKey, KEY_ALGORITHM);
+            SecretKeySpec secretKey = new SecretKeySpec(customCryptoKey, KEY_ALGORITHM);
             Cipher decipher = Cipher.getInstance(ALGORITHM);
             GCMParameterSpec gcmParameterSpec = new GCMParameterSpec(128, iv);
             decipher.init(Cipher.DECRYPT_MODE, secretKey, gcmParameterSpec);

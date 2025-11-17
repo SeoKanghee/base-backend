@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.EmptySource;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -43,6 +44,28 @@ class ConvertUtilTests {
 
             // then
             Assertions.assertEquals(CommonResultCode.SYSTEM_ERROR, e.getResultCode());
+        }
+    }
+
+    @Nested
+    @DisplayName("ToLowerCaseTests")
+    class ToLowerCaseTests {
+        @ParameterizedTest
+        @CsvSource({
+                "toLowerCase, tolowercase",
+                "123Number, 123number",
+                ",",    // null 인 경우
+                "'', ''",    // 빈문자열
+        })
+        @DisplayName("toLowerCase test")
+        void toLowerCaseTest(final String source, final String expectedResult) {
+            // when
+            final String result = Assertions.assertDoesNotThrow(
+                    () -> ConvertUtil.toLowerCase(source)
+            );
+
+            // then
+            Assertions.assertEquals(expectedResult, result);
         }
     }
 }

@@ -57,6 +57,7 @@ dependencies {
     // spring
     implementation(libs.spring.boot.starter.web)
     implementation(libs.spring.boot.starter.validation)
+    implementation(libs.spring.boot.starter.security)
 
     // actuator
     implementation(libs.spring.boot.starter.actuator)
