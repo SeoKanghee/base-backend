@@ -10,26 +10,40 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 @Slf4j
 @RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+    
+    @Bean
+    public SessionRegistry sessionRegistry() {
+        return new SessionRegistryImpl();   // session 정보 관리
+    }
+
+    @Bean
+    public HttpSessionEventPublisher httpSessionEventPublisher() {
+        return new HttpSessionEventPublisher(); // httpSession 이벤트를 spring security 에 전달
+    }
+    
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)      // CSRF 비활성화 (REST API용)
             .formLogin(AbstractHttpConfigurer::disable) // 폼 로그인 비활성화 (REST API용)
             .httpBasic(AbstractHttpConfigurer::disable) // HTTP Basic 비활성화
 
-            // 세션 기반 인증 사용
+            // 세션 정책 정의 -> NEVER
+            // - Spring Security 에서 자동으로 처리하지 않음
+            // - AuthService 에서 수동으로 생성해서 등록해서 사용
             .sessionManagement(session -> session
-                    .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-                    .maximumSessions(1) // 동시 세션 1개로 제한
-                    .maxSessionsPreventsLogin(false)    // 새 로그인이 기존 세션 무효화
+                    .sessionCreationPolicy(SessionCreationPolicy.NEVER)
             )
 
             // URL별 인증 설정
