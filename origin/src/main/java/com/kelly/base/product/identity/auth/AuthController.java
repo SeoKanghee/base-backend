@@ -4,6 +4,7 @@ import com.kelly.base.common.response.CommonResponse;
 import com.kelly.base.product.identity.auth.dto.PostLoginRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,9 +26,9 @@ public class AuthController {
     @Operation(summary = "로그인 요청")
     @PostMapping(value = "/login")
     public CommonResponse<Void> postLogin(
-            @RequestBody @Valid final PostLoginRequest requestPayload
+            @RequestBody @Valid final PostLoginRequest requestPayload, HttpServletRequest servletRequest
     ) {
         log.info("[post] login");
-        return authService.login(requestPayload);
+        return authService.login(requestPayload, servletRequest);
     }
 }

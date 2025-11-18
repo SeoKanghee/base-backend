@@ -12,7 +12,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
@@ -49,7 +48,7 @@ class AuthControllerTests {
         @DisplayName("[post] login test - 200 OK")
         void login200OKTest() throws Exception {
             // given
-            final PostLoginRequest request = new PostLoginRequest("user1", "password123");
+            final PostLoginRequest request = new PostLoginRequest("user1", "password123", false);
 
             // when, then
             mockMvc.perform(
@@ -69,7 +68,7 @@ class AuthControllerTests {
         @DisplayName("[post] login test - wrong request")
         void loginWrongReqTest(final String loginId, final String password) throws Exception {
             // given
-            final PostLoginRequest request = new PostLoginRequest(loginId, password);
+            final PostLoginRequest request = new PostLoginRequest(loginId, password, false);
 
             // when, then
             mockMvc.perform(

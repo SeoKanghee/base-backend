@@ -10,6 +10,7 @@ public enum IdentityStatusCode implements IStatusCode {
     // 8(auth) + xxx(http status code) + yyyy(unique code)
     ISC_82000001(82000001, "[OK] password change is required"),
     ISC_84010001(84010001, "[UNAUTHORIZED] invalid userId or password"),
+    ISC_84010002(84010002, "[UNAUTHORIZED] already logged in"),
     ISC_84030001(84030001, "[FORBIDDEN] this account has been locked"),
     ISC_84030002(84030002, "[FORBIDDEN] this account is currently disabled");
 

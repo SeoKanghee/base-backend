@@ -14,6 +14,7 @@ public enum IdentityResultCode implements IResultCode {
 
     // unauthorized - 401
     BAD_CREDENTIAL(HttpStatus.UNAUTHORIZED, IdentityStatusCode.ISC_84010001),
+    ALREADY_LOGIN(HttpStatus.UNAUTHORIZED, IdentityStatusCode.ISC_84010002),
 
     // forbidden - 403
     ACCOUNT_LOCKED(HttpStatus.FORBIDDEN, IdentityStatusCode.ISC_84030001),

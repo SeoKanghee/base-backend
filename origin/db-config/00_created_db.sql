@@ -30,5 +30,5 @@ CREATE TABLE `base_backend`.`account` (
 
 -- init data
 INSERT INTO `base_backend`.`account` (login_id, password, name, role, status, fail_count, is_temp, department, password_expired_at, created_at, updated_at) VALUES
-    ('master', 'FfihV0TUqJzX+Is+WvMY5CckI1UlHP3Xg7JTuNDCOT9wvUurU9Wm6Ko=', '시스템 관리자', 'SITE_MANAGER', 'ACTIVE', 0, 0, '마스터 계정', TIMESTAMP('2125-11-11 00:00:00'), CURRENT_TIMESTAMP(6), CURRENT_TIMESTAMP(6)),
-    ('admin', 'QRgAlRgDFkGhpci1h4CtkC/j3h/eqktdxg+SfpiZqcrj+Fv4DIFb9g==', '서비스 엔지니어', 'SERVICE_ENGINEER', 'ACTIVE', 0, 0, 'SE', TIMESTAMP('2125-11-11 00:00:00'), CURRENT_TIMESTAMP(6), CURRENT_TIMESTAMP(6));
+    ('master', '$2a$12$RCtTO21kUB3pmMy5oLXhn.kQrkxwvg8/xM2XPMf3dp3aJ91A8eNuW', '시스템 관리자', 'SITE_MANAGER', 'ACTIVE', 0, 0, '마스터 계정', TIMESTAMP('2125-11-11 00:00:00'), CURRENT_TIMESTAMP(6), CURRENT_TIMESTAMP(6)),
+    ('admin', '$2a$12$lqH4bS1GbawmstuChZD2WeNqmPSRgkkM55TSIHcnMWUkDxHC2dfd2', '서비스 엔지니어', 'SERVICE_ENGINEER', 'ACTIVE', 0, 0, 'SE', TIMESTAMP('2125-11-11 00:00:00'), CURRENT_TIMESTAMP(6), CURRENT_TIMESTAMP(6));
