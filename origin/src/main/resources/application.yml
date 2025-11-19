@@ -3,6 +3,7 @@ config:
   options:
     use-default-async: true # common 에 선언된 async executor 를 사용할지 여부
     vault-type: native  # native library 사용
+    auth-strategy: session  # 인증 유지 방법
   constants:
     application-name: ${APPLICATION_NAME:base-backend}
     application-version: ${APPLICATION_VERSION:0.0.1}

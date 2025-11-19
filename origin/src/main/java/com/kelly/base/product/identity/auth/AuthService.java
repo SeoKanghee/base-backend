@@ -6,7 +6,7 @@ import com.kelly.base.common.response.CommonResponse;
 import com.kelly.base.common.response.CommonResultCode;
 import com.kelly.base.common.utils.DateTimeUtil;
 import com.kelly.base.product.identity.auth.dto.PostLoginRequest;
-import com.kelly.base.product.identity.auth.session.AuthSessionManager;
+import com.kelly.base.product.identity.auth.strategy.AuthenticationStrategy;
 import com.kelly.base.product.identity.domain.account.Account;
 import com.kelly.base.product.identity.repository.AccountRepository;
 import com.kelly.base.product.identity.response.IdentityResultCode;
@@ -30,7 +30,7 @@ import java.time.ZonedDateTime;
 @Service
 public class AuthService {
     private final AuthenticationManager authenticationManager;
-    private final AuthSessionManager authSessionManager;
+    private final AuthenticationStrategy authenticationStrategy;
 
     private final AccountRepository accountRepository;
 
@@ -84,9 +84,8 @@ public class AuthService {
         final IResultCode resultCode = getLoginResultCode(loginId);
         log.info("result code: {}, loginId: {}", resultCode, loginId);
 
-        // 2. 세션 처리
-        final boolean isForce = Boolean.TRUE.equals(loginRequest.force());
-        authSessionManager.dispatchSession(authentication, servletRequest, isForce);
+        // 2. 인증 전략에 따른 세션 유지 방법 적용
+        authenticationStrategy.handleLogin(authentication, loginRequest, servletRequest);
 
         return new CommonResponse<>(resultCode);
     }

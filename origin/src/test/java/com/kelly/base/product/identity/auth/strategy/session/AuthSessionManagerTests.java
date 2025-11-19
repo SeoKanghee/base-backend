@@ -1,4 +1,4 @@
-package com.kelly.base.product.identity.auth.session;
+package com.kelly.base.product.identity.auth.strategy.session;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

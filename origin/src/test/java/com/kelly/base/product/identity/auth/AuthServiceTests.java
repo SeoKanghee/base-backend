@@ -6,7 +6,8 @@ import com.kelly.base.common.response.CommonResultCode;
 import com.kelly.base.common.utils.DateTimeUtil;
 import com.kelly.base.product.identity.adapter.security.CustomUserDetailsService;
 import com.kelly.base.product.identity.auth.dto.PostLoginRequest;
-import com.kelly.base.product.identity.auth.session.AuthSessionManager;
+import com.kelly.base.product.identity.auth.strategy.session.AuthSessionManager;
+import com.kelly.base.product.identity.auth.strategy.session.AuthSessionStrategy;
 import com.kelly.base.product.identity.domain.account.Account;
 import com.kelly.base.product.identity.domain.account.AccountStatus;
 import com.kelly.base.product.identity.repository.AccountRepository;
@@ -26,7 +27,11 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import java.util.Objects;
 
 @DataJpaTest
-@Import({ AuthService.class, AuthSessionManager.class, CustomUserDetailsService.class, SecurityConfig.class })
+@Import({
+        AuthService.class, AuthSessionManager.class,
+        AuthSessionStrategy.class,  // session 기반으로 테스트
+        CustomUserDetailsService.class, SecurityConfig.class
+})
 @DisplayName("AuthServiceTests")
 class AuthServiceTests {
     @Autowired
