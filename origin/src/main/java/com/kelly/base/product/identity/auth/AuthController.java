@@ -2,6 +2,7 @@ package com.kelly.base.product.identity.auth;
 
 import com.kelly.base.common.response.CommonResponse;
 import com.kelly.base.product.identity.auth.dto.PostLoginRequest;
+import com.kelly.base.product.identity.auth.swagger.PostLoginApiResponses;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,6 +25,7 @@ public class AuthController {
     private final AuthService authService;
 
     @Operation(summary = "로그인 요청")
+    @PostLoginApiResponses
     @PostMapping(value = "/login")
     public CommonResponse<Void> postLogin(
             @RequestBody @Valid final PostLoginRequest requestPayload, HttpServletRequest servletRequest

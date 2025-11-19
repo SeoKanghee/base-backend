@@ -37,7 +37,7 @@ class SseEmitterManagerTests {
     @DisplayName("InitTests")
     class InitTests {
         @Test
-        @DisplayName("init test - use timeout from properties")
+        @DisplayName("init test - properties 에 정의된 timeout 값을 사용하는지 확인")
         void initPropertiesTimeoutTest() {
             // given - commonPropertiesConfig mocking
             final long sseTimeoutFromProp = 10L;
@@ -54,7 +54,7 @@ class SseEmitterManagerTests {
         }
 
         @Test
-        @DisplayName("init test - default")
+        @DisplayName("init test - timeout 기본값 확인")
         void initDefaultTimeoutTest() {
             // given - commonPropertiesConfig mocking
             when(mockCommonPropertiesConfig.getSseEmitterTimeoutMs()).thenReturn(null);
@@ -74,7 +74,7 @@ class SseEmitterManagerTests {
     @DisplayName("CreateEmitterTests")
     class CreateEmitterTests {
         @Test
-        @DisplayName("createEmitter test - new one")
+        @DisplayName("createEmitter test - 신규 emitter 등록")
         void createEmitterNewOneTest() {
             // when
             final SseEmitter result = Assertions.assertDoesNotThrow(
@@ -91,7 +91,7 @@ class SseEmitterManagerTests {
         }
 
         @Test
-        @DisplayName("createEmitter test - duplicated")
+        @DisplayName("createEmitter test - 동일한 userId 로 emitter 등록 시도")
         void createEmitterDuplicatedTest() {
             // 이미 SseEmitter 가 등록되어 있을 경우, 기존 값을 삭제하고 등록하는지 확인
             // given
@@ -124,7 +124,7 @@ class SseEmitterManagerTests {
     @DisplayName("SendToUserTests")
     class SendToAccountTests {
         @Test
-        @DisplayName("sendToUser - no emitter")
+        @DisplayName("sendToUser - emitter 가 없는 경우")
         void sendToUserNoEmitterTest() {
             // given
             final SseEvent sseEvent = sseEmitterManager.createConnectEvent(1L);
@@ -139,7 +139,7 @@ class SseEmitterManagerTests {
         }
 
         @Test
-        @DisplayName("sendToUser - success")
+        @DisplayName("sendToUser - emitter 가 있는 경우")
         void sendToUserSuccessTest() {
             // given - SseEmitter 등록
             sseEmitterManager.createEmitter(1L);
@@ -155,7 +155,7 @@ class SseEmitterManagerTests {
         }
 
         @Test
-        @DisplayName("sendToUser - exception")
+        @DisplayName("sendToUser - emitter 처리 중 exception 이 발생하는 경우")
         void sendToUserExceptionTest() throws IOException {
             // given - SseEmitter mocking
             final SseEmitter mockSseEmitter = mock(SseEmitter.class);
@@ -184,7 +184,7 @@ class SseEmitterManagerTests {
     @DisplayName("DisconnectTests")
     class DisconnectTests {
         @Test
-        @DisplayName("disconnect test - success")
+        @DisplayName("disconnect test - 등록된 emitter 해제 성공")
         void disconnectSuccessTest() {
             // disconnect 시에 특별한 문제가 없는 경우
             // given - 등록
@@ -204,7 +204,7 @@ class SseEmitterManagerTests {
         }
 
         @Test
-        @DisplayName("disconnect test - no emitter")
+        @DisplayName("disconnect test - emitter 가 없는 경우")
         void disconnectNoEmitterTest() {
             // disconnect 시에 등록된 SseEmitter 가 없는 경우
             // when
@@ -220,7 +220,7 @@ class SseEmitterManagerTests {
         }
 
         @Test
-        @DisplayName("disconnect test - exception")
+        @DisplayName("disconnect test - emitter 해제 중 exception 발생 : IllegalStateException")
         void disconnectExceptionTest() {
             // disconnect 시에 등록된 SseEmitter 에서 Exception 이 발생하는 경우
 
@@ -242,7 +242,7 @@ class SseEmitterManagerTests {
         }
 
         @Test
-        @DisplayName("disconnect - mock exception")
+        @DisplayName("disconnect - emitter 해제 중 exception 발생 : RuntimeException(mock)")
         void disconnectMockExceptionTest() {
             // given - SseEmitter mocking
             final SseEmitter mockSseEmitter = mock(SseEmitter.class);
@@ -271,7 +271,7 @@ class SseEmitterManagerTests {
     @DisplayName("IntegrationTests")
     class IntegrationTests {
         @Test
-        @DisplayName("sendToAll, getConnectionCount, isConnected test")
+        @DisplayName("sendToAll, getConnectionCount, isConnected test - 전체 통합 검증")
         void broadcastTest() {
             // when - 등록 #1
             sseEmitterManager.createEmitter(1L);
@@ -342,6 +342,22 @@ class SseEmitterManagerTests {
 
             // then - userId 1L의 emitter가 제거되었는지 확인
             Assertions.assertFalse(sseEmitterManager.isConnected(1L));
+        }
+    }
+
+    @Nested
+    @DisplayName("RemoveEmitterTests")
+    class RemoveEmitterTests {
+        @Test
+        @DisplayName("removeEmitter test - 등록된 emitter 가 없는 경우")
+        void removeEmitterNullTest() {
+            // removeEmitter 가 호출될 때 대부분의 경우 emitter 존재 여부를 확인하고 처리함
+            // runtime 에 타이밍상 문제가 될 부분도 존재하므로 테스트 코드로 확인
+
+            // when, then - exception 이 발생하지 않아야 함
+            Assertions.assertDoesNotThrow(
+                    () -> ReflectionTestUtils.invokeMethod(sseEmitterManager, "removeEmitter", 999L)
+            );
         }
     }
 }

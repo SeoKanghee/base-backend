@@ -85,7 +85,8 @@ public class SseEmitterManager {
             return true;
         } catch (Exception e) {
             // 예상 Exception : IOException, IllegalStateException
-            log.error("transmission failure - userId : {}, error : {}", userId, e.getMessage());
+            log.error("transmission failure - userId : {}, error : {}, message : {}",
+                      userId, e.getClass().getSimpleName(), e.getMessage());
             removeEmitter(userId);
             return false;
         }
