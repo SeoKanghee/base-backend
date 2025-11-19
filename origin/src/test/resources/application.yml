@@ -3,6 +3,7 @@ config:
   options:
     use-default-async: false  # common 에 선언된 async executor 를 사용할지 여부
     vault-type: random  # random, native, cloud
+    auth-strategy: session  # 인증 유지 방법
   constants:
     application-name: base-backend
     application-version: 0.0.1

@@ -28,7 +28,7 @@ import java.lang.annotation.Target;
                                         value = """
                                                 {
                                                   "code": 200,
-                                                  "message": "Success",
+                                                  "message": "OK",
                                                   "data": null
                                                 }
                                                 """

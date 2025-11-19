@@ -1,0 +1,51 @@
+package com.kelly.base.product.identity.auth.strategy.session;
+
+import com.kelly.base.product.identity.auth.dto.PostLoginRequest;
+import com.kelly.base.product.identity.auth.strategy.AuthenticationStrategy;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.Generated;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.lang.NonNull;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Component;
+
+@Slf4j
+@RequiredArgsConstructor
+@Component
+@ConditionalOnProperty(
+        name = "config.options.auth-strategy",  // bean 생성 여부를 결정할 property
+        havingValue = "session",                // 해당 property 값이 'session' 이면 생성
+        matchIfMissing = true                   // property 를 따로 선언해주지 않을 경우 기본으로 그냥 생성
+)
+public class AuthSessionStrategy implements AuthenticationStrategy {
+    private final AuthSessionManager authSessionManager;
+
+    /**
+     * 로그인 처리 ( session 기반 )
+     *
+     * @param authentication 인증 정보
+     * @param loginRequest   로그인을 위한 정보
+     * @param servletRequest HTTP 요청 정보
+     * @author kelly
+     */
+    @Override
+    public void handleLogin(@NonNull Authentication authentication, @NonNull PostLoginRequest loginRequest,
+                            @NonNull HttpServletRequest servletRequest) {
+        final boolean isForce = Boolean.TRUE.equals(loginRequest.force());
+        authSessionManager.dispatchSession(authentication, servletRequest, isForce);
+    }
+
+    /**
+     * 로그아웃 처리 ( session 기반 )
+     *
+     * @param servletRequest HTTP 요청 정보
+     * @author kelly
+     */
+    @Override
+    @Generated  // 임시
+    public void handleLogout(@NonNull HttpServletRequest servletRequest) {
+        log.error("need to impl");
+    }
+}

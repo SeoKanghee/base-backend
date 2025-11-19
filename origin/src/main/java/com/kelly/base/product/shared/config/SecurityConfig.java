@@ -22,7 +22,6 @@ import org.springframework.security.web.session.HttpSessionEventPublisher;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-    
     @Bean
     public SessionRegistry sessionRegistry() {
         return new SessionRegistryImpl();   // session 정보 관리
@@ -32,7 +31,7 @@ public class SecurityConfig {
     public HttpSessionEventPublisher httpSessionEventPublisher() {
         return new HttpSessionEventPublisher(); // httpSession 이벤트를 spring security 에 전달
     }
-    
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)      // CSRF 비활성화 (REST API용)
