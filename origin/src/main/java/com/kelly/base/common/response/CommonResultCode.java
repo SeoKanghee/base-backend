@@ -16,11 +16,11 @@ public enum CommonResultCode implements IResultCode {
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR),
 
     // specific - 4xx
-    INVALID_PARAMETER(HttpStatus.BAD_REQUEST, SpecificStatusCode.SSC_94000001),
+    INVALID_PARAMETER(HttpStatus.BAD_REQUEST, CommonStatusCode.CSC_94000001),
 
     // specific - 5xx
-    SYSTEM_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, SpecificStatusCode.SSC_95000001),
-    TASK_REJECTED(HttpStatus.SERVICE_UNAVAILABLE, SpecificStatusCode.SSC_95030001);
+    SYSTEM_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, CommonStatusCode.CSC_95000001),
+    TASK_REJECTED(HttpStatus.SERVICE_UNAVAILABLE, CommonStatusCode.CSC_95030001);
 
 
     CommonResultCode(final HttpStatus httpStatus) {
