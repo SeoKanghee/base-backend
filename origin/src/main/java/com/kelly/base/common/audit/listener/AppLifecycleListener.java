@@ -7,6 +7,11 @@ import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
+/**
+ * audit log 저장을 위한 app 시작/종료 이벤트 리스너
+ *
+ * @author 서강희
+ */
 @Component
 @RequiredArgsConstructor
 public class AppLifecycleListener {

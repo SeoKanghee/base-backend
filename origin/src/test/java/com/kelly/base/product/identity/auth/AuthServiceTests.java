@@ -11,7 +11,8 @@ import com.kelly.base.product.identity.auth.strategy.session.AuthSessionStrategy
 import com.kelly.base.product.identity.domain.account.Account;
 import com.kelly.base.product.identity.domain.account.AccountStatus;
 import com.kelly.base.product.identity.repository.AccountRepository;
-import com.kelly.base.product.identity.response.IdentityResultCode;
+import com.kelly.base.product.shared.config.QuerydslConfig;
+import com.kelly.base.product.shared.response.identity.IdentityResultCode;
 import com.kelly.base.product.shared.config.SecurityConfig;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -23,14 +24,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.util.Objects;
 
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
+
 @DataJpaTest
 @Import({
-        AuthService.class, AuthSessionManager.class,
-        AuthSessionStrategy.class,  // session 기반으로 테스트
-        CustomUserDetailsService.class, SecurityConfig.class
+        AuthService.class, AuthSessionManager.class, AuthSessionStrategy.class, // session 기반으로 테스트
+        CustomUserDetailsService.class,
+        SecurityConfig.class, QuerydslConfig.class
 })
 @DisplayName("AuthServiceTests")
 class AuthServiceTests {
@@ -108,6 +114,57 @@ class AuthServiceTests {
                 );
                 // then - BAD_CREDENTIAL 이 발생했는지 확인
                 Assertions.assertEquals(IdentityResultCode.BAD_CREDENTIAL, exception.getResultCode());
+            }
+
+            @Test
+            @DisplayName("login test - Role 이 잘못된 경우")
+            void loginFailRoleErrorTest() {
+                // 로그인 시도 중 Role 이 잘못되어 처리 불가능한 경우
+
+                // given
+                final String loginId = "unknown_role";
+                final PostLoginRequest postLoginRequest = new PostLoginRequest(loginId, loginId, true);
+                final MockHttpServletRequest request = new MockHttpServletRequest();
+
+                // when, then
+                final CommonRuntimeException exception = Assertions.assertThrows(
+                        CommonRuntimeException.class,
+                        () -> authService.login(postLoginRequest, request)
+
+                );
+                // then - DATABASE_ERROR 이 발생했는지 확인
+                Assertions.assertEquals(CommonResultCode.DATABASE_ERROR, exception.getResultCode());
+            }
+        }
+
+        @Nested
+        @DisplayName("LoginMockTests - Mock 을 이용한 검증")
+        class LoginMockTests {
+            @MockitoBean
+            private CustomUserDetailsService mockUserDetailsService;
+
+            @Autowired
+            private AuthService authServiceWithMock;
+
+            @Test
+            @DisplayName("login test - 알 수 없는 exception 발생")
+            void loginUnknownExceptionTest() {
+                // 알 수 없는 exception 발생으로 처리가 불가능한 경우
+
+                // given - loadUserByUsername 을 처리할 때 임의의 RuntimeException 을 발생
+                when(mockUserDetailsService.loadUserByUsername(anyString())).thenThrow(RuntimeException.class);
+                final String loginId = "unknown_role";
+                final PostLoginRequest postLoginRequest = new PostLoginRequest(loginId, loginId, true);
+                final MockHttpServletRequest request = new MockHttpServletRequest();
+
+                // when
+                final InternalAuthenticationServiceException result = Assertions.assertThrows(
+                        InternalAuthenticationServiceException.class,
+                        () -> authServiceWithMock.login(postLoginRequest, request)
+                );
+
+                // then - mocking 으로 던진 exception 이 InternalAuthenticationServiceException 으로 래핑됐는지 확인
+                Assertions.assertInstanceOf(RuntimeException.class, result.getCause());
             }
         }
 

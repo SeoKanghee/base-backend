@@ -9,8 +9,11 @@ import java.util.List;
 public final class CommonConstants {
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     public static final class OrderInfo {
-        // ExceptionHandler 의 order 상수 정의
-        public static final int EXCEPTION_HANDLER_ORDER_COMMON = 100;
+        // Aspect 의 order 상수 정의 ( 1 ~ 1000 )
+        public static final int ASPECT_ORDER_PERMISSION_CHECK = 100;
+
+        // ExceptionHandler 의 order 상수 정의 ( 0 ~ 1000 )
+        public static final int EXCEPTION_HANDLER_ORDER_COMMON = 999;
     }
 
     @NoArgsConstructor(access = AccessLevel.PRIVATE)

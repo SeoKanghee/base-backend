@@ -3,6 +3,7 @@ package com.kelly.base.product.identity.repository;
 import com.kelly.base.common.utils.DateTimeUtil;
 import com.kelly.base.product.identity.domain.account.Account;
 import com.kelly.base.product.identity.domain.account.AccountStatus;
+import com.kelly.base.product.shared.config.QuerydslConfig;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -11,15 +12,17 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 
 @DataJpaTest
-@DisplayName("UserRepositoryTests")
+@Import({ QuerydslConfig.class })
+@DisplayName("AccountRepositoryTests")
 public class AccountRepositoryTests {
     @Autowired
     private AccountRepository accountRepository;
 
     @Nested
-    @DisplayName("UserEntityTests")
+    @DisplayName("AccountEntityTests")
     class AccountEntityTests {
         @Test
         @DisplayName("updateProfile test")

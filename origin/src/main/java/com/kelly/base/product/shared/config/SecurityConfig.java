@@ -17,21 +17,43 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 
+/**
+ * Spring Security 사용을 위한 Config 선언
+ *
+ * @author 서강희
+ */
 @Slf4j
 @RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+    private static final String[] NO_AUTH_REQUIRED_URL_LIST = {
+            "/api/auth/login",
+            "/api.html",
+            "/swagger-ui/**",
+            "/v3/api-docs/**",
+            "/monitor/**"
+    };
+
+    /**
+     * session 정보 관리를 위한 registry bean
+     */
     @Bean
     public SessionRegistry sessionRegistry() {
-        return new SessionRegistryImpl();   // session 정보 관리
+        return new SessionRegistryImpl();
     }
 
+    /**
+     * httpSession 이벤트를 spring security 에 전달하는 bean
+     */
     @Bean
     public HttpSessionEventPublisher httpSessionEventPublisher() {
-        return new HttpSessionEventPublisher(); // httpSession 이벤트를 spring security 에 전달
+        return new HttpSessionEventPublisher();
     }
 
+    /**
+     * security filter 를 상세 정의한 bean
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)      // CSRF 비활성화 (REST API용)
@@ -48,13 +70,7 @@ public class SecurityConfig {
             // URL별 인증 설정
             .authorizeHttpRequests(auth -> auth
                     // 인증 없이 접근 가능한 URL
-                    .requestMatchers(
-                            "/api/auth/login",
-                            "/api.html",
-                            "/swagger-ui/**",
-                            "/v3/api-docs/**",
-                            "/monitor/**"
-                    ).permitAll()
+                    .requestMatchers(NO_AUTH_REQUIRED_URL_LIST).permitAll()
                     // 그 외 모든 요청은 인증 필요
                     .anyRequest().authenticated()
             );
@@ -62,12 +78,17 @@ public class SecurityConfig {
         return http.build();
     }
 
+    /**
+     * authenticationManager bean 이 생성될 때 초기화에 사용될 passwordEncoder bean
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
-        // AuthenticationManager bean 이 생성될 때 초기화에 사용될 PasswordEncoder bean 선언
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * authenticationManager bean
+     */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();

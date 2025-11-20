@@ -10,6 +10,7 @@ public enum CommonStatusCode implements IStatusCode {
     // 9(error) + xxx(http status code) + yyyy(unique code)
     CSC_94000001(94000001, "[ERROR] invalid parameter"),
     CSC_95000001(95000001, "[ERROR] system error"),
+    CSC_95000002(95000002, "[ERROR] error while accessing database"),
     CSC_95030001(95030001, "[ERROR] thread usage is not possible");
 
     private final Integer code;
