@@ -65,7 +65,7 @@ class AuthControllerTests {
                 "pw_is_null,",      // password 가 null
                 "pw_is_empty, ''",  // password 가 빈 문자열
         })
-        @DisplayName("[post] login test - wrong request")
+        @DisplayName("[post] login test - payload 에 문제가 있는 경우")
         void loginWrongReqTest(final String loginId, final String password) throws Exception {
             // given
             final PostLoginRequest request = new PostLoginRequest(loginId, password, false);
@@ -76,6 +76,19 @@ class AuthControllerTests {
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsBytes(request))
             ).andExpect(status().isBadRequest());
+        }
+    }
+
+    @Nested
+    @DisplayName("PostLogoutTests")
+    class PostLogoutTests {
+        @Test
+        @DisplayName("[post] logout test - 200 OK")
+        void logout200OKTest() throws Exception {
+            // when, then
+            mockMvc.perform(
+                    post(URI_ROOT_AUTH + "/logout")
+            ).andExpect(status().isOk());
         }
     }
 }

@@ -50,7 +50,6 @@ public class SecurityConfig {
                     // 인증 없이 접근 가능한 URL
                     .requestMatchers(
                             "/api/auth/login",
-                            "/api/auth/logout",
                             "/api.html",
                             "/swagger-ui/**",
                             "/v3/api-docs/**",

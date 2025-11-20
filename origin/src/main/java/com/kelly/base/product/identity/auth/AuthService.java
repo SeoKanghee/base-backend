@@ -116,4 +116,16 @@ public class AuthService {
             account.increaseFailCount();
         }
     }
+
+    /**
+     * 로그아웃 처리
+     *
+     * @param servletRequest HTTP 요청 정보
+     * @return HTTP response <code>CommonResultCode</code>
+     * @author kelly
+     */
+    public CommonResponse<Void> logout(HttpServletRequest servletRequest) {
+        authenticationStrategy.handleLogout(servletRequest);
+        return new CommonResponse<>(CommonResultCode.SUCCESS);
+    }
 }

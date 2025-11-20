@@ -41,6 +41,8 @@ public class AuthSessionManager {
 
         // 3. 세션 등록/갱신 처리
         updateSession(servletRequest, authentication, currentSessionId);
+
+        log.info("session-based login completed - [{}]", authentication.getName());
     }
 
     String getCurrentSessionId(final HttpServletRequest servletRequest) {
@@ -116,6 +118,57 @@ public class AuthSessionManager {
         if (sessionInfo != null) {
             sessionInfo.refreshLastRequest();   // 타임스탬프 갱신
             log.debug("session refreshed for [{}] - sessionId: {}", loginId, httpSession.getId());
+        }
+    }
+
+    /**
+     * 세션 무효화 및 SessionRegistry 제거
+     *
+     * @param servletRequest HTTP 요청 정보
+     * @author kelly
+     */
+    public void invalidateSession(final HttpServletRequest servletRequest) {
+        // 1. session 추출
+        final HttpSession session = servletRequest.getSession(false);
+        if (session == null) {
+            log.info("logout attempt with no session");
+            return; // 세션이 없으므로 추가 처리 하지 않음
+        }
+
+        // 2. loginId 추출 ( logging 용 )
+        final String loginId = extractLoginId(session);
+
+        // 3. session 정보 expire 처리
+        expireSessionInfo(session.getId(), loginId);
+
+        // 4. session 무효화 및 context 제거
+        session.invalidate();
+        SecurityContextHolder.clearContext();
+
+        log.info("session-based logout completed - [{}]", loginId);
+    }
+
+    private String extractLoginId(final HttpSession httpSession) {
+        try {
+            // 세션에서 loginId 추출
+            SecurityContext context = (SecurityContext) httpSession.getAttribute(
+                    HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY
+            );
+            return context.getAuthentication().getName();
+        } catch (Exception e) {
+            // 추출중 에러가 발생하면 'unknown' 으로 처리
+            // 예상 exception : IllegalStateException, NullPointerException
+            log.error("failed to extract loginId from session - {}", e.getClass().getSimpleName());
+            return "unknown";
+        }
+    }
+
+    private void expireSessionInfo(final String sessionId, final String loginId) {
+        // sessionRegistry 에 있는 정보를 expire 처리해서 제거
+        SessionInformation sessionInformation = sessionRegistry.getSessionInformation(sessionId);
+        if (sessionInformation != null) {
+            sessionInformation.expireNow();
+            log.debug("session expired in sessionRegistry for [{}] - sessionId: {}", loginId, sessionId);
         }
     }
 }
