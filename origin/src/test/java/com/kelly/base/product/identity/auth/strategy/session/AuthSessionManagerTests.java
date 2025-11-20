@@ -1,9 +1,11 @@
 package com.kelly.base.product.identity.auth.strategy.session;
 
+import jakarta.servlet.http.HttpSession;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.security.core.session.SessionRegistry;
@@ -43,6 +45,43 @@ class AuthSessionManagerTests {
 
             // then
             Assertions.assertEquals(expectedResult, result);
+        }
+    }
+
+    @Nested
+    @DisplayName("ExtractLoginIdTests")
+    class ExtractLoginIdTests {
+        @Test
+        @DisplayName("extractLoginId test - exception 이 발생하는 경우")
+        void extractLoginIdExceptionTest() {
+            // exception 이 발생했을 경우 'unknown' 이 반환되는지 확인
+
+            // when - NullPointerException
+            final String result = Assertions.assertDoesNotThrow(
+                    () -> ReflectionTestUtils.invokeMethod(
+                            authSessionManager, "extractLoginId", mock(HttpSession.class)
+                    )
+            );
+
+            // then
+            Assertions.assertEquals("unknown", result);
+        }
+    }
+
+    @Nested
+    @DisplayName("ExpireSessionInfoTests")
+    class ExpireSessionInfoTests {
+        @Test
+        @DisplayName("expireSessionInfo test - 등록된 session 을 찾지 못했을 경우")
+        void expireSessionInfoNullTest() {
+            // sessionId 가 없어도 exception 이 발생하지 않는지 확인
+
+            // when, then
+            Assertions.assertDoesNotThrow(
+                    () -> ReflectionTestUtils.invokeMethod(
+                            authSessionManager, "expireSessionInfo", "session-id", "loginId"
+                    )
+            );
         }
     }
 }

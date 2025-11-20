@@ -3,6 +3,7 @@ package com.kelly.base.product.identity.auth;
 import com.kelly.base.common.response.CommonResponse;
 import com.kelly.base.product.identity.auth.dto.PostLoginRequest;
 import com.kelly.base.product.identity.auth.swagger.PostLoginApiResponses;
+import com.kelly.base.product.identity.auth.swagger.PostLogoutApiResponses;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,5 +33,13 @@ public class AuthController {
     ) {
         log.info("[post] login");
         return authService.login(requestPayload, servletRequest);
+    }
+
+    @Operation(summary = "로그아웃 요청")
+    @PostLogoutApiResponses
+    @PostMapping(value = "/logout")
+    public CommonResponse<Void> postLogout(HttpServletRequest servletRequest) {
+        log.info("[post] logout");
+        return authService.logout(servletRequest);
     }
 }

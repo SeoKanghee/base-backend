@@ -301,4 +301,44 @@ class AuthServiceTests {
             }
         }
     }
+
+
+    @Nested
+    @DisplayName("LogoutTests")
+    class LogoutTests {
+        @Test
+        @DisplayName("logout test - 일반 검증")
+        void logoutPassTest() {
+            // given
+            final String loginId = "gen-user";
+            final String password = "gen-user!password";
+            final PostLoginRequest postLoginRequest = new PostLoginRequest(loginId, password, true);
+            final MockHttpServletRequest request = new MockHttpServletRequest();
+
+            // given - 로그인
+            final CommonResponse<Void> loginResult = Assertions.assertDoesNotThrow(
+                    () -> authService.login(postLoginRequest, request));
+            Assertions.assertEquals(CommonResultCode.SUCCESS.getCode(), loginResult.getCode());
+
+            // when - 로그아웃
+            final CommonResponse<Void> logoutResult = Assertions.assertDoesNotThrow(
+                    () -> authService.logout(request)
+            );
+            Assertions.assertEquals(CommonResultCode.SUCCESS.getCode(), logoutResult.getCode());
+        }
+
+        @Test
+        @DisplayName("logout test - 세션이 null 인 경우")
+        void logoutSessionNullTest() {
+            // 일반적으로는 spring security 입구컷이라 발생하지 않는 케이스
+
+            // given
+            final MockHttpServletRequest request = new MockHttpServletRequest();
+
+            // when
+            Assertions.assertDoesNotThrow(
+                    () -> authService.logout(request)
+            );
+        }
+    }
 }
