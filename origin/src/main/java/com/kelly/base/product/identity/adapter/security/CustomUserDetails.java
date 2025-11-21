@@ -15,6 +15,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Spring Security 처리를 위한 계정 정보를 담을 객체
+ *
+ * @author 서강희
+ */
 @Getter
 @ToString
 public class CustomUserDetails extends User {
@@ -28,7 +33,6 @@ public class CustomUserDetails extends User {
      * @param account     <code>Account</code> entity
      * @param role        <code>Role</code> entity
      * @param permissions <code>Permission</code> entities
-     * @author kelly
      */
     public CustomUserDetails(final Account account, final Role role, final Set<Permission> permissions) {
         // accountNonExpired, credentialsNonExpired 는 사용하지 않음 -> true

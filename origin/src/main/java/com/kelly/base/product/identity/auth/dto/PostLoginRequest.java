@@ -3,6 +3,14 @@ package com.kelly.base.product.identity.auth.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 
+/**
+ * login request payload
+ *
+ * @param loginId  계정 ID
+ * @param password 계정 비밀번호
+ * @param force    기존 세션이 존재할 때 강제로 로그인할 지 여부 (기본값 : false)
+ * @author 서강희
+ */
 @Schema(description = "payload - post login")
 public record PostLoginRequest(
         @Schema(description = "ID", requiredMode = Schema.RequiredMode.REQUIRED, example = "test_user")
@@ -16,7 +24,4 @@ public record PostLoginRequest(
         @Schema(description = "강제 로그인 여부 (true: 기존 세션 무효화, false: 기존 세션 유지)", example = "false")
         Boolean force
 ) {
-    // loginId : 계정 ID
-    // password : 계정 비밀번호
-    // force : 기존 세션이 존재할 때 강제로 로그인할지 여부 (기본값: false)
 }

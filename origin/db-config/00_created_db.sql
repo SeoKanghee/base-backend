@@ -37,12 +37,10 @@ CREATE TABLE `base_backend`.`permission` (
     code VARCHAR(100) UNIQUE NOT NULL COMMENT '권한 코드',
     name VARCHAR(255) NOT NULL COMMENT '권한 이름',
     description VARCHAR(500) COMMENT '권한 설명',
-    bit_index INT NOT NULL UNIQUE COMMENT '권한별 비트 인덱스 (0, 1, 2, ...)',
     created_at DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT '생성일시',
     updated_at DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '수정일시',
 
-    INDEX idx_code (code),
-    INDEX idx_bit_index (bit_index)
+    INDEX idx_code (code)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='권한 테이블';
 
 CREATE TABLE `base_backend`.`role` (
@@ -68,10 +66,10 @@ CREATE TABLE `base_backend`.`role_permission` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='역할-권한 매핑 테이블';
 
 -- [init data]
-INSERT INTO `base_backend`.`permission` (code, name, description, bit_index) VALUES
-    ('VIEW_MY_ACCOUNT', '내 계정정보 조회', '자신의 계정 정보를 조회할 수 있는 권한', 0),
-    ('VIEW_ACCOUNT_LIST', '사용자 목록 조회', '사용자 목록을 조회할 수 있는 권한', 1),
-    ('MANAGE_ACCOUNT', '사용자 관리', '사용자를 생성/수정/삭제할 수 있는 권한', 2);
+INSERT INTO `base_backend`.`permission` (code, name, description) VALUES
+    ('VIEW_MY_ACCOUNT', '내 계정정보 조회', '자신의 계정 정보를 조회할 수 있는 권한'),
+    ('VIEW_ACCOUNT_LIST', '사용자 목록 조회', '사용자 목록을 조회할 수 있는 권한'),
+    ('MANAGE_ACCOUNT', '사용자 관리', '사용자를 생성/수정/삭제할 수 있는 권한');
 
 INSERT INTO `base_backend`.`role` (code, name, description) VALUES
     ('ROLE_SITE_MANAGER', '사이트 관리자', '사이트, 시스템, 사용자 관리 권한이 있는 사용자'),

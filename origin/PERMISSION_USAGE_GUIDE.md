@@ -1,22 +1,37 @@
-# Permission 기반 인증 시스템 사용 가이드
+# Permission 기반 인증 사용 가이드
 
 ## 📋 개요
 
-Enum 기반에서 DB 기반 Role/Permission 시스템으로 전환되었습니다.
+Permission 구현 내용에 대한 설명입니다.
 
 ## 🏗️ 아키텍처
 
 ### DB 구조
-- `role`: 역할 정보 (code: "ROLE_SITE_MANAGER")
-- `permission`: 권한 정보 (code: "VIEW_MY_ACCOUNT")
-- `role_permission`: 역할-권한 매핑 (N:M)
-- `account`: 사용자 정보 (role: role.code 저장)
+- `role` 테이블: 역할 정보
+  - `id`: Primary Key
+  - `code`: 역할 코드 (예: "ROLE_SITE_MANAGER")
+  - `name`: 역할 이름
+  - `description`: 역할 설명
+  
+- `permission` 테이블: 권한 정보
+  - `id`: Primary Key
+  - `code`: 권한 코드 (예: "VIEW_MY_ACCOUNT")
+  - `name`: 권한 이름
+  - `description`: 권한 설명
+  
+- `role_permission` 테이블: 역할-권한 매핑 (N:M)
+  - `id`: Primary Key
+  - `role_id`: FK → role.id
+  - `permission_id`: FK → permission.id
+  
+- `account` 테이블: 사용자 정보
+  - `role`: role.code 값을 String으로 저장
 
 ### Spring Security 통합
 사용자가 로그인하면:
 1. `CustomUserDetailsService`가 Account 조회
 2. Account의 role(code)로 Role 조회
-3. Role의 ID로 연결된 모든 Permission 조회 (**캐싱됨**)
+3. Role의 ID로 연결된 모든 Permission 조회
 4. `CustomUserDetails`에 Role code + Permission codes를 authorities로 설정
 5. 세션에 저장되어 이후 요청에서 재사용
 
@@ -25,38 +40,52 @@ Enum 기반에서 DB 기반 Role/Permission 시스템으로 전환되었습니�
 ["ROLE_SITE_MANAGER", "VIEW_MY_ACCOUNT", "VIEW_ACCOUNT_LIST", "MANAGE_ACCOUNT"]
 ```
 
-### 성능 최적화 (캐싱)
-- **로그인 시**: 세션이 없으면 DB 조회 (Account 1회 + Role 1회 + Permissions 1회)
-- **로그인 후**: 세션에서 재사용, DB 조회 없음
-- **Permission 캐싱**: 같은 Role을 가진 첫 사용자만 DB 조회, 이후는 캐시 사용
-- 예: ROLE_GENERAL_USER를 가진 100명이 로그인해도 Permissions는 1회만 조회
-
 ## 🔧 사용 방법
 
 ### 1. 상수 클래스 사용
 
-**RoleCode.java**:
+**Constants.java** :
 ```java
-public final class RoleCode {
-    public static final String SITE_MANAGER = "ROLE_SITE_MANAGER";
-    public static final String SERVICE_ENGINEER = "ROLE_SERVICE_ENGINEER";
-    public static final String ADVANCED_USER = "ROLE_ADVANCED_USER";
-    public static final String GENERAL_USER = "ROLE_GENERAL_USER";
-    public static final String DEMO_USER = "ROLE_DEMO_USER";
+package com.kelly.base.product.shared;
+
+public final class Constants {
+    
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    public static final class RoleCode {
+        public static final String ROLE_SITE_MANAGER = "ROLE_SITE_MANAGER";
+        public static final String ROLE_SERVICE_ENGINEER = "ROLE_SERVICE_ENGINEER";
+        public static final String ROLE_ADVANCED_USER = "ROLE_ADVANCED_USER";
+        public static final String ROLE_GENERAL_USER = "ROLE_GENERAL_USER";
+        public static final String ROLE_DEMO_USER = "ROLE_DEMO_USER";
+    }
+
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    public static final class PermissionCode {
+        public static final String VIEW_MY_ACCOUNT = "VIEW_MY_ACCOUNT";
+        public static final String VIEW_ACCOUNT_LIST = "VIEW_ACCOUNT_LIST";
+        public static final String MANAGE_ACCOUNT = "MANAGE_ACCOUNT";
+    }
 }
 ```
 
-**PermissionCode.java**:
+**사용 예시**:
 ```java
-public final class PermissionCode {
-    public static final String VIEW_MY_ACCOUNT = "VIEW_MY_ACCOUNT";
-    public static final String VIEW_ACCOUNT_LIST = "VIEW_ACCOUNT_LIST";
-    public static final String MANAGE_ACCOUNT = "MANAGE_ACCOUNT";
-    // TODO: 추가 권한 정의 (총 28개 예상)
-}
+import static com.kelly.base.product.shared.Constants.RoleCode;
+import static com.kelly.base.product.shared.Constants.PermissionCode;
+
+// 사용
+String role = RoleCode.ROLE_SITE_MANAGER;
+String permission = PermissionCode.VIEW_MY_ACCOUNT;
 ```
 
-### 2. 커스텀 어노테이션 사용
+### 2. 커스텀 어노테이션 사용 (권장)
+
+**어노테이션 import**:
+```java
+import com.kelly.base.product.shared.permission.annotation.RequirePermission;
+import com.kelly.base.product.shared.permission.PermOperator;
+import static com.kelly.base.product.shared.Constants.PermissionCode;
+```
 
 **단일 권한 체크**:
 ```java
@@ -80,12 +109,12 @@ public class AccountController {
 }
 ```
 
-**여러 권한 체크 (OR 연산)**:
+**여러 권한 체크 (OR 연산)** - 기본값:
 ```java
 @RequirePermission(value = {
     PermissionCode.MANAGE_ACCOUNT, 
     "SYSTEM_ADMIN"
-}, operator = LogicalOperator.OR)
+}, operator = PermOperator.OR)
 @DeleteMapping("/{id}")
 public void deleteAccount(@PathVariable Long id) {
     // MANAGE_ACCOUNT 또는 SYSTEM_ADMIN 권한 중 하나만 있어도 OK
@@ -98,7 +127,7 @@ public void deleteAccount(@PathVariable Long id) {
 @RequirePermission(value = {
     PermissionCode.MANAGE_ACCOUNT, 
     "SYSTEM_ADMIN"
-}, operator = LogicalOperator.AND)
+}, operator = PermOperator.AND)
 @PostMapping("/dangerous-operation")
 public void dangerousOperation() {
     // MANAGE_ACCOUNT AND SYSTEM_ADMIN 둘 다 있어야 OK
@@ -141,6 +170,8 @@ public Account createAccount(@RequestBody AccountRequest request) {
 ### 4. 프로그래밍 방식 권한 체크
 
 ```java
+import static com.kelly.base.product.shared.Constants.PermissionCode;
+
 @Service
 public class SomeService {
     
@@ -169,11 +200,14 @@ INSERT INTO permission (code, name, description, bit_index) VALUES
     ('NEW_PERMISSION', '새로운 권한', '새로운 권한 설명', 3);
 ```
 
-### 2. PermissionCode 상수 추가
+### 2. Constants.PermissionCode에 상수 추가 (옵션)
+`src/main/java/com/kelly/base/product/shared/Constants.java` 파일을 수정:
 ```java
-public final class PermissionCode {
-    // ...
-    public static final String NEW_PERMISSION = "NEW_PERMISSION";
+public static final class PermissionCode {
+    public static final String VIEW_MY_ACCOUNT = "VIEW_MY_ACCOUNT";
+    public static final String VIEW_ACCOUNT_LIST = "VIEW_ACCOUNT_LIST";
+    public static final String MANAGE_ACCOUNT = "MANAGE_ACCOUNT";
+    public static final String NEW_PERMISSION = "NEW_PERMISSION";  // 추가
 }
 ```
 
@@ -189,6 +223,8 @@ INSERT INTO role_permission (role_id, permission_id)
 
 ### 4. 코드에서 사용
 ```java
+import static com.kelly.base.product.shared.Constants.PermissionCode;
+
 @RequirePermission(PermissionCode.NEW_PERMISSION)
 @GetMapping("/new-feature")
 public void newFeature() {
@@ -196,34 +232,3 @@ public void newFeature() {
 }
 ```
 
-## 🎯 권장 사항
-
-1. **Permission 중심 설계**: 가능한 Permission을 사용하여 세밀한 권한 제어
-2. **Role 레벨 체크**: 넓은 범위의 권한이 필요한 경우에만 Role 사용
-3. **상수 클래스 활용**: 오타 방지를 위해 PermissionCode 상수 사용
-4. **문서화**: 새로운 권한 추가 시 이 문서 업데이트
-
-## 🚨 주의사항
-
-1. **DB와 동기화**: PermissionCode 상수는 DB의 permission.code와 일치해야 함
-2. **권한 없음 예외**: `AccessDeniedException`이 발생하면 403 Forbidden 응답
-3. **테스트**: 권한 체크 로직은 반드시 테스트 코드 작성
-
-## 🔄 마이그레이션 체크리스트
-
-- [x] DB 스키마 수정 (role.code에 ROLE_ prefix)
-- [x] Role, Permission, RolePermission 엔티티 생성
-- [x] Repository 생성
-- [x] Account 엔티티 수정 (enum → String)
-- [x] RoleCode, PermissionCode 상수 클래스 생성
-- [x] CustomUserDetails 수정
-- [x] CustomUserDetailsService 수정
-- [x] @RequirePermission 어노테이션 구현
-- [x] PermissionCheckAspect 구현
-- [x] AccountRole enum 삭제
-- [ ] 테스트 코드 작성 (CustomUserDetailsTests 등)
-- [ ] 추가 Permission 정의 (28개 목표)
-
-## 📞 문의
-
-궁금한 사항이나 이슈가 있으면 개발팀에 문의하세요.

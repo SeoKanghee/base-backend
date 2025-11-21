@@ -1,8 +1,8 @@
 -- permission
-INSERT INTO "permission" ("code", "name", "description", "bit_index", "created_at", "updated_at") VALUES
-    ('VIEW_MY_ACCOUNT', '내 계정정보 조회', '자신의 계정 정보를 조회할 수 있는 권한', 0, CURRENT_TIMESTAMP(6), CURRENT_TIMESTAMP(6)),
-    ('VIEW_ACCOUNT_LIST', '사용자 목록 조회', '사용자 목록을 조회할 수 있는 권한', 1, CURRENT_TIMESTAMP(6), CURRENT_TIMESTAMP(6)),
-    ('MANAGE_ACCOUNT', '사용자 관리', '사용자를 생성/수정/삭제할 수 있는 권한', 2, CURRENT_TIMESTAMP(6), CURRENT_TIMESTAMP(6));
+INSERT INTO "permission" ("code", "name", "description", "created_at", "updated_at") VALUES
+    ('VIEW_MY_ACCOUNT', '내 계정정보 조회', '자신의 계정 정보를 조회할 수 있는 권한', CURRENT_TIMESTAMP(6), CURRENT_TIMESTAMP(6)),
+    ('VIEW_ACCOUNT_LIST', '사용자 목록 조회', '사용자 목록을 조회할 수 있는 권한', CURRENT_TIMESTAMP(6), CURRENT_TIMESTAMP(6)),
+    ('MANAGE_ACCOUNT', '사용자 관리', '사용자를 생성/수정/삭제할 수 있는 권한', CURRENT_TIMESTAMP(6), CURRENT_TIMESTAMP(6));
 
 -- role
 INSERT INTO "role" ("code", "name", "description", "created_at", "updated_at") VALUES

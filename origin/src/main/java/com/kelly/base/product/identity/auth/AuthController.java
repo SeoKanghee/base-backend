@@ -17,6 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static com.kelly.base.product.shared.Constants.UrlInfo.URI_ROOT_AUTH;
 
+/**
+ * authentication controller
+ *
+ * @author 서강희
+ */
 @Slf4j
 @RequiredArgsConstructor
 @Tag(name = "Authentication", description = "API for authentication")
