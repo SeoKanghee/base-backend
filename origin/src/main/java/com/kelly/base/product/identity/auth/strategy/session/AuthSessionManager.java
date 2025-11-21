@@ -16,6 +16,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * 세션 기반 로그인 처리 서비스
+ *
+ * @author 서강희
+ */
 @Slf4j
 @RequiredArgsConstructor
 @Service
@@ -29,7 +34,6 @@ public class AuthSessionManager {
      * @param authentication 계정 인증 정보
      * @param servletRequest HTTP 요청 정보
      * @param isForce        기존 세션을 무시하고 강제 로그인할지 여부
-     * @author kelly
      */
     public void dispatchSession(final Authentication authentication, final HttpServletRequest servletRequest,
                                 final boolean isForce) {
@@ -125,7 +129,6 @@ public class AuthSessionManager {
      * 세션 무효화 및 SessionRegistry 제거
      *
      * @param servletRequest HTTP 요청 정보
-     * @author kelly
      */
     public void invalidateSession(final HttpServletRequest servletRequest) {
         // 1. session 추출

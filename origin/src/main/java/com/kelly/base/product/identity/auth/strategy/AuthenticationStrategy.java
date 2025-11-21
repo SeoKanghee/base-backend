@@ -5,6 +5,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.lang.NonNull;
 import org.springframework.security.core.Authentication;
 
+/**
+ * 로그인 전략을 구현하기 위한 interface
+ *
+ * @author 서강희
+ */
 public interface AuthenticationStrategy {
     /**
      * 로그인 처리

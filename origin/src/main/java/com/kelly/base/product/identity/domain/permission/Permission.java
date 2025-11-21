@@ -31,9 +31,6 @@ public class Permission {
     @Column(name = "description", length = 500)
     private String description;
 
-    @Column(name = "bit_index", nullable = false, unique = true)
-    private Integer bitIndex;
-
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private ZonedDateTime createdAt;

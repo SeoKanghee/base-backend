@@ -26,6 +26,11 @@ import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
 
+/**
+ * authentication service
+ *
+ * @author 서강희
+ */
 @Slf4j
 @RequiredArgsConstructor
 @Service
@@ -41,7 +46,6 @@ public class AuthService {
      * @param loginRequest   로그인을 위한 정보
      * @param servletRequest HTTP 요청 정보
      * @return HTTP response <code>CommonResultCode</code>, <code>IdentityResultCode</code>
-     * @author kelly
      */
     @Transactional
     public CommonResponse<Void> login(@NonNull final PostLoginRequest loginRequest, HttpServletRequest servletRequest) {
@@ -129,7 +133,6 @@ public class AuthService {
      *
      * @param servletRequest HTTP 요청 정보
      * @return HTTP response <code>CommonResultCode</code>
-     * @author kelly
      */
     public CommonResponse<Void> logout(HttpServletRequest servletRequest) {
         authenticationStrategy.handleLogout(servletRequest);
