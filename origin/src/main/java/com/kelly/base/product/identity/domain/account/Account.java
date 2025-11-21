@@ -9,6 +9,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.ZonedDateTime;
 
+import static com.kelly.base.product.shared.Constants.RoleCode.ROLE_GENERAL_USER;
+
 @Entity
 @Getter
 @ToString
@@ -32,9 +34,8 @@ public class Account {
     private String name;
 
     @Builder.Default
-    @Enumerated(EnumType.STRING)
-    @Column(name = "role", nullable = false)
-    private AccountRole role = AccountRole.GENERAL_USER;
+    @Column(name = "role", nullable = false, length = 100)
+    private String role = ROLE_GENERAL_USER;
 
     @Builder.Default
     @Enumerated(EnumType.STRING)

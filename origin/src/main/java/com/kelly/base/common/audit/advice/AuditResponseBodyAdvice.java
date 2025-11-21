@@ -22,6 +22,11 @@ import java.util.Map;
 
 import static com.kelly.base.common.CommonConstants.AuditConstants.*;
 
+/**
+ * audit 처리를 하는 ControllerAdvice
+ *
+ * @author 서강희
+ */
 @Component
 @ControllerAdvice
 @RequiredArgsConstructor

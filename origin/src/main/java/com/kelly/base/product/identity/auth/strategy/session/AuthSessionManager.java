@@ -1,7 +1,7 @@
 package com.kelly.base.product.identity.auth.strategy.session;
 
 import com.kelly.base.common.exception.CommonRuntimeException;
-import com.kelly.base.product.identity.response.IdentityResultCode;
+import com.kelly.base.product.shared.response.identity.IdentityResultCode;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;

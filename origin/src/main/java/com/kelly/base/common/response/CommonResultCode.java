@@ -20,6 +20,7 @@ public enum CommonResultCode implements IResultCode {
 
     // specific - 5xx
     SYSTEM_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, CommonStatusCode.CSC_95000001),
+    DATABASE_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, CommonStatusCode.CSC_95000002),
     TASK_REJECTED(HttpStatus.SERVICE_UNAVAILABLE, CommonStatusCode.CSC_95030001);
 
 

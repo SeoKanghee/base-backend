@@ -9,6 +9,17 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.ZonedDateTime;
 import java.util.Map;
 
+/**
+ * audit log 정의
+ *
+ * @param creationDateTime 시간 정보 <code>ZonedDateTime</code>
+ * @param eventType        이벤트 분류 정보
+ * @param ipAddress        호출 대상 IP
+ * @param activity         동작 정보
+ * @param activityDetail   동작 상세 정보 ( payload.. )
+ * @param productVersion   앱 정보
+ * @author 서강희
+ */
 @Schema(description = "log - audit")
 @JsonNaming(PropertyNamingStrategies.UpperCamelCaseStrategy.class)  // json 처리시 첫글자 대문자로 변경
 public record AuditLogFormat(
@@ -20,10 +31,4 @@ public record AuditLogFormat(
         Map<String, Object> activityDetail,
         String productVersion
 ) {
-    // creationDateTime : 시간 정보
-    // eventType : 이벤트 분류 정보
-    // ipAddress : 호출 대상 IP
-    // activity : 동작 정보
-    // activityDetail : 동작 상세 정보 ( payload.. )
-    // productVersion : 앱 정보
 }

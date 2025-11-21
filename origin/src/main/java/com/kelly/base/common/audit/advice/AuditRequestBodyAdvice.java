@@ -15,6 +15,11 @@ import java.lang.reflect.Type;
 
 import static com.kelly.base.common.CommonConstants.AuditConstants.ATTR_AUDIT_REQ_BODY;
 
+/**
+ * audit 처리를 위해 request 에 body 를 attribute 에 저장하는 ControllerAdvice
+ *
+ * @author 서강희
+ */
 @Component
 @ControllerAdvice
 public class AuditRequestBodyAdvice extends RequestBodyAdviceAdapter {

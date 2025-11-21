@@ -9,7 +9,7 @@ import com.kelly.base.product.identity.auth.dto.PostLoginRequest;
 import com.kelly.base.product.identity.auth.strategy.AuthenticationStrategy;
 import com.kelly.base.product.identity.domain.account.Account;
 import com.kelly.base.product.identity.repository.AccountRepository;
-import com.kelly.base.product.identity.response.IdentityResultCode;
+import com.kelly.base.product.shared.response.identity.IdentityResultCode;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +18,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -65,6 +66,12 @@ public class AuthService {
             handleFailedLogin(loginRequest.loginId());
             log.error("invalid credentials : {}", loginRequest.loginId());
             throw new CommonRuntimeException(IdentityResultCode.BAD_CREDENTIAL);
+        } catch (InternalAuthenticationServiceException e) {
+            // 내부에서 사용하는 exception 인 경우
+            if (e.getCause() instanceof CommonRuntimeException commonRuntimeException) {
+                throw commonRuntimeException;
+            }
+            throw e;    // 그 외에는 InternalAuthenticationServiceException 을 그대로 처리
         }
     }
 
