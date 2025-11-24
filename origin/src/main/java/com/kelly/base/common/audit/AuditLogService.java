@@ -2,6 +2,7 @@ package com.kelly.base.common.audit;
 
 import com.kelly.base.common.audit.dto.AuditEventType;
 import com.kelly.base.common.audit.dto.AuditLogFormat;
+import com.kelly.base.common.audit.provider.AuditContextProvider;
 import com.kelly.base.common.config.CommonPropertiesConfig;
 import com.kelly.base.common.utils.DateTimeUtil;
 import com.kelly.base.common.utils.JsonUtil;
@@ -29,6 +30,8 @@ public class AuditLogService {
 
     private final CommonPropertiesConfig commonPropertiesConfig;
 
+    private final AuditContextProvider auditContextProvider;
+
     /**
      * API 호출에 대한 audit log 저장
      *
@@ -38,8 +41,10 @@ public class AuditLogService {
      */
     public void logApiCall(final String ipAddress, final String activity, final Map<String, Object> activityDetail) {
         final String productVersion = getProductVersion();
+        final String detailedInfo = auditContextProvider.getDetailedInfo();
         final AuditLogFormat auditLog = new AuditLogFormat(
-                DateTimeUtil.nowUtc(), AuditEventType.API_CALL, ipAddress, activity, activityDetail, productVersion
+                DateTimeUtil.nowUtc(), AuditEventType.API_CALL, ipAddress, activity, activityDetail, productVersion,
+                detailedInfo
         );
         logAudit(auditLog);
     }
@@ -54,7 +59,7 @@ public class AuditLogService {
         final String productVersion = getProductVersion();
         final AuditLogFormat auditLog = new AuditLogFormat(
                 DateTimeUtil.nowUtc(), AuditEventType.SYSTEM_EVENT, NOT_APPLICABLE,
-                activity, activityDetail, productVersion
+                activity, activityDetail, productVersion, null
         );
         logAudit(auditLog);
     }

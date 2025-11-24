@@ -5,6 +5,7 @@ import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.read.ListAppender;
 import com.kelly.base.common.audit.dto.AuditEventType;
 import com.kelly.base.common.audit.dto.AuditLogFormat;
+import com.kelly.base.common.audit.provider.DefaultAuditContextProvider;
 import com.kelly.base.common.config.CommonPropertiesConfig;
 import com.kelly.base.common.exception.CommonException;
 import com.kelly.base.common.utils.DateTimeUtil;
@@ -38,7 +39,7 @@ class AuditLogServiceTests {
         when(mockPropertiesConfig.getApplicationVersion()).thenReturn("1.0.0");
 
         // AuditLogService 초기화
-        auditLogService = new AuditLogService(mockPropertiesConfig);
+        auditLogService = new AuditLogService(mockPropertiesConfig, new DefaultAuditContextProvider());
 
         // log 수집을 위한 ListAppender 설정
         auditLogger = (Logger) LoggerFactory.getLogger("AUDIT_LOGGER");
@@ -79,7 +80,7 @@ class AuditLogServiceTests {
 
             final AuditLogFormat errorAuditLog = new AuditLogFormat(
                     DateTimeUtil.nowUtc(), AuditEventType.API_CALL, "192.168.1.119",
-                    "error", circularDetail, "test v1.0.0"
+                    "error", circularDetail, "test v1.0.0", null
             );
 
             // when, then - exception 이 app 동작에 영향을 미치지 않도록 log 만 출력
