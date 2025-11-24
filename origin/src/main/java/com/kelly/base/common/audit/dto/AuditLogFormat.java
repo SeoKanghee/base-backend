@@ -18,6 +18,7 @@ import java.util.Map;
  * @param activity         동작 정보
  * @param activityDetail   동작 상세 정보 ( payload.. )
  * @param productVersion   앱 정보
+ * @param detailedInfo     추가 상세 정보 ( accountId, role.. )
  * @author 서강희
  */
 @Schema(description = "log - audit")
@@ -29,6 +30,7 @@ public record AuditLogFormat(
         String ipAddress,
         String activity,
         Map<String, Object> activityDetail,
-        String productVersion
+        String productVersion,
+        String detailedInfo
 ) {
 }
