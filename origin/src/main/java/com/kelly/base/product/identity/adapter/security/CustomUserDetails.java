@@ -64,7 +64,7 @@ public class CustomUserDetails extends User {
         // 1. Role code를 authority로 추가 (예: "ROLE_SITE_MANAGER")
         authorities.add(new SimpleGrantedAuthority(role.getCode()));
 
-        // 2. Permission codes를 authorities로 추가 (예: "VIEW_MY_ACCOUNT", "MANAGE_ACCOUNT")
+        // 2. Permission codes를 authorities로 추가 (예: "MANAGE_MY_ACCOUNT", "MANAGE_ACCOUNT")
         permissions.forEach(p -> authorities.add(new SimpleGrantedAuthority(p.getCode()))
         );
 

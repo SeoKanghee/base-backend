@@ -15,7 +15,7 @@ Permission 구현 내용에 대한 설명입니다.
   
 - `permission` 테이블: 권한 정보
   - `id`: Primary Key
-  - `code`: 권한 코드 (예: "VIEW_MY_ACCOUNT")
+  - `code`: 권한 코드 (예: "MANAGE_MY_ACCOUNT")
   - `name`: 권한 이름
   - `description`: 권한 설명
   
@@ -37,48 +37,14 @@ Permission 구현 내용에 대한 설명입니다.
 
 예시 authorities:
 ```
-["ROLE_SITE_MANAGER", "VIEW_MY_ACCOUNT", "VIEW_ACCOUNT_LIST", "MANAGE_ACCOUNT"]
+["ROLE_SITE_MANAGER", "MANAGE_MY_ACCOUNT", "VIEW_ACCOUNT_LIST", "MANAGE_ACCOUNT"]
 ```
 
 ## 🔧 사용 방법
 
-### 1. 상수 클래스 사용
+### 1. 커스텀 어노테이션 사용 (권장)
 
-**Constants.java** :
-```java
-package com.kelly.base.product.shared;
-
-public final class Constants {
-    
-    @NoArgsConstructor(access = AccessLevel.PRIVATE)
-    public static final class RoleCode {
-        public static final String ROLE_SITE_MANAGER = "ROLE_SITE_MANAGER";
-        public static final String ROLE_SERVICE_ENGINEER = "ROLE_SERVICE_ENGINEER";
-        public static final String ROLE_ADVANCED_USER = "ROLE_ADVANCED_USER";
-        public static final String ROLE_GENERAL_USER = "ROLE_GENERAL_USER";
-        public static final String ROLE_DEMO_USER = "ROLE_DEMO_USER";
-    }
-
-    @NoArgsConstructor(access = AccessLevel.PRIVATE)
-    public static final class PermissionCode {
-        public static final String VIEW_MY_ACCOUNT = "VIEW_MY_ACCOUNT";
-        public static final String VIEW_ACCOUNT_LIST = "VIEW_ACCOUNT_LIST";
-        public static final String MANAGE_ACCOUNT = "MANAGE_ACCOUNT";
-    }
-}
-```
-
-**사용 예시**:
-```java
-import static com.kelly.base.product.shared.Constants.RoleCode;
-import static com.kelly.base.product.shared.Constants.PermissionCode;
-
-// 사용
-String role = RoleCode.ROLE_SITE_MANAGER;
-String permission = PermissionCode.VIEW_MY_ACCOUNT;
-```
-
-### 2. 커스텀 어노테이션 사용 (권장)
+- @RequirePermission 어노테이션을 제공합니다.
 
 **어노테이션 import**:
 ```java
@@ -135,7 +101,9 @@ public void dangerousOperation() {
 }
 ```
 
-### 3. Spring Security 기본 어노테이션 사용
+### 2. Spring Security 기본 어노테이션 사용
+
+- Spring Security 에서 제공하는 @PreAuthorize 사용도 가능합니다.
 
 **Role 체크**:
 ```java
@@ -167,7 +135,9 @@ public Account createAccount(@RequestBody AccountRequest request) {
 }
 ```
 
-### 4. 프로그래밍 방식 권한 체크
+### 3. 프로그래밍 방식 권한 체크
+
+- 어노테이션 활용이 어려운 경우 권한 체크 예시 코드 입니다.
 
 ```java
 import static com.kelly.base.product.shared.Constants.PermissionCode;
@@ -192,6 +162,44 @@ public class SomeService {
 }
 ```
 
+## 상수 클래스 사용 (옵션)
+
+- permission 키워드를 상수로 선언해서 사용하면 typo 오류를 방지할 수 있습니다.
+
+**Constants.java** :
+```java
+package com.kelly.base.product.shared;
+
+public final class Constants {
+    
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    public static final class RoleCode {
+        public static final String ROLE_SITE_MANAGER = "ROLE_SITE_MANAGER";
+        public static final String ROLE_SERVICE_ENGINEER = "ROLE_SERVICE_ENGINEER";
+        public static final String ROLE_ADVANCED_USER = "ROLE_ADVANCED_USER";
+        public static final String ROLE_GENERAL_USER = "ROLE_GENERAL_USER";
+        public static final String ROLE_DEMO_USER = "ROLE_DEMO_USER";
+    }
+
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    public static final class PermissionCode {
+        public static final String MANAGE_MY_ACCOUNT = "MANAGE_MY_ACCOUNT";
+        public static final String VIEW_ACCOUNT_LIST = "VIEW_ACCOUNT_LIST";
+        public static final String MANAGE_ACCOUNT = "MANAGE_ACCOUNT";
+    }
+}
+```
+
+**사용 예시**:
+```java
+import static com.kelly.base.product.shared.Constants.RoleCode;
+import static com.kelly.base.product.shared.Constants.PermissionCode;
+
+// 사용
+String role = RoleCode.ROLE_SITE_MANAGER;
+String permission = PermissionCode.MANAGE_MY_ACCOUNT;
+```
+
 ## 📝 권한 추가 방법
 
 ### 1. DB에 Permission 추가
@@ -204,7 +212,7 @@ INSERT INTO permission (code, name, description, bit_index) VALUES
 `src/main/java/com/kelly/base/product/shared/Constants.java` 파일을 수정:
 ```java
 public static final class PermissionCode {
-    public static final String VIEW_MY_ACCOUNT = "VIEW_MY_ACCOUNT";
+    public static final String MANAGE_MY_ACCOUNT = "MANAGE_MY_ACCOUNT";
     public static final String VIEW_ACCOUNT_LIST = "VIEW_ACCOUNT_LIST";
     public static final String MANAGE_ACCOUNT = "MANAGE_ACCOUNT";
     public static final String NEW_PERMISSION = "NEW_PERMISSION";  // 추가

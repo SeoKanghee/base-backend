@@ -105,9 +105,16 @@ public class AuthService {
         // 계정에 대한 유효성은 AuthenticationManager 에서 처리했으므로 orElse 는 의미 없음
         final Account account = accountRepository.findByLoginId(loginId).orElse(Account.builder().build());
 
-        // 로그인이 성공한 상황이므로 쌓여있던 fail count 는 초기화 후 ResultCode 판단해서 반환
+        // 로그인이 성공한 상황이므로 쌓여있던 fail count 는 초기화
         account.initFailCount();
-        return account.isFirstLogin() ? IdentityResultCode.NEED_CHANGE_PASSWORD : CommonResultCode.SUCCESS;
+
+        if (account.isFirstLogin()) {
+            // 비번을 바꿔야 하는 경우이므로 로그인 시간을 따로 기록하지 않음
+            return IdentityResultCode.NEED_CHANGE_PASSWORD;
+        } else {
+            account.recordLoginTimestamp(DateTimeUtil.nowUtc());
+            return CommonResultCode.SUCCESS;
+        }
     }
 
     void handleFailedLogin(final String loginId) {

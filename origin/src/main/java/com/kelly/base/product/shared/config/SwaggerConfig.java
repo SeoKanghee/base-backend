@@ -28,4 +28,10 @@ public class SwaggerConfig {
         String[] paths = { URI_ROOT_AUTH + WITH_SUB_PATHS };
         return GroupedOpenApi.builder().group("auth").pathsToMatch(paths).build();
     }
+
+    @Bean
+    public GroupedOpenApi accountsOpenApi() {
+        String[] paths = { URI_ROOT_ACCOUNTS + WITH_SUB_PATHS };
+        return GroupedOpenApi.builder().group("accounts").pathsToMatch(paths).build();
+    }
 }

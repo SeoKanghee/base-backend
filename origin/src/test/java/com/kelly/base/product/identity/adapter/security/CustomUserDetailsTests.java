@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Set;
 
-import static com.kelly.base.product.shared.Constants.PermissionCode.VIEW_MY_ACCOUNT;
+import static com.kelly.base.product.shared.Constants.PermissionCode.MANAGE_MY_ACCOUNT;
 import static com.kelly.base.product.shared.Constants.RoleCode.ROLE_GENERAL_USER;
 
 @DisplayName("CustomUserDetailsTests")
@@ -29,7 +29,7 @@ class CustomUserDetailsTests {
                            .role(ROLE_GENERAL_USER).status(AccountStatus.ACTIVE)
                            .failCount(0L).isTemp(true).passwordExpiredAt(DateTimeUtil.nowUtc()).build(),
                     Role.builder().code(ROLE_GENERAL_USER).build(),
-                    Set.of(Permission.builder().code(VIEW_MY_ACCOUNT).build())
+                    Set.of(Permission.builder().code(MANAGE_MY_ACCOUNT).build())
             );
 
             final CustomUserDetails customUserDetails2 = new CustomUserDetails(
@@ -37,7 +37,7 @@ class CustomUserDetailsTests {
                            .role(ROLE_GENERAL_USER).status(AccountStatus.ACTIVE)
                            .failCount(0L).isTemp(true).passwordExpiredAt(DateTimeUtil.nowUtc()).build(),
                     Role.builder().code(ROLE_GENERAL_USER).build(),
-                    Set.of(Permission.builder().code(VIEW_MY_ACCOUNT).build())
+                    Set.of(Permission.builder().code(MANAGE_MY_ACCOUNT).build())
             );
 
             // when, then
