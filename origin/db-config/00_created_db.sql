@@ -23,8 +23,10 @@ CREATE TABLE `base_backend`.`account` (
     is_temp BOOLEAN NOT NULL DEFAULT TRUE COMMENT '임시 비밀번호 사용 여부',
     department VARCHAR(128) COMMENT '부서',
     memo VARCHAR(512) COMMENT '메모',
+    last_login_at DATETIME(6) NULL COMMENT '마지막으로 로그인한 시간',
     lockout_expired_at DATETIME(6) NULL COMMENT '잠금 만료 시간',
     password_expired_at DATETIME(6) NOT NULL COMMENT '비밀번호 만료 시간',
+    is_hidden BOOLEAN NOT NULL DEFAULT FALSE COMMENT '목록 노출 제외',
     created_at DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT '생성일시',
     updated_at DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '수정일시',
 
@@ -67,7 +69,7 @@ CREATE TABLE `base_backend`.`role_permission` (
 
 -- [init data]
 INSERT INTO `base_backend`.`permission` (code, name, description) VALUES
-    ('VIEW_MY_ACCOUNT', '내 계정정보 조회', '자신의 계정 정보를 조회할 수 있는 권한'),
+    ('MANAGE_MY_ACCOUNT', '내 계정정보 관리', '자신의 계정 정보를 조회/수정할 수 있는 권한'),
     ('VIEW_ACCOUNT_LIST', '사용자 목록 조회', '사용자 목록을 조회할 수 있는 권한'),
     ('MANAGE_ACCOUNT', '사용자 관리', '사용자를 생성/수정/삭제할 수 있는 권한');
 
@@ -84,7 +86,7 @@ INSERT INTO `base_backend`.`role_permission` (role_id, permission_id)
     FROM role r
     CROSS JOIN permission p
     WHERE r.code = 'ROLE_SITE_MANAGER'
-        AND p.code IN ('VIEW_MY_ACCOUNT', 'VIEW_ACCOUNT_LIST', 'MANAGE_ACCOUNT');
+        AND p.code IN ('MANAGE_MY_ACCOUNT', 'VIEW_ACCOUNT_LIST', 'MANAGE_ACCOUNT');
 
 -- role_permission : ROLE_SERVICE_ENGINEER
 INSERT INTO `base_backend`.`role_permission` (role_id, permission_id)
@@ -92,7 +94,7 @@ INSERT INTO `base_backend`.`role_permission` (role_id, permission_id)
     FROM role r
     CROSS JOIN permission p
     WHERE r.code = 'ROLE_SERVICE_ENGINEER'
-        AND p.code IN ('VIEW_MY_ACCOUNT', 'VIEW_ACCOUNT_LIST', 'MANAGE_ACCOUNT');
+        AND p.code IN ('MANAGE_MY_ACCOUNT', 'VIEW_ACCOUNT_LIST', 'MANAGE_ACCOUNT');
 
 -- role_permission : ROLE_ADVANCED_USER
 INSERT INTO `base_backend`.`role_permission` (role_id, permission_id)
@@ -100,7 +102,7 @@ INSERT INTO `base_backend`.`role_permission` (role_id, permission_id)
     FROM role r
     CROSS JOIN permission p
     WHERE r.code = 'ROLE_ADVANCED_USER'
-        AND p.code IN ('VIEW_MY_ACCOUNT');
+        AND p.code IN ('MANAGE_MY_ACCOUNT');
 
 -- role_permission : ROLE_GENERAL_USER
 INSERT INTO `base_backend`.`role_permission` (role_id, permission_id)
@@ -108,7 +110,7 @@ INSERT INTO `base_backend`.`role_permission` (role_id, permission_id)
     FROM role r
     CROSS JOIN permission p
     WHERE r.code = 'ROLE_GENERAL_USER'
-        AND p.code IN ('VIEW_MY_ACCOUNT');
+        AND p.code IN ('MANAGE_MY_ACCOUNT');
 
 -- role_permission : ROLE_DEMO_USER
 INSERT INTO `base_backend`.`role_permission` (role_id, permission_id)
@@ -116,8 +118,8 @@ INSERT INTO `base_backend`.`role_permission` (role_id, permission_id)
     FROM role r
     CROSS JOIN permission p
     WHERE r.code = 'ROLE_DEMO_USER'
-        AND p.code IN ('VIEW_MY_ACCOUNT');
+        AND p.code IN ('MANAGE_MY_ACCOUNT');
 
-INSERT INTO `base_backend`.`account` (login_id, password, name, role, status, fail_count, is_temp, department, password_expired_at) VALUES
-    ('master', '$2a$12$RCtTO21kUB3pmMy5oLXhn.kQrkxwvg8/xM2XPMf3dp3aJ91A8eNuW', '시스템 관리자', 'ROLE_SITE_MANAGER', 'ACTIVE', 0, 0, '마스터 계정', TIMESTAMP('2125-11-11 00:00:00')),
-    ('admin', '$2a$12$lqH4bS1GbawmstuChZD2WeNqmPSRgkkM55TSIHcnMWUkDxHC2dfd2', '서비스 엔지니어', 'ROLE_SERVICE_ENGINEER', 'ACTIVE', 0, 0, 'SE', TIMESTAMP('2125-11-11 00:00:00'));
+INSERT INTO `base_backend`.`account` (login_id, password, name, role, status, fail_count, is_temp, department, password_expired_at, is_hidden) VALUES
+    ('master', '$2a$12$RCtTO21kUB3pmMy5oLXhn.kQrkxwvg8/xM2XPMf3dp3aJ91A8eNuW', '시스템 관리자', 'ROLE_SITE_MANAGER', 'ACTIVE', 0, 0, '마스터 계정', TIMESTAMP('2125-11-11 00:00:00'), 1),
+    ('admin', '$2a$12$lqH4bS1GbawmstuChZD2WeNqmPSRgkkM55TSIHcnMWUkDxHC2dfd2', '서비스 엔지니어', 'ROLE_SERVICE_ENGINEER', 'ACTIVE', 0, 0, 'SE', TIMESTAMP('2125-11-11 00:00:00'), 1);

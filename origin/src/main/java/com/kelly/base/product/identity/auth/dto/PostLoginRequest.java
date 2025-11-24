@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 
 /**
- * login request payload
+ * 로그인 - request payload
  *
  * @param loginId  계정 ID
  * @param password 계정 비밀번호

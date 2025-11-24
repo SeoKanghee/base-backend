@@ -18,10 +18,8 @@ public final class Constants {
         public static final String URI_PREFIX_API = "/api";
         public static final String WITH_SUB_PATHS = "/**";
 
-        public static final String URI_ROOT_SSE = URI_PREFIX_API + "/sse";  // API - sse
-
         public static final String URI_ROOT_AUTH = URI_PREFIX_API + "/auth";    // API - auth
-        public static final String URI_ROOT_USERS = URI_PREFIX_API + "/users";  // API - users
+        public static final String URI_ROOT_ACCOUNTS = URI_PREFIX_API + "/accounts";    // API - accounts
     }
 
     /**
@@ -41,7 +39,7 @@ public final class Constants {
      */
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     public static final class PermissionCode {
-        public static final String VIEW_MY_ACCOUNT = "VIEW_MY_ACCOUNT";
+        public static final String MANAGE_MY_ACCOUNT = "MANAGE_MY_ACCOUNT";
         public static final String VIEW_ACCOUNT_LIST = "VIEW_ACCOUNT_LIST";
         public static final String MANAGE_ACCOUNT = "MANAGE_ACCOUNT";
     }

@@ -42,11 +42,13 @@ public class Account {
     @Column(name = "status", nullable = false)
     private AccountStatus status = AccountStatus.ACTIVE;
 
+    @Builder.Default
     @Column(name ="fail_count", nullable = false)
-    private Long failCount;
+    private Long failCount = 0L;
 
+    @Builder.Default
     @Column(name ="is_temp", nullable = false)
-    private Boolean isTemp;
+    private Boolean isTemp = true;
 
     @Column(name = "department", length = 128)
     private String department;
@@ -54,11 +56,18 @@ public class Account {
     @Column(name = "memo")
     private String memo;
 
+    @Column(name = "last_login_at")
+    private ZonedDateTime lastLoginAt;
+
     @Column(name = "lockout_expired_at")
     private ZonedDateTime lockoutExpiredAt;
 
     @Column(name = "password_expired_at", nullable = false)
     private ZonedDateTime passwordExpiredAt;
+
+    @Builder.Default
+    @Column(name ="is_hidden", nullable = false)
+    private Boolean isHidden = false;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
@@ -109,5 +118,9 @@ public class Account {
 
     public void initFailCount() {
         this.failCount = 0L;
+    }
+
+    public void recordLoginTimestamp(final ZonedDateTime loginAt) {
+        this.lastLoginAt = loginAt;
     }
 }
