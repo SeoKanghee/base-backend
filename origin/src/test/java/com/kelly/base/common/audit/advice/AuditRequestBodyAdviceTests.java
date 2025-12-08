@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpInputMessage;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.http.converter.json.JacksonJsonHttpMessageConverter;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -47,15 +47,15 @@ class AuditRequestBodyAdviceTests {
         @DisplayName("supports test")
         void supportsTest() {
             // when
-            final boolean result = Assertions.assertDoesNotThrow(
+            final Boolean result = Assertions.assertDoesNotThrow(
                     () -> auditRequestBodyAdvice.supports(
                             mock(MethodParameter.class), mock(Type.class),
-                            MappingJackson2HttpMessageConverter.class
+                            JacksonJsonHttpMessageConverter.class
                     )
             );
 
             // then - 항상 true 반환
-            Assertions.assertTrue(result);
+            Assertions.assertEquals(Boolean.TRUE, result);
         }
     }
 
@@ -72,7 +72,7 @@ class AuditRequestBodyAdviceTests {
             final Object result = Assertions.assertDoesNotThrow(
                     () -> auditRequestBodyAdvice.afterBodyRead(
                             testBody, mock(HttpInputMessage.class), mock(MethodParameter.class), mock(Type.class),
-                            MappingJackson2HttpMessageConverter.class
+                            JacksonJsonHttpMessageConverter.class
                     )
             );
 

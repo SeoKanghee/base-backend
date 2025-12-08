@@ -32,10 +32,10 @@ public class Role {
     private String description;
 
     @CreatedDate
-    @Column(nullable = false, updatable = false)
+    @Column(name = "created_at", nullable = false, updatable = false)
     private ZonedDateTime createdAt;
 
     @LastModifiedDate
-    @Column(nullable = false)
+    @Column(name = "updated_at", nullable = false)
     private ZonedDateTime updatedAt;
 }

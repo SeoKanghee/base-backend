@@ -61,6 +61,7 @@ springdoc:
   swagger-ui:
     path: "api.html" # http://localhost:{port}/api.html
     operations-sorter: "method"
+    default-models-expand-depth: 0  # 하단 schema 영역을 닫아둠
 
 management:
   endpoints:
