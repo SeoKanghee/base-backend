@@ -74,11 +74,11 @@ public class Account {
     private Boolean isHidden = false;
 
     @CreatedDate
-    @Column(nullable = false, updatable = false)
+    @Column(name = "created_at", nullable = false, updatable = false)
     private ZonedDateTime createdAt;
 
     @LastModifiedDate
-    @Column(nullable = false)
+    @Column(name = "updated_at", nullable = false)
     private ZonedDateTime updatedAt;
 
     public void updateProfile(final String name, final String department, final String memo) {

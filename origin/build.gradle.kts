@@ -21,7 +21,6 @@ plugins {
     alias(libs.plugins.sonarqube)
     alias(libs.plugins.spring.boot)
     alias(libs.plugins.spring.dependency)
-    alias(libs.plugins.openapi.gradle.plugin)
     alias(libs.plugins.maven.settings)
 }
 
@@ -55,7 +54,7 @@ dependencies {
     val classifierJakarta = "jakarta"
 
     // spring
-    implementation(libs.spring.boot.starter.web)
+    implementation(libs.spring.boot.starter.webmvc)
     implementation(libs.spring.boot.starter.validation)
     implementation(libs.spring.boot.starter.security)
 
@@ -88,7 +87,8 @@ dependencies {
     annotationProcessor(libs.annotation.api)
     annotationProcessor(libs.persistence.api)
 
-    testImplementation(libs.spring.boot.starter.test)
+    testImplementation(libs.spring.boot.starter.data.jpa.test)
+    testImplementation(libs.spring.boot.starter.webmvc.test)
 
     testCompileOnly(libs.lombok)
 

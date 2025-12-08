@@ -13,8 +13,8 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.ArgumentCaptor;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
+import org.springframework.http.converter.json.JacksonJsonHttpMessageConverter;
 import org.springframework.http.converter.json.JsonbHttpMessageConverter;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -85,10 +85,10 @@ class AuditResponseBodyAdviceTests {
             final MethodParameter methodParameter = new MethodParameter(method, -1);
 
             // when
-            final boolean result = Assertions.assertDoesNotThrow(
+            final Boolean result = Assertions.assertDoesNotThrow(
                     () -> auditResponseBodyAdvice.supports(
                             methodParameter,
-                            MappingJackson2HttpMessageConverter.class
+                            JacksonJsonHttpMessageConverter.class
                     )
             );
 
@@ -104,10 +104,10 @@ class AuditResponseBodyAdviceTests {
             final MethodParameter methodParameter = new MethodParameter(method, -1);
 
             // when
-            final boolean result = Assertions.assertDoesNotThrow(
+            final Boolean result = Assertions.assertDoesNotThrow(
                     () -> auditResponseBodyAdvice.supports(
                             methodParameter,
-                            MappingJackson2HttpMessageConverter.class
+                            JacksonJsonHttpMessageConverter.class
                     )
             );
 
