@@ -21,6 +21,7 @@ CREATE TABLE `base_backend`.`account` (
     status VARCHAR(16) NOT NULL DEFAULT 'ACTIVE' COMMENT '사용자 상태',
     fail_count BIGINT NOT NULL DEFAULT 0 COMMENT '로그인 시도 실패 횟수',
     is_temp BOOLEAN NOT NULL DEFAULT TRUE COMMENT '임시 비밀번호 사용 여부',
+    language_code VARCHAR(5) NOT NULL DEFAULT 'en' COMMENT '언어 설정',
     department VARCHAR(128) COMMENT '부서',
     memo VARCHAR(512) COMMENT '메모',
     last_login_at DATETIME(6) NULL COMMENT '마지막으로 로그인한 시간',
