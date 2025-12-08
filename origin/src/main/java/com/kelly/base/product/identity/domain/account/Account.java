@@ -50,6 +50,10 @@ public class Account {
     @Column(name ="is_temp", nullable = false)
     private Boolean isTemp = true;
 
+    @Builder.Default
+    @Column(name = "language_code", nullable = false)
+    private String languageCode = "en";
+
     @Column(name = "department", length = 128)
     private String department;
 
