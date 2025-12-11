@@ -20,6 +20,7 @@ public final class Constants {
 
         public static final String URI_ROOT_AUTH = URI_PREFIX_API + "/auth";    // API - auth
         public static final String URI_ROOT_ACCOUNTS = URI_PREFIX_API + "/accounts";    // API - accounts
+        public static final String URI_ROOT_SYSTEM = URI_PREFIX_API + "/system";    // API - system
     }
 
     /**

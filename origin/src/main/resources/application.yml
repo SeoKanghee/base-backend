@@ -73,3 +73,10 @@ management:
 logging:
   level:
     com.kelly.base: ${KELLY_LOG_LEVEL:INFO}
+
+# i18n 설정
+i18n:
+  default-language: ${DEFAULT_LANGUAGE_CODE:en} # 비로그인 사용자의 기본 언어
+  default-regulator: ${DEFAULT_REGULATOR_CODE:mfds} # 비활성화된 시스템의 기본 규제기관
+  resource-path: file:./config/i18n # 리소스 파일 경로
+  cache-enabled: true # cache 활성화

@@ -70,3 +70,9 @@ logging:
   level:
     com.neurophet: debug # default log level : info
 
+# i18n 설정
+i18n:
+  default-language: en  # 비로그인 사용자의 기본 언어
+  default-regulator: mfds # 비활성화된 시스템의 기본 규제기관
+  resource-path: classpath:config/i18n # 리소스 파일 경로
+  cache-enabled: true # cache 활성화

@@ -72,7 +72,8 @@ CREATE TABLE `base_backend`.`role_permission` (
 INSERT INTO `base_backend`.`permission` (code, name, description) VALUES
     ('MANAGE_MY_ACCOUNT', '내 계정정보 관리', '자신의 계정 정보를 조회/수정할 수 있는 권한'),
     ('VIEW_ACCOUNT_LIST', '사용자 목록 조회', '사용자 목록을 조회할 수 있는 권한'),
-    ('MANAGE_ACCOUNT', '사용자 관리', '사용자를 생성/수정/삭제할 수 있는 권한');
+    ('MANAGE_ACCOUNT', '사용자 관리', '사용자를 생성/수정/삭제할 수 있는 권한'),
+    ('MANAGE_SYSTEM', '시스템 관리', '시스템 설정을 변경할 수 있는 권한');
 
 INSERT INTO `base_backend`.`role` (code, name, description) VALUES
     ('ROLE_SITE_MANAGER', '사이트 관리자', '사이트, 시스템, 사용자 관리 권한이 있는 사용자'),
@@ -87,7 +88,7 @@ INSERT INTO `base_backend`.`role_permission` (role_id, permission_id)
     FROM role r
     CROSS JOIN permission p
     WHERE r.code = 'ROLE_SITE_MANAGER'
-        AND p.code IN ('MANAGE_MY_ACCOUNT', 'VIEW_ACCOUNT_LIST', 'MANAGE_ACCOUNT');
+        AND p.code IN ('MANAGE_MY_ACCOUNT', 'VIEW_ACCOUNT_LIST', 'MANAGE_ACCOUNT', 'MANAGE_SYSTEM');
 
 -- role_permission : ROLE_SERVICE_ENGINEER
 INSERT INTO `base_backend`.`role_permission` (role_id, permission_id)
@@ -95,7 +96,7 @@ INSERT INTO `base_backend`.`role_permission` (role_id, permission_id)
     FROM role r
     CROSS JOIN permission p
     WHERE r.code = 'ROLE_SERVICE_ENGINEER'
-        AND p.code IN ('MANAGE_MY_ACCOUNT', 'VIEW_ACCOUNT_LIST', 'MANAGE_ACCOUNT');
+        AND p.code IN ('MANAGE_MY_ACCOUNT', 'VIEW_ACCOUNT_LIST', 'MANAGE_ACCOUNT', 'MANAGE_SYSTEM');
 
 -- role_permission : ROLE_ADVANCED_USER
 INSERT INTO `base_backend`.`role_permission` (role_id, permission_id)
