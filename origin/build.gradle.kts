@@ -89,6 +89,7 @@ dependencies {
 
     testImplementation(libs.spring.boot.starter.data.jpa.test)
     testImplementation(libs.spring.boot.starter.webmvc.test)
+    testImplementation(libs.spring.boot.starter.security.test)
 
     testCompileOnly(libs.lombok)
 

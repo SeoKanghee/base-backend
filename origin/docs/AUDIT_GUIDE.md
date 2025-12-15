@@ -1,4 +1,4 @@
-# Audit System Guide
+# Audit 시스템 가이드
 
 ## 개요
 

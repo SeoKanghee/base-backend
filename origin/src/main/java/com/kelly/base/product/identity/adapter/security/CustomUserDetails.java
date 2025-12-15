@@ -26,6 +26,7 @@ public class CustomUserDetails extends User {
     private final long accountId;   // accountId ( Entity )
     private final String roleCode;  // role code
     private final Set<String> permissionCodes;  // permission codes
+    private final String languageCode;  // language code for i18n
 
     /**
      * 생성자
@@ -49,6 +50,7 @@ public class CustomUserDetails extends User {
         this.accountId = account.getId();
         this.roleCode = role.getCode();
         this.permissionCodes = permissions.stream().map(Permission::getCode).collect(Collectors.toSet());
+        this.languageCode = account.getLanguageCode();
     }
 
     /**

@@ -2,7 +2,8 @@
 INSERT INTO "permission" ("code", "name", "description", "created_at", "updated_at") VALUES
     ('MANAGE_MY_ACCOUNT', '내 계정정보 관리', '자신의 계정 정보를 조회/수정할 수 있는 권한', CURRENT_TIMESTAMP(6), CURRENT_TIMESTAMP(6)),
     ('VIEW_ACCOUNT_LIST', '사용자 목록 조회', '사용자 목록을 조회할 수 있는 권한', CURRENT_TIMESTAMP(6), CURRENT_TIMESTAMP(6)),
-    ('MANAGE_ACCOUNT', '사용자 관리', '사용자를 생성/수정/삭제할 수 있는 권한', CURRENT_TIMESTAMP(6), CURRENT_TIMESTAMP(6));
+    ('MANAGE_ACCOUNT', '사용자 관리', '사용자를 생성/수정/삭제할 수 있는 권한', CURRENT_TIMESTAMP(6), CURRENT_TIMESTAMP(6)),
+    ('MANAGE_SYSTEM', '시스템 관리', '시스템 설정을 변경할 수 있는 권한', CURRENT_TIMESTAMP(6), CURRENT_TIMESTAMP(6));
 
 -- role
 INSERT INTO "role" ("code", "name", "description", "created_at", "updated_at") VALUES
@@ -18,7 +19,7 @@ INSERT INTO "role_permission" ("role_id", "permission_id", "created_at")
     FROM "role" "r"
     CROSS JOIN "permission" "p"
     WHERE "r"."code" = 'ROLE_SITE_MANAGER'
-        AND "p"."code" IN ('MANAGE_MY_ACCOUNT', 'VIEW_ACCOUNT_LIST', 'MANAGE_ACCOUNT');
+        AND "p"."code" IN ('MANAGE_MY_ACCOUNT', 'VIEW_ACCOUNT_LIST', 'MANAGE_ACCOUNT', 'MANAGE_SYSTEM');
 
 -- role_permission : ROLE_SERVICE_ENGINEER
 INSERT INTO "role_permission" ("role_id", "permission_id", "created_at")
@@ -26,7 +27,7 @@ INSERT INTO "role_permission" ("role_id", "permission_id", "created_at")
     FROM "role" "r"
     CROSS JOIN "permission" "p"
     WHERE "r"."code" = 'ROLE_SERVICE_ENGINEER'
-        AND "p"."code" IN ('MANAGE_MY_ACCOUNT', 'VIEW_ACCOUNT_LIST', 'MANAGE_ACCOUNT');
+        AND "p"."code" IN ('MANAGE_MY_ACCOUNT', 'VIEW_ACCOUNT_LIST', 'MANAGE_ACCOUNT', 'MANAGE_SYSTEM');
 
 -- role_permission : ROLE_ADVANCED_USER
 INSERT INTO "role_permission" ("role_id", "permission_id", "created_at")
