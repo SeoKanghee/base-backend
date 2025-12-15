@@ -8,7 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,7 +33,7 @@ public class SystemController {
      *
      * @return 성공/실패 응답
      */
-    @GetMapping("/i18n/reload")
+    @PostMapping("/i18n/reload")
     @RequirePermission("MANAGE_SYSTEM")
     @Operation(summary = "다국어 메시지 리로드", description = "다국어 메시지 리소스를 리로드합니다")
     public CommonResponse<String> reloadMessages() {

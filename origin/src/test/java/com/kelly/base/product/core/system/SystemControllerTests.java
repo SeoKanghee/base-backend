@@ -26,7 +26,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 
 import static com.kelly.base.product.shared.Constants.UrlInfo.URI_ROOT_SYSTEM;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = SystemController.class, excludeAutoConfiguration = SecurityAutoConfiguration.class)
@@ -57,7 +57,7 @@ class SystemControllerTests {
         private final String testUri = URI_ROOT_SYSTEM + "/i18n/reload";
 
         @Test
-        @DisplayName("[get] reloadMessages test - 권한이 있는 경우")
+        @DisplayName("[post] reloadMessages test - 권한이 있는 경우")
         void reloadMessagesWithPermissionTest() throws Exception {
             // given - authentication
             final Authentication authentication = new UsernamePasswordAuthenticationToken(
@@ -68,11 +68,11 @@ class SystemControllerTests {
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             // when, then
-            mockMvc.perform(get(testUri)).andExpect(status().isOk());   // 200 OK
+            mockMvc.perform(post(testUri)).andExpect(status().isOk());   // 200 OK
         }
 
         @Test
-        @DisplayName("[get] reloadMessages test - 권한이 없는 경우")
+        @DisplayName("[post] reloadMessages test - 권한이 없는 경우")
         void reloadMessagesWithoutPermissionTest() throws Exception {
             // given - authentication
             final Authentication authentication = new UsernamePasswordAuthenticationToken(
@@ -83,14 +83,14 @@ class SystemControllerTests {
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             // when, then
-            mockMvc.perform(get(testUri)).andExpect(status().isForbidden());    // 403 forbidden
+            mockMvc.perform(post(testUri)).andExpect(status().isForbidden());    // 403 forbidden
         }
 
         @Test
-        @DisplayName("[get] reloadMessages test - 인증 정보가 없는 경우")
+        @DisplayName("[post] reloadMessages test - 인증 정보가 없는 경우")
         void reloadMessagesUnAuthTest() throws Exception {
             // when, then
-            mockMvc.perform(get(testUri)).andExpect(status().isUnauthorized()); // 401 unauthorized
+            mockMvc.perform(post(testUri)).andExpect(status().isUnauthorized()); // 401 unauthorized
         }
     }
 }

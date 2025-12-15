@@ -2,7 +2,7 @@ package com.kelly.base.product.identity.auth.strategy;
 
 import com.kelly.base.product.identity.auth.dto.PostLoginRequest;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 import org.springframework.security.core.Authentication;
 
 /**

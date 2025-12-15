@@ -5,7 +5,7 @@ import com.kelly.base.common.response.CommonResultCode;
 import com.kelly.base.common.interfaces.ICommonException;
 import lombok.Getter;
 import lombok.ToString;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 
 @Getter
 @ToString

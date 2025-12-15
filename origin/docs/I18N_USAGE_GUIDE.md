@@ -23,10 +23,10 @@ i18n 을 통해 사용자별 언어 설정과 규제기관에 따라 다국어 �
         │   ├── messages_en.json
         │   └── messages_ko.json
         └── product/                   # 프로덕트 메시지 (Properties)
-            ├── messages_en_fda.properties
-            ├── messages_ko_fda.properties
-            ├── messages_en_ce.properties
-            └── messages_ko_ce.properties
+            ├── messages_fda_en.properties
+            ├── messages_fda_ko.properties
+            ├── messages_mfds_en.properties
+            └── messages_mfds_ko.properties
 ```
 
 ## 메시지 키 규칙
@@ -41,7 +41,7 @@ i18n 을 통해 사용자별 언어 설정과 규제기관에 따라 다국어 �
 - 접두사: `EXT_TID_`
 - 포맷: `EXT_TID_{5자리 숫자}`
 - 예시: `EXT_TID_00001`, `EXT_TID_00002`
-- 파일: `config/i18n/product/messages_{언어}_{규제기관}.properties`
+- 파일: `config/i18n/product/messages_{규제기관}_{언어}.properties`
 
 ## 사용 방법
 
@@ -55,34 +55,31 @@ public class SomeService {
     private final I18nMessageService i18nMessageService;
     
     public void someMethod() {
-        // 1️⃣ 현재 로그인한 사용자의 언어로 조회
+        // 1️⃣ 현재 로그인한 사용자의 언어로 조회 (단순 조회)
         String message = i18nMessageService.getMessage("TID_00001");
         // 결과: "저장" (사용자 languageCode가 "ko"인 경우)
         
-        // 2️⃣ 명시적으로 언어/규제기관 지정
-        String role = i18nMessageService.getMessageWith("EXT_TID_00001", "en", "ce");
-        // 결과: "Site Manager"
-        
-        // 3️⃣ 현재 사용자 언어로 포맷팅
-        String welcome = i18nMessageService.formatMessage("TID_WELCOME", userName);
+        // 2️⃣ 현재 사용자 언어로 메시지 포맷팅
+        String welcome = i18nMessageService.getMessage("TID_WELCOME", userName);
         // messages_ko.json: "TID_WELCOME": "{0}님, 환영합니다"
         // 결과: "홍길동님, 환영합니다"
         
-        // 4️⃣ 언어/규제 지정 + 포맷팅
-        String notification = i18nMessageService.formatMessageWith(
-            "TID_NOTIFY", "en", "fda", userName, actionName
-        );
-        // messages_en_fda.properties: TID_NOTIFY={0} performed {1}
-        // 결과: "John performed Update"
+        // 3️⃣ 규제기관별 메시지 조회
+        String role = i18nMessageService.getMessage("EXT_TID_00001");
+        // messages_fda_ko.properties: EXT_TID_00001=사이트 관리자
+        // 결과: "사이트 관리자"
+        
+        // 4️⃣ 복수 파라미터 포맷팅
+        String notification = i18nMessageService.getMessage("TID_NOTIFY", userName, actionName);
+        // messages_ko.json: "TID_NOTIFY": "{0}님이 {1} 작업을 수행했습니다"
+        // 결과: "홍길동님이 업데이트 작업을 수행했습니다"
     }
 }
 ```
 
 **메서드 요약**:
-- `getMessage(key)`: 현재 컨텍스트 언어로 조회
-- `getMessageWith(key, lang, reg)`: 언어/규제 명시하여 조회
-- `formatMessage(key, args...)`: 현재 언어로 조회 + 포맷팅
-- `formatMessageWith(key, lang, reg, args...)`: 언어/규제 명시 + 포맷팅
+- `getMessage(key)`: 현재 로그인한 사용자의 언어와 시스템 규제기관으로 메시지 조회
+- `getMessage(key, args...)`: 현재 언어로 조회 + MessageFormat을 사용한 파라미터 포맷팅
 
 ### 2. 사용자 언어 설정
 
@@ -108,13 +105,12 @@ accountRepository.save(account);
 
 ```yaml
 i18n:
-  regulatory: fda  # fda, ce, mfds 등
+  default-regulator: fda  # fda, mfds 등
 ```
 
 환경 변수:
 ```bash
-export I18N_REGULATORY=ce
-java -jar base-backend.jar
+export I18N_DEFAULT_REGULATOR=mfds
 ```
 
 ### 4. 비로그인 사용자
@@ -148,11 +144,11 @@ i18n:
 }
 ```
 
-### 프로덕트 리소스 (Properties + UTF-8)
+### 프로덕트 리소스 (properties + UTF-8)
 
-**✨ 주요 특징**: Properties 파일은 **UTF-8 인코딩**으로 읽히므로, **한글을 직접 작성**하고 **주석(`#`)을 사용**할 수 있습니다!
+**✨ 주요 특징**: properties 파일은 주석(`#`) 활용이 가능합니다
 
-`config/i18n/product/messages_en_fda.properties`:
+`config/i18n/product/messages_fda_en.properties`:
 ```properties
 # ===================================
 # Product Messages (English + FDA)
@@ -161,15 +157,11 @@ i18n:
 # -----------------------------------
 # User Roles
 # -----------------------------------
-
-# Site Manager: Top administrator with all system permissions
 EXT_TID_00001=Site Manager
-
-# Service Manager: Administrator with service operation and user management permissions
 EXT_TID_00002=Service Manager
 ```
 
-`config/i18n/product/messages_ko_fda.properties`:
+`config/i18n/product/messages_fda_ko.properties`:
 ```properties
 # ===================================
 # 프로덕트 메시지 리소스 (한국어 + FDA)
@@ -178,21 +170,9 @@ EXT_TID_00002=Service Manager
 # -----------------------------------
 # 사용자 역할 (User Roles)
 # -----------------------------------
-
-# 사이트 관리자: 시스템의 모든 권한을 가진 최고 관리자
-# Site Manager: Top administrator with all system permissions
 EXT_TID_00001=사이트 관리자
-
-# 서비스 관리자: 서비스 운영 및 사용자 관리 권한을 가진 관리자
-# Service Manager: Administrator with service operation and user management permissions
 EXT_TID_00002=서비스 관리자
 ```
-
-**💡 주석 활용 팁**:
-- `#`으로 시작하는 줄은 주석으로 처리됨
-- 메시지 키의 의미, 사용 위치, 주의사항 등을 주석으로 명시
-- 한국어와 영어 주석을 함께 작성하여 국제 협업 지원
-- 섹션 구분자(`===`, `---`)로 가독성 향상
 
 ## 동적 메시지 리로드
 
@@ -200,7 +180,7 @@ EXT_TID_00002=서비스 관리자
 
 ### API 호출
 ```bash
-POST /api/admin/i18n/reload
+POST /api/system/i18n/reload
 Authorization: Bearer {token}
 ```
 
@@ -209,74 +189,70 @@ Authorization: Bearer {token}
 
 ### 사용 시나리오
 1. `config/i18n/common/messages_ko.json` 파일 수정
-2. `/api/admin/i18n/reload` API 호출
+2. `POST /api/system/i18n/reload` API 호출
 3. 즉시 변경된 메시지 반영
 
 ## 새로운 언어 추가
 
-### 1. 리소스 파일 생성
+리소스 파일만 생성하면 자동으로 인식됩니다.
 
 ```bash
 # 일본어 추가 예시
 config/i18n/common/messages_ja.json
-config/i18n/product/messages_ja_fda.properties
-config/i18n/product/messages_ja_ce.properties
+config/i18n/product/messages_fda_ja.properties
+config/i18n/product/messages_mfds_ja.properties
 ```
 
-### 2. I18nMessageServiceImpl 수정
-
-```java
-// 지원 언어 목록에 추가
-private void loadAllMessages() {
-    final String[] languages = {"en", "ko", "ja"};  // ja 추가
-    // ...
-}
-```
+애플리케이션 재시작 시 자동으로 로드됩니다.
 
 ## 새로운 규제기관 추가
+
+리소스 파일만 생성하고 시스템 설정을 변경하면 됩니다.
 
 ### 1. 리소스 파일 생성
 
 ```bash
-# MFDS 추가 예시
-config/i18n/product/messages_en_mfds.properties
-config/i18n/product/messages_ko_mfds.properties
+# CE 규제기관 추가 예시
+config/i18n/product/messages_ce_en.properties
+config/i18n/product/messages_ce_ko.properties
 ```
 
-### 2. I18nMessageServiceImpl 수정
-
-```java
-// 지원 규제기관 목록에 추가
-private void loadAllMessages() {
-    final String[] regulatories = {"fda", "ce", "mfds"};  // mfds 추가
-    // ...
-}
-```
-
-### 3. 시스템 설정 변경
+### 2. 시스템 설정 변경
 
 ```yaml
 i18n:
-  regulatory: mfds
+  default-regulator: ce
 ```
+
+**💡 참고**: `I18nMessageSourceConfig`가 `config/i18n/product/` 디렉터리를 스캔하여 `messages_{규제기관}_{언어}.properties` 패턴의 파일을 자동으로 로드합니다.
 
 ## 메시지 조회 우선순위
 
-1. **프로덕트 리소스**: `messages_{언어}_{규제기관}.properties`
+메시지 조회는 다음 순서로 진행됩니다:
+
+1. **규제기관별 리소스**: `messages_{규제기관}_{언어}.properties`
 2. **공통 리소스**: `messages_{언어}.json`
-3. **폴백**: 기본 언어로 재시도 (fallback-enabled: true인 경우)
+3. **Locale 폴백**: Spring MessageSource의 기본 폴백 (예: ko → en)
 4. **기본값**: 메시지 키 자체 반환
 
-예시:
-```
-사용자 언어: ko, 규제기관: fda, 키: EXT_TID_00001
+### 조회 예시
 
-1. messages_ko_fda.properties 조회 → 성공 시 반환
-2. messages_ko.json 조회 → 성공 시 반환
-3. messages_en_fda.properties 조회 (폴백) → 성공 시 반환
-4. messages_en.json 조회 (폴백) → 성공 시 반환
-5. "EXT_TID_00001" 반환 (키 자체)
+**사용자 언어: ko, 규제기관: fda, 키: EXT_TID_00001**
+
 ```
+1. messages_fda_ko.properties 에서 EXT_TID_00001 조회
+   → 성공 시 반환
+   
+2. messages_ko.json 에서 EXT_TID_00001 조회
+   → 성공 시 반환
+   
+3. Locale 폴백: messages_fda_en.properties 에서 조회
+   → 성공 시 반환
+   
+4. "EXT_TID_00001" 반환 (키 자체)
+```
+
+**💡 참고**: `fallbackToSystemLocale`이 false로 설정되어 있어, 시스템 로케일이 아닌 설정된 기본 언어(default-language)로 폴백됩니다.
 
 ## 환경별 설정
 
@@ -286,7 +262,7 @@ i18n:
 i18n:
   resource-path: file:./config/i18n
   default-language: ko
-  regulatory: fda
+  default-regulator: mfds
 ```
 
 ### 프로덕션 환경
@@ -295,72 +271,17 @@ i18n:
 i18n:
   resource-path: file:./config/i18n
   default-language: en
-  regulatory: fda
+  default-regulator: fda
 ```
 
 환경 변수로 오버라이드:
 ```bash
 export I18N_RESOURCE_PATH=file:/app/config/i18n
-export I18N_REGULATORY=ce
+export I18N_DEFAULT_REGULATOR=ce
 ```
-
-## 트러블슈팅
-
-### 1. 메시지를 찾을 수 없음
-
-**증상**: 메시지 키가 그대로 표시됨
-
-**원인**:
-- 리소스 파일이 없거나 경로가 잘못됨
-- 메시지 키가 리소스 파일에 없음
-
-**해결**:
-1. `config/i18n` 디렉터리 구조 확인
-2. 로그에서 "Required i18n resource not found" 확인
-3. 메시지 키 철자 확인
-
-### 2. 한글이 깨짐 (Properties 파일)
-
-**원인**: Properties 파일 인코딩 문제
-
-**해결**:
-```bash
-# native2ascii 사용
-native2ascii -encoding UTF-8 messages_ko_fda.properties messages_ko_fda_encoded.properties
-
-# 또는 Java에서 UTF-8로 직접 로드 (현재 구현은 UTF-8 사용)
-```
-
-### 3. 애플리케이션 시작 실패
-
-**증상**: "Required i18n resource not found" 에러
-
-**해결**:
-1. 필수 리소스 파일 존재 확인:
-   - `messages_en.json`
-   - `messages_ko.json`
-   - `messages_en_fda.properties`
-   - `messages_ko_fda.properties`
-   - `messages_en_ce.properties`
-   - `messages_ko_ce.properties`
-
-2. 경로 확인:
-   ```bash
-   ls -la ./config/i18n/common/
-   ls -la ./config/i18n/product/
-   ```
-
-## 베스트 프랙티스
-
-1. **메시지 키 관리**: 스프레드시트나 별도 문서로 메시지 키 목록 관리
-2. **일관된 네이밍**: 도메인별로 키 그룹핑 (예: `TID_AUTH_xxx`, `TID_USER_xxx`)
-3. **폴백 전략**: fallback-enabled를 true로 설정하여 안정성 확보
-4. **버전 관리**: 리소스 파일을 Git으로 관리
-5. **테스트**: 각 언어/규제기관 조합에 대한 메시지 존재 여부 테스트
-6. **문서화**: 새로운 메시지 키 추가 시 문서 업데이트
 
 ## 참고사항
 
 - **Thread Safety**: I18nContext는 ThreadLocal 사용으로 스레드 안전
 - **성능**: 모든 메시지는 애플리케이션 시작 시 메모리에 캐싱
-- **메모리**: 메시지 파일 크기에 주의 (대량의 메시지는 별도 전략 필요)
+- **메모리**: 메시지 파일이 커질 경우, 로딩 전략 수정이 필요

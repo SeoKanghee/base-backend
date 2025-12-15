@@ -2,3 +2,4 @@
 *.bat text eol=crlf
 *.jar binary
 *.properties text working-tree-encoding=UTF-8
+*.properties text eol=lf

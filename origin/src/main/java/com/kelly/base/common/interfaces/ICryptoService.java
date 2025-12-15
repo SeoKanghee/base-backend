@@ -1,9 +1,9 @@
 package com.kelly.base.common.interfaces;
 
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 
 public interface ICryptoService<T> {
     void setCryptoKey(String key);
-    String encrypt(@NonNull final T source);
+    String encrypt(final T source);
     T decrypt(@NonNull final String source);
 }

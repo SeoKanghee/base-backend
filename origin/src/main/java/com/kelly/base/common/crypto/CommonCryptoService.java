@@ -6,7 +6,7 @@ import jakarta.annotation.PostConstruct;
 import jakarta.xml.bind.DatatypeConverter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.Cipher;
@@ -53,7 +53,7 @@ public class CommonCryptoService implements ICryptoService<byte[]> {
      * @author kelly
      */
     @Override
-    public String encrypt(@NonNull final byte[] source) {
+    public String encrypt(final byte[] source) {
         if (isInvalidCryptoKey()) {
             log.error("cryptoKey is missing, making encryption impossible");
             return null;
@@ -69,12 +69,12 @@ public class CommonCryptoService implements ICryptoService<byte[]> {
      * @return 암호화된 문자열
      * @author kelly
      */
-    public String encrypt(@NonNull final byte[] source, @NonNull final String oneTimeCryptoKey) {
+    public String encrypt(final byte[] source, @NonNull final String oneTimeCryptoKey) {
         final byte[] customCryptoKey = oneTimeCryptoKey.getBytes(StandardCharsets.UTF_8);
         return dispatchEncryption(source, customCryptoKey);
     }
 
-    String dispatchEncryption(@NonNull final byte[] source, @NonNull final byte[] customCryptoKey) {
+    String dispatchEncryption(final byte[] source, final byte[] customCryptoKey) {
         try {
             byte[] iv = new byte[IV_LENGTH];
             SecureRandom secureRandom = new SecureRandom(); // 동기화 문제가 혹시 있을 수 있으니 매번 new 로 생성
