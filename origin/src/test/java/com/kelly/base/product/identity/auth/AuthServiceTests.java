@@ -11,9 +11,9 @@ import com.kelly.base.product.identity.auth.strategy.session.AuthSessionStrategy
 import com.kelly.base.product.identity.domain.account.Account;
 import com.kelly.base.product.identity.domain.account.AccountStatus;
 import com.kelly.base.product.identity.repository.AccountRepository;
-import com.kelly.base.product.shared.config.QuerydslConfig;
-import com.kelly.base.product.shared.response.identity.IdentityResultCode;
-import com.kelly.base.product.shared.config.SecurityConfig;
+import com.kelly.base.common.config.QuerydslConfig;
+import com.kelly.base.product.identity.response.IdentityResultCode;
+import com.kelly.base.product.identity.config.SecurityConfig;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

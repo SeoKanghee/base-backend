@@ -1,5 +1,7 @@
 package com.kelly.base.common.audit.provider;
 
+import com.kelly.base.common.interfaces.IAuditContextProvider;
+
 /**
  * AuditContextProvider의 기본 구현체
  * <p>
@@ -7,7 +9,7 @@ package com.kelly.base.common.audit.provider;
  *
  * @author 서강희
  */
-public class DefaultAuditContextProvider implements AuditContextProvider {
+public class DefaultAuditContextProvider implements IAuditContextProvider {
     @Override
     public String getDetailedInfo() {
         return null;

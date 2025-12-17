@@ -1,4 +1,4 @@
-package com.kelly.base.product.shared.config;
+package com.kelly.base.common.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
@@ -7,7 +7,7 @@ import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import static com.kelly.base.product.shared.Constants.UrlInfo.*;
+import static com.kelly.base.common.CommonConstants.UrlInfo.*;
 
 @Configuration
 @RequiredArgsConstructor

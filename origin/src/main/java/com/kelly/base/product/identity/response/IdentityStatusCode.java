@@ -1,4 +1,4 @@
-package com.kelly.base.product.shared.response.identity;
+package com.kelly.base.product.identity.response;
 
 import com.kelly.base.common.interfaces.IStatusCode;
 import lombok.AllArgsConstructor;

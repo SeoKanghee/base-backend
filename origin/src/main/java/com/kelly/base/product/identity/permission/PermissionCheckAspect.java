@@ -1,9 +1,9 @@
-package com.kelly.base.product.shared.permission;
+package com.kelly.base.product.identity.permission;
 
 import com.kelly.base.common.exception.CommonRuntimeException;
-import com.kelly.base.product.shared.permission.annotation.RequirePermission;
-import com.kelly.base.product.shared.response.identity.IdentityResultCode;
-import lombok.Generated;
+import com.kelly.base.product.identity.permission.annotation.PermOperator;
+import com.kelly.base.product.identity.permission.annotation.RequirePermission;
+import com.kelly.base.product.identity.response.IdentityResultCode;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -25,7 +26,6 @@ import static com.kelly.base.common.CommonConstants.OrderInfo.ASPECT_ORDER_PERMI
  *
  * @author 서강희
  */
-@Generated  // 임시
 @Slf4j
 @Aspect
 @Component
@@ -43,7 +43,8 @@ public class PermissionCheckAspect {
         checkAuthentication(authentication);    // 인증 정보 확인
 
         // 사용자의 권한 목록 추출
-        final Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        final Collection<? extends GrantedAuthority> authorities
+                = Objects.requireNonNull(authentication).getAuthorities();
         final Set<String> userAuthorities = authorities.stream()
                                                        .map(GrantedAuthority::getAuthority)
                                                        .collect(Collectors.toSet());

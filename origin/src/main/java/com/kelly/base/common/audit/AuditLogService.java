@@ -1,8 +1,8 @@
 package com.kelly.base.common.audit;
 
+import com.kelly.base.common.interfaces.IAuditContextProvider;
 import com.kelly.base.common.audit.dto.AuditEventType;
 import com.kelly.base.common.audit.dto.AuditLogFormat;
-import com.kelly.base.common.audit.provider.AuditContextProvider;
 import com.kelly.base.common.config.CommonPropertiesConfig;
 import com.kelly.base.common.utils.DateTimeUtil;
 import com.kelly.base.common.utils.JsonUtil;
@@ -30,7 +30,7 @@ public class AuditLogService {
 
     private final CommonPropertiesConfig commonPropertiesConfig;
 
-    private final AuditContextProvider auditContextProvider;
+    private final IAuditContextProvider auditContextProvider;
 
     /**
      * API 호출에 대한 audit log 저장

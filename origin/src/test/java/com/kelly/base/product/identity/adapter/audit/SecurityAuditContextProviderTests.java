@@ -1,6 +1,6 @@
 package com.kelly.base.product.identity.adapter.audit;
 
-import com.kelly.base.common.audit.provider.AuditContextProvider;
+import com.kelly.base.common.interfaces.IAuditContextProvider;
 import com.kelly.base.common.config.CommonBeanConfig;
 import com.kelly.base.common.utils.DateTimeUtil;
 import com.kelly.base.product.identity.adapter.security.CustomUserDetails;
@@ -32,7 +32,7 @@ class SecurityAuditContextProviderTests {
             ).run(
                     context -> {
                         // then - DefaultAuditContextProvider가 주입됐는지 확인
-                        final AuditContextProvider auditContextProvider = context.getBean(AuditContextProvider.class);
+                        final IAuditContextProvider auditContextProvider = context.getBean(IAuditContextProvider.class);
                         Assertions.assertNotNull(auditContextProvider);
                         Assertions.assertNull(auditContextProvider.getDetailedInfo());
                     }
@@ -49,7 +49,7 @@ class SecurityAuditContextProviderTests {
             ).run(
                     context -> {
                         // then - SecurityAuditContextProvider가 주입됐는지 확인
-                        final AuditContextProvider auditContextProvider = context.getBean(AuditContextProvider.class);
+                        final IAuditContextProvider auditContextProvider = context.getBean(IAuditContextProvider.class);
                         Assertions.assertNotNull(auditContextProvider);
                         Assertions.assertInstanceOf(SecurityAuditContextProvider.class, auditContextProvider);
                         Assertions.assertNull(auditContextProvider.getDetailedInfo());

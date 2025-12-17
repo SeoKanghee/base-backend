@@ -1,5 +1,6 @@
 package com.kelly.base.product.identity.adapter.security;
 
+import com.kelly.base.common.interfaces.IExtUserInfo;
 import com.kelly.base.product.identity.domain.account.Account;
 import com.kelly.base.product.identity.domain.account.AccountStatus;
 import com.kelly.base.product.identity.domain.permission.Permission;
@@ -22,7 +23,7 @@ import java.util.stream.Collectors;
  */
 @Getter
 @ToString
-public class CustomUserDetails extends User {
+public class CustomUserDetails extends User implements IExtUserInfo {
     private final long accountId;   // accountId ( Entity )
     private final String roleCode;  // role code
     private final Set<String> permissionCodes;  // permission codes

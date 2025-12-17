@@ -12,8 +12,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Set;
 
-import static com.kelly.base.product.shared.Constants.PermissionCode.MANAGE_MY_ACCOUNT;
-import static com.kelly.base.product.shared.Constants.RoleCode.ROLE_GENERAL_USER;
+import static com.kelly.base.common.CommonConstants.PermissionCode.MANAGE_MY_ACCOUNT;
+import static com.kelly.base.common.CommonConstants.RoleCode.ROLE_GENERAL_USER;
 
 @DisplayName("CustomUserDetailsTests")
 class CustomUserDetailsTests {

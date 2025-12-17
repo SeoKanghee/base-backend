@@ -77,6 +77,9 @@ dependencies {
     // nano id
     implementation(libs.nanoid)
 
+    // spring modulith
+    implementation(libs.spring.modulith.starter.core)
+
     compileOnly(libs.lombok)
 
     runtimeOnly(libs.mariadb.java.client)
@@ -90,6 +93,9 @@ dependencies {
     testImplementation(libs.spring.boot.starter.data.jpa.test)
     testImplementation(libs.spring.boot.starter.webmvc.test)
     testImplementation(libs.spring.boot.starter.security.test)
+
+    testImplementation(libs.spring.modulith.starter.test)
+    testImplementation(libs.spring.modulith.docs)
 
     testCompileOnly(libs.lombok)
 

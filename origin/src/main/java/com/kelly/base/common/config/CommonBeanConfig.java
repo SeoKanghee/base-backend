@@ -1,7 +1,7 @@
 package com.kelly.base.common.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kelly.base.common.audit.provider.AuditContextProvider;
+import com.kelly.base.common.interfaces.IAuditContextProvider;
 import com.kelly.base.common.audit.provider.DefaultAuditContextProvider;
 import com.kelly.base.common.utils.JsonUtil;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -37,8 +37,8 @@ public class CommonBeanConfig {
      * @return DefaultAuditContextProvider 인스턴스
      */
     @Bean
-    @ConditionalOnMissingBean(AuditContextProvider.class)
-    AuditContextProvider defaultAuditContextProvider() {
+    @ConditionalOnMissingBean(IAuditContextProvider.class)
+    IAuditContextProvider defaultAuditContextProvider() {
         return new DefaultAuditContextProvider();
     }
 }

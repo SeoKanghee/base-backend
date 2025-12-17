@@ -3,7 +3,7 @@ package com.kelly.base.product.identity.repository;
 import com.kelly.base.common.utils.DateTimeUtil;
 import com.kelly.base.product.identity.domain.account.Account;
 import com.kelly.base.product.identity.domain.account.AccountStatus;
-import com.kelly.base.product.shared.config.QuerydslConfig;
+import com.kelly.base.common.config.QuerydslConfig;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

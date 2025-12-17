@@ -5,7 +5,7 @@ import com.kelly.base.common.response.PagedResult;
 import com.kelly.base.product.identity.accounts.dto.AccountDetailed;
 import com.kelly.base.product.identity.domain.account.Account;
 import com.kelly.base.product.identity.repository.AccountRepository;
-import com.kelly.base.product.shared.config.QuerydslConfig;
+import com.kelly.base.common.config.QuerydslConfig;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
