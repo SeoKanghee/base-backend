@@ -18,7 +18,7 @@
  *   <li>common::utils</li>
  * </ul>
  *
- * @author kelly.seo
+ * @author 서강희
  */
 @org.springframework.modulith.ApplicationModule(
         displayName = "Identity Module",

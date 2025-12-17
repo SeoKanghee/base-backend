@@ -15,6 +15,11 @@ import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 
+/**
+ * 공통 암복호화 서비스
+ *
+ * @author 서강희
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -38,7 +43,6 @@ public class CommonCryptoService implements ICryptoService<byte[]> {
      * 암호화 키 설정
      *
      * @param key 저장할 암호화 키
-     * @author kelly
      */
     @Override
     public void setCryptoKey(final String key) {
@@ -50,7 +54,6 @@ public class CommonCryptoService implements ICryptoService<byte[]> {
      *
      * @param source 암호화할 byte 배열
      * @return 암호화된 문자열
-     * @author kelly
      */
     @Override
     public String encrypt(final byte[] source) {
@@ -67,7 +70,6 @@ public class CommonCryptoService implements ICryptoService<byte[]> {
      * @param source 암호화할 byte 배열
      * @param oneTimeCryptoKey 일회용 암호화 키
      * @return 암호화된 문자열
-     * @author kelly
      */
     public String encrypt(final byte[] source, @NonNull final String oneTimeCryptoKey) {
         final byte[] customCryptoKey = oneTimeCryptoKey.getBytes(StandardCharsets.UTF_8);
@@ -102,7 +104,6 @@ public class CommonCryptoService implements ICryptoService<byte[]> {
      *
      * @param source 암호화된 문자열
      * @return 복호화된 byte 배열
-     * @author kelly
      */
     @Override
     public byte[] decrypt(@NonNull final String source) {
@@ -119,7 +120,6 @@ public class CommonCryptoService implements ICryptoService<byte[]> {
      * @param source 암호화된 문자열
      * @param oneTimeCryptoKey 일회용 암호화 키
      * @return 복호화된 byte 배열
-     * @author kelly
      */
     public byte[] decrypt(@NonNull final String source, @NonNull final String oneTimeCryptoKey) {
         final byte[] customCryptoKey = oneTimeCryptoKey.getBytes(StandardCharsets.UTF_8);
