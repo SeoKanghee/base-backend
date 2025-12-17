@@ -1,6 +1,6 @@
 package com.kelly.base.common.i18n;
 
-import com.kelly.base.product.identity.adapter.security.CustomUserDetails;
+import com.kelly.base.identity.adapter.security.CustomUserDetails;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.AfterEach;
