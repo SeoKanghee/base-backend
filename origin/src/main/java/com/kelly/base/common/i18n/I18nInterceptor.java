@@ -1,6 +1,6 @@
 package com.kelly.base.common.i18n;
 
-import com.kelly.base.product.identity.adapter.security.CustomUserDetails;
+import com.kelly.base.common.interfaces.IExtUserInfo;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -44,11 +44,11 @@ public class I18nInterceptor implements HandlerInterceptor {
 
         String languageCode = i18nProperties.getDefaultLanguage();
 
-        // 로그인한 사용자의 경우 Account의 languageCode 사용
-        if (authentication != null && authentication.getPrincipal() instanceof CustomUserDetails userDetails) {
-            languageCode = userDetails.getLanguageCode();
-            log.debug("user language code from SecurityContext: {} (accountId: {})",
-                      languageCode, userDetails.getAccountId());
+        // 로그인한 사용자의 경우 IExtUserInfo 통해 languageCode 사용
+        if (authentication != null && authentication.getPrincipal() instanceof IExtUserInfo extUserInfo) {
+            languageCode = extUserInfo.getLanguageCode();
+            log.debug("user language code from SecurityContext: {} (userId: {})",
+                      languageCode, extUserInfo.getAccountId());
         } else {
             log.debug("using default language code: {} (not authenticated)", languageCode);
         }

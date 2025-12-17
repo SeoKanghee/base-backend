@@ -1,4 +1,4 @@
-package com.kelly.base.product.shared.config;
+package com.kelly.base.common.config;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;

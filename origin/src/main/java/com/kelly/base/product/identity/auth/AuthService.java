@@ -9,7 +9,7 @@ import com.kelly.base.product.identity.auth.dto.PostLoginRequest;
 import com.kelly.base.product.identity.auth.strategy.AuthenticationStrategy;
 import com.kelly.base.product.identity.domain.account.Account;
 import com.kelly.base.product.identity.repository.AccountRepository;
-import com.kelly.base.product.shared.response.identity.IdentityResultCode;
+import com.kelly.base.product.identity.response.IdentityResultCode;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

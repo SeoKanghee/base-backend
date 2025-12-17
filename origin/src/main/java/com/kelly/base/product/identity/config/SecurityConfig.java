@@ -1,4 +1,4 @@
-package com.kelly.base.product.shared.config;
+package com.kelly.base.product.identity.config;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

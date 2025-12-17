@@ -22,7 +22,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static com.kelly.base.product.shared.Constants.UrlInfo.URI_ROOT_AUTH;
+import static com.kelly.base.common.CommonConstants.UrlInfo.URI_ROOT_AUTH;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 

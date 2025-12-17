@@ -3,7 +3,7 @@ package com.kelly.base.product.core.system;
 import com.kelly.base.common.audit.AuditLogService;
 import com.kelly.base.common.i18n.I18nMessageService;
 import com.kelly.base.common.i18n.I18nProperties;
-import com.kelly.base.product.shared.permission.PermissionCheckAspect;
+import com.kelly.base.product.identity.permission.PermissionCheckAspect;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -25,7 +25,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
-import static com.kelly.base.product.shared.Constants.UrlInfo.URI_ROOT_SYSTEM;
+import static com.kelly.base.common.CommonConstants.UrlInfo.URI_ROOT_SYSTEM;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 

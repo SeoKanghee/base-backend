@@ -7,13 +7,13 @@ annotation-api = "3.0.0"
 persistence-api = "3.2.0"
 querydsl = "5.1.0"
 
-#openapi-gradle-plugin = "1.6.0"
 maven-settings = "0.5"
 sonarqube = "3.5.0.2730"
 
 jasypt = "3.0.5"
 springdoc = "3.0.0"
 nanoid = "1.0.1"
+spring-modulith = "2.0.0"
 
 # Vulnerability 보완 적용 ( 아래에 작성후 bundle -> clear-vulnerabilities 에 업데이트 )
 
@@ -51,6 +51,9 @@ h2 = { group = "com.h2database", name = "h2" }
 jasypt = { group = "com.github.ulisesbocchio", name = "jasypt-spring-boot-starter", version.ref = "jasypt" }
 springdoc = { group = "org.springdoc", name = "springdoc-openapi-starter-webmvc-ui", version.ref = "springdoc" }
 nanoid = { group = "io.viascom.nanoid", name = "nanoid", version.ref = "nanoid" }
+spring-modulith-starter-core = { group = "org.springframework.modulith", name = "spring-modulith-starter-core", version.ref = "spring-modulith" }
+spring-modulith-starter-test = { group = "org.springframework.modulith", name = "spring-modulith-starter-test", version.ref = "spring-modulith" }
+spring-modulith-docs = { group = "org.springframework.modulith", name = "spring-modulith-docs", version.ref = "spring-modulith" }
 
 # special versioning targets
 ## 아래 항목들은 spring boot 버전의 dependency 에 맞게 업데이트 필요함

@@ -1,4 +1,4 @@
-package com.kelly.base.common.audit.provider;
+package com.kelly.base.common.interfaces;
 
 /**
  * audit log 기록을 위한 컨텍스트 정보를 제공하는 인터페이스<p>
@@ -6,7 +6,7 @@ package com.kelly.base.common.audit.provider;
  *
  * @author 서강희
  */
-public interface AuditContextProvider {
+public interface IAuditContextProvider {
     /**
      * audit 에 추가할 정보
      * <p>

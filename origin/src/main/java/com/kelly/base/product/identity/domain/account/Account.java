@@ -9,8 +9,13 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.ZonedDateTime;
 
-import static com.kelly.base.product.shared.Constants.RoleCode.ROLE_GENERAL_USER;
+import static com.kelly.base.common.CommonConstants.RoleCode.ROLE_GENERAL_USER;
 
+/**
+ * account entity
+ *
+ * @author 서강희
+ */
 @Entity
 @Getter
 @ToString

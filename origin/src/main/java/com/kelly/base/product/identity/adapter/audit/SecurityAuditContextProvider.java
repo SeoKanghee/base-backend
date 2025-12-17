@@ -1,6 +1,6 @@
 package com.kelly.base.product.identity.adapter.audit;
 
-import com.kelly.base.common.audit.provider.AuditContextProvider;
+import com.kelly.base.common.interfaces.IAuditContextProvider;
 import com.kelly.base.product.identity.adapter.security.CustomUserDetails;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
  * @author 서강희
  */
 @Component
-public class SecurityAuditContextProvider implements AuditContextProvider {
+public class SecurityAuditContextProvider implements IAuditContextProvider {
     @Override
     public String getDetailedInfo() {
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

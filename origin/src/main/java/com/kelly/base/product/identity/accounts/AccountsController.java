@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.kelly.base.product.shared.Constants.SwaggerDescription.ACCOUNTS_RETRIEVE;
-import static com.kelly.base.product.shared.Constants.UrlInfo.URI_ROOT_ACCOUNTS;
+import static com.kelly.base.common.CommonConstants.SwaggerDescription.ACCOUNTS_RETRIEVE;
+import static com.kelly.base.common.CommonConstants.UrlInfo.URI_ROOT_ACCOUNTS;
 
 /**
  * accounts controller

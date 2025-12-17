@@ -1,6 +1,4 @@
-package com.kelly.base.product.shared.permission.annotation;
-
-import com.kelly.base.product.shared.permission.PermOperator;
+package com.kelly.base.product.identity.permission.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -22,7 +20,7 @@ import java.lang.annotation.Target;
  * }
  * </pre>
  *
- * @author kelly
+ * @author 서강희
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
