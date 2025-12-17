@@ -6,6 +6,11 @@ import lombok.NoArgsConstructor;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
+/**
+ * DateTimeUtil
+ *
+ * @author 서강희
+ */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class DateTimeUtil {
     public static final ZoneId ZONE_ID_UTC = ZoneId.of("UTC");
@@ -15,7 +20,6 @@ public final class DateTimeUtil {
      *
      * @param zone <code>java.time.ZoneId</code>
      * @return 현재시간 (ZoneId)
-     * @author kelly
      */
     public static ZonedDateTime getNow(final ZoneId zone) {
         return ZonedDateTime.now(zone);
@@ -25,7 +29,6 @@ public final class DateTimeUtil {
      * 현재시간을 UTC 로 반환
      *
      * @return 현재시간 (UTC)
-     * @author kelly
      */
     public static ZonedDateTime nowUtc() {
         return getNow(ZONE_ID_UTC);
@@ -36,7 +39,6 @@ public final class DateTimeUtil {
      *
      * @param minutes 계산할 분 (minutes)
      * @return 현재시간 + <code>minutes</code> (UTC)
-     * @author kelly
      */
     public static ZonedDateTime nowUtcPlusMinutes(final long minutes) {
         return nowUtc().plusMinutes(minutes);
@@ -47,7 +49,6 @@ public final class DateTimeUtil {
      *
      * @param minutes 계산할 분 (minutes)
      * @return 현재시간 - <code>minutes</code> (UTC)
-     * @author kelly
      */
     public static ZonedDateTime nowUtcMinusMinutes(final long minutes) {
         return nowUtc().minusMinutes(minutes);

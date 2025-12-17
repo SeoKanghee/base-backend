@@ -7,6 +7,11 @@ import lombok.NoArgsConstructor;
 
 import java.util.Optional;
 
+/**
+ * ConvertUtil
+ *
+ * @author 서강희
+ */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ConvertUtil {
     /**
@@ -15,7 +20,6 @@ public final class ConvertUtil {
      * @param source 변환할 원본 문자열
      * @return 변환된 값 (long)
      * @throws CommonException 변환이 불가능할 경우
-     * @author kelly
      */
     public static long convertStr2Long(final String source) throws CommonException {
         try {
@@ -31,7 +35,6 @@ public final class ConvertUtil {
      *
      * @param source 변환할 원본 문자열
      * @return 소문자로 변환된 값 ( null 인 경우 동일하게 null 반환 )
-     * @author kelly
      */
     public static String toLowerCase(final String source) {
         return Optional.ofNullable(source).map(String::toLowerCase).orElse(null);
