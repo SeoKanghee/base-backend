@@ -88,16 +88,23 @@ com.kelly.base
     └── package-info.java
 ```  
 
-### package-info.java 예시 (identity 모듈)
+### package-info.java 작성
 
-- package-info 파일을 통해 모듈에 대한 정의를 작성합니다.
+- `package-info.java` 파일을 통해 모듈에 대한 정의를 작성합니다.
+- 특별한 사유가 없다면 아래와 같이 초기 설정을 하여 `common` 모듈에 접근 가능하도록 아래 내용은 기본으로 작성합니다.
 
 ```java
-@ApplicationModule(
-        displayName = "Identity Module",
-        allowedDependencies = {"common"}
+@org.springframework.modulith.ApplicationModule(
+        displayName = "My Module",
+        allowedDependencies = {
+                "common",
+                "common::exceptions",
+                "common::responses",
+                "common::interfaces",
+                "common::utils"
+        }
 )
-package com.kelly.base.identity;
+package com.kelly.base.my;
 ```
 
 ---  
