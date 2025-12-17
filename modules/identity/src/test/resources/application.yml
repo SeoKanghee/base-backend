@@ -1,0 +1,78 @@
+--- #default
+config:
+  options:
+    use-default-async: false  # common 에 선언된 async executor 를 사용할지 여부
+    vault-type: random  # random, native, cloud
+    auth-strategy: session  # 인증 유지 방법
+  constants:
+    application-name: module-identity
+    application-version: 0.0.1
+    common-crypto-key: temporary_crypto_key
+    sse-emitter-timeout-ms: 10
+
+spring:
+  application:
+    name: ${config.constants.application-name}
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:test_dummy;MODE=MariaDB;IGNORECASE=TRUE;CASE_INSENSITIVE_IDENTIFIERS=TRUE;DATABASE_TO_UPPER=FALSE
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        format_sql: false
+        globally_quoted_identifiers: true   # 예약어 컬럼, 테이블 이름에 대한 예외 처리 ( id.. )
+        globally_quoted_identifiers_skip_column_definitions: true   # 예약어 컬럼, 테이블 이름에 대한 예외 처리 ( id.. )
+        jdbc:
+          time_zone: UTC  # DB timezone 정보를 UTC 로 설정
+    open-in-view: false   # OSIV 를 적용하지 않음 - 영속성 컨텍스트를 실제 트랜잭션 범위로만 한정 시킴
+    show-sql: false
+    defer-datasource-initialization: true
+  sql:
+    init:
+      encoding: UTF-8
+      mode: always
+
+server:
+  port: 7499
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+    session:
+      timeout: 60s
+
+jasypt:
+  encryptor:
+    bean: "commonJasyptEncryptor"
+
+springdoc:
+  api-docs:
+    groups:
+      enabled: true
+  swagger-ui:
+    path: "api.html"   # http://localhost:{port}/api.html
+    operations-sorter: "method"
+
+management:
+  endpoints:
+    web:
+      base-path: "/monitor"
+      exposure:
+        include: health, info
+
+logging:
+  level:
+    com.neurophet: debug # default log level : info
+
+# i18n 설정
+i18n:
+  default-language: en  # 비로그인 사용자의 기본 언어
+  default-regulator: mfds # 비활성화된 시스템의 기본 규제기관
+  resource-path: classpath:config/i18n # 리소스 파일 경로
+  cache-enabled: true # cache 활성화

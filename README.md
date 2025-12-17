@@ -2,7 +2,7 @@
 
 - Make Application Great Again
 - Spring Boot 4.0 기반의 백엔드 애플리케이션 템플릿입니다.
-- Spring Modulith를 활용한 모듈화된 아키텍처와 재사용 가능한 공통 모듈을 제공합니다.
+- **Gradle 멀티 모듈 프로젝트**와 **Spring Modulith**를 활용한 모듈화된 아키텍처를 제공합니다.
 
 ---
 
@@ -12,10 +12,11 @@
 - [🛠 기술 스택](#🛠-기술-스택)
 - [📦 시작하기](#📦-시작하기)
 - [📁 프로젝트 구조](#📁-프로젝트-구조)
+- [🏗️ 애플리케이션 빌드](#️🏗️-애플리케이션-빌드)
 - [🔧 주요 기능 상세](#🔧-주요-기능-상세)
 - [📚 API 문서](#📚-api-문서)
 - [🧪 테스트](#🧪-테스트)
-- [⚙️ 환경 설정](#⚙️-환경-설정)
+- [⚙️ 환경 설정](#️⚙️-환경-설정)
 - [📖 문서 가이드](#📖-문서-가이드)
 - [🔍 추가 정보](#🔍-추가-정보)
 
@@ -35,16 +36,15 @@
 - **다국어 (i18n)**: 다국어 지원 메시지 서비스
 - **유틸리티**: JSON 처리, 날짜/시간, NanoID 생성 등
 
-### Product 모듈 (비즈니스 로직)
-- **Spring Modulith 기반 모듈화**: 독립적이고 테스트 가능한 모듈 구조
-- **Identity 모듈**: 
-  - 세션 기반 인증/인가
-  - 계정 관리
-  - 역할 기반 접근 제어
-  - 권한 체크 시스템
-- **Core 모듈**:
-  - 시스템 설정 기능
-  - TBU
+### Identity 모듈 (인증/인가)
+- 세션 기반 인증/인가
+- 계정 관리
+- 역할 기반 접근 제어
+- 권한 체크 시스템
+
+### Core 모듈 (비즈니스 로직)
+- 시스템 설정 기능
+- TBU (향후 확장 예정)
 
 ---
 
@@ -54,7 +54,7 @@
 - **Java 17**
 - **Spring Boot 4.0.0**
 - **Spring Modulith 2.0.0**
-- **Gradle Kotlin DSL**
+- **Gradle Kotlin DSL** ( + 멀티 모듈)
 
 ### 핵심 라이브러리
 - **Spring Boot Starter Web**: RESTful API 개발
@@ -91,7 +91,7 @@
 
 1. MariaDB 데이터베이스 생성 및 초기화:
 ```bash
-mysql -u root -p < origin/db-config/00_created_db.sql
+mysql -u root -p < db-config/00_created_db.sql
 ```
 
 2. 데이터베이스 스키마:
@@ -143,62 +143,147 @@ DEFAULT_REGULATOR_CODE=mfds
 ### 빌드 및 실행
 
 ```bash
-# origin 디렉토리로 이동
-cd origin
+# 전체 컴파일
+./gradlew compileJava
 
-# 빌드
-./gradlew build
+# app-full 빌드 및 실행
+./gradlew :apps:app-full:bootRun
 
-# 실행
-./gradlew bootRun
+# app-identity 빌드 및 실행
+./gradlew :apps:app-identity:bootRun
 
-# 또는 JAR 실행
-java -jar build/libs/base-backend.jar
+# JAR 빌드
+./gradlew :apps:app-full:bootJar
+./gradlew :apps:app-identity:bootJar
+
+# JAR 실행
+cd apps/full && java -jar build/libs/app-full.jar
+cd apps/identity && java -jar build/libs/app-identity.jar
 ```
 
-애플리케이션은 기본적으로 `http://localhost:7479`에서 실행됩니다.
+애플리케이션은 기본적으로 다음 포트에서 실행됩니다:
+- **app-full**: `http://localhost:7904`
+- **app-identity**: `http://localhost:7479`
 
 ---
 
 ## 📁 프로젝트 구조
 
 ```
-origin/
-├── config/
-│   └── i18n/                           # 다국어 리소스
-│       ├── common/                     # 공통 메시지
-│       │   └── messages_{lang}.json
-│       └── product/                    # 제품별 메시지
-│           └── messages_{regulator}_{lang}.properties
+base-backend/
+├── .env                              # 환경 설정 파일 (모든 앱 공유)
+├── settings.gradle.kts               # 멀티 모듈 정의
+├── build.gradle.kts                  # 루트 빌드 설정
+├── gradle/
+│   └── libs.versions.toml            # 버전 카탈로그
+│
+├── buildSrc/                         # Convention Plugins (공통 빌드 로직)
+│   ├── build.gradle.kts
+│   └── src/main/kotlin/
+│       ├── base-library-conventions.gradle.kts   # 라이브러리 모듈용
+│       └── spring-app-conventions.gradle.kts     # 애플리케이션용
+│
+├── modules/                          # 재사용 가능한 라이브러리 모듈
+│   ├── common/                       # 공통 모듈
+│   │   ├── build.gradle.kts
+│   │   └── src/main/java/com/kelly/base/common/
+│   │       ├── audit/                # 감사 로깅
+│   │       ├── config/               # 설정 클래스
+│   │       ├── crypto/               # 암호화 서비스
+│   │       ├── exception/            # 예외 처리
+│   │       ├── i18n/                 # 다국어
+│   │       ├── interfaces/           # 인터페이스 정의
+│   │       ├── jni/                  # JNI Native 라이브러리
+│   │       ├── response/             # 공통 응답 포맷
+│   │       ├── sse/                  # Server-Sent Events
+│   │       └── utils/                # 유틸리티
+│   │
+│   ├── identity/                     # 인증/인가 모듈
+│   │   ├── build.gradle.kts
+│   │   └── src/main/java/com/kelly/base/identity/
+│   │       ├── accounts/             # 계정 관리
+│   │       ├── adapter/              # 어댑터
+│   │       ├── auth/                 # 인증
+│   │       ├── config/               # 보안 설정
+│   │       ├── domain/               # 도메인 엔티티
+│   │       ├── permission/           # 권한 체크
+│   │       ├── repository/           # 리포지토리
+│   │       └── response/             # Identity 응답 코드
+│   │
+│   └── core/                         # 비즈니스 로직 모듈
+│       ├── build.gradle.kts
+│       └── src/main/java/com/kelly/base/core/
+│           └── system/               # 시스템 설정
+│
+├── apps/                             # 애플리케이션 그룹
+│   ├── full/                         # 애플리케이션: common + identity + core
+│   │   ├── build.gradle.kts
+│   │   └── src/main/
+│   │       ├── java/com/kelly/base/AppFullApplication.java
+│   │       └── resources/application.yml
+│   │
+│   └── identity/                     # 애플리케이션: common + identity
+│       ├── build.gradle.kts
+│       └── src/main/
+│           ├── java/com/kelly/base/AppIdentityApplication.java
+│           └── resources/application.yml
+│
+├── config/                           # 공유 설정
+│   └── i18n/                         # 다국어 리소스
+│       ├── common/messages_{lang}.json
+│       └── product/messages_{regulator}_{lang}.properties
+│
 ├── db-config/
-│   └── 00_created_db.sql               # DB 초기화 스크립트
-├── docs/                               # 문서 가이드
-└── src/main/java/com/kelly/base/
-    ├── BaseBackendApplication.java     # 메인 애플리케이션
-    ├── common/                         # 공통 모듈
-    │   ├── audit/                      # 감사 로깅
-    │   ├── config/                     # 설정 클래스
-    │   ├── crypto/                     # 암호화 서비스
-    │   ├── exception/                  # 예외 처리
-    │   ├── i18n/                       # 다국어
-    │   ├── interfaces/                 # 인터페이스 정의
-    │   ├── jni/                        # JNI Native 라이브러리
-    │   ├── response/                   # 공통 응답 포맷
-    │   ├── sse/                        # Server-Sent Events
-    │   └── utils/                      # 유틸리티
-    └── product/                        # 비즈니스 로직 (Spring Modulith)
-        ├── core/                       # Core 모듈
-        │   └── system/                 # 시스템 설정
-        └── identity/                   # Identity 모듈
-            ├── accounts/               # 계정 관리
-            ├── adapter/                # 어댑터
-            ├── auth/                   # 인증
-            ├── config/                 # 보안 설정
-            ├── domain/                 # 도메인 엔티티
-            ├── permission/             # 권한 체크
-            ├── repository/             # 리포지토리
-            └── response/               # Identity 응답 코드
+│   └── 00_created_db.sql             # DB 초기화 스크립트
+│
+└── docs/                             # 문서 가이드
 ```
+
+---
+
+## 🏗️ 애플리케이션 빌드
+
+### 빌드 명령어 (app-full)
+
+```bash
+# 전체 컴파일
+./gradlew compileJava
+
+# 특정 애플리케이션 JAR 빌드
+./gradlew :apps:app-full:bootJar
+
+# 모든 애플리케이션 JAR 빌드
+./gradlew bootJar
+
+# 개발 환경 실행
+./gradlew :apps:app-full:bootRun
+```
+
+### 빌드 결과물 위치
+
+```
+apps/full/build/libs/app-full.jar
+```
+
+### 프로덕션 배포 구조
+
+```
+{설치 루트}/
+├── .env                            # 환경 설정 파일
+├── config/
+│   └── i18n/                       # 다국어 리소스
+└── apps/
+    └── app-full/
+        └── app-full.jar  # 실행 파일
+```
+
+**실행 방법:**
+```bash
+cd {설치 루트}/apps/app-full
+java -jar app-full.jar
+```
+
+> **참고**: 각 애플리케이션은 `../../.env` 경로로 루트 폴더의 .env 파일을 참조합니다.
 
 ---
 
@@ -221,7 +306,7 @@ public ResponseEntity<?> publicEndpoint() {
 - `logs/{APPLICATION_NAME}.log`: 일반 애플리케이션 로그
 - `logs/{APPLICATION_NAME}-audit.log`: 감사 로그
 
-> 상세 사용법은 [AUDIT_GUIDE.md](origin/docs/AUDIT_GUIDE.md) 참조
+> 상세 사용법은 [AUDIT_GUIDE.md](docs/AUDIT_GUIDE.md) 참조
 
 ### 2. 권한 체크 시스템
 
@@ -244,7 +329,7 @@ public ResponseEntity<?> deleteUser(@PathVariable Long id) {
 }
 ```
 
-> 상세 사용법은 [PERMISSION_USAGE_GUIDE.md](origin/docs/PERMISSION_USAGE_GUIDE.md) 참조
+> 상세 사용법은 [PERMISSION_USAGE_GUIDE.md](docs/PERMISSION_USAGE_GUIDE.md) 참조
 
 ### 3. 다국어 (i18n)
 
@@ -264,7 +349,7 @@ String message = i18nMessageService.getMessage("welcome.user", new Object[]{"Kel
 - `config/i18n/common/`: 공통 메시지 (JSON 형식)
 - `config/i18n/product/`: 제품별 메시지 (Properties 형식)
 
-> 상세 사용법은 [I18N_USAGE_GUIDE.md](origin/docs/I18N_USAGE_GUIDE.md) 참조
+> 상세 사용법은 [I18N_USAGE_GUIDE.md](docs/I18N_USAGE_GUIDE.md) 참조
 
 ### 4. SSE (Server-Sent Events)
 
@@ -298,7 +383,7 @@ sseEmitterManager.sendToUser(userId, event);
 
 모듈화된 아키텍처를 통해 독립적인 비즈니스 로직을 구현합니다.
 
-> 상세 사용법은 [SPRING_MODULITH_GUIDE.md](origin/docs/SPRING_MODULITH_GUIDE.md) 및 [MODULE_COMMUNICATION_GUIDE.md](origin/docs/MODULE_COMMUNICATION_GUIDE.md) 참조
+> 상세 사용법은 [SPRING_MODULITH_GUIDE.md](docs/SPRING_MODULITH_GUIDE.md) 및 [MODULE_COMMUNICATION_GUIDE.md](docs/MODULE_COMMUNICATION_GUIDE.md) 참조
 
 ### 7. 암호화된 설정 관리
 
@@ -329,7 +414,8 @@ String decrypted = cryptoService.decrypt(encrypted);
 Swagger UI를 통해 API 문서를 확인할 수 있습니다:
 
 ```
-http://localhost:7479/api.html
+http://localhost:7479/api.html    # app-full
+http://localhost:7480/api.html    # app-identity
 ```
 
 ---
@@ -339,10 +425,13 @@ http://localhost:7479/api.html
 ### 테스트 실행
 
 ```bash
-cd origin
-
 # 모든 테스트 실행
 ./gradlew test
+
+# 특정 모듈 테스트
+./gradlew :modules:common:test
+./gradlew :modules:identity:test
+./gradlew :modules:core:test
 
 # 테스트 및 커버리지 리포트 생성
 ./gradlew build
@@ -350,9 +439,9 @@ cd origin
 
 ### 커버리지 리포트
 
-테스트 커버리지 리포트는 다음 위치에서 확인할 수 있습니다:
-- HTML: `build/reports/jacoco/test/html/index.html`
-- XML: `build/reports/jacoco/test/jacocoTestReport.xml`
+테스트 커버리지 리포트는 각 모듈의 다음 위치에서 확인할 수 있습니다:
+- HTML: `{module}/build/reports/jacoco/test/html/index.html`
+- XML: `{module}/build/reports/jacoco/test/jacocoTestReport.xml`
 
 **목표 커버리지**: 100% (LINE 기준)
 
@@ -369,10 +458,14 @@ config:
     vault-type: native                 # Vault 타입 (native)
     auth-strategy: session             # 인증 전략 (session)
   constants:
-    application-name: base-backend
+    application-name: app-full
     application-version: 0.0.1
     common-crypto-key: ${COMMON_CRYPTO_KEY}
     sse-emitter-timeout-ms: 60000      # SSE 타임아웃 (밀리초)
+
+spring:
+  config:
+    import: optional:file:../../.env[.properties]  # 루트 폴더의 .env 참조
 
 server:
   port: 7479                           # 서버 포트
@@ -397,14 +490,15 @@ management:
 i18n:
   default-language: en                 # 기본 언어
   default-regulator: mfds              # 기본 규제기관
-  resource-path: file:./config/i18n    # 리소스 파일 경로
+  resource-path: file:../../config/i18n  # 리소스 파일 경로 (루트 기준)
   cache-enabled: true                  # 캐시 활성화
 ```
 
 ### 헬스 체크
 
 ```
-http://localhost:7479/monitor/health
+http://localhost:7479/monitor/health   # app-full
+http://localhost:7480/monitor/health   # app-identity
 ```
 
 ### 프로파일
@@ -413,34 +507,55 @@ http://localhost:7479/monitor/health
 - `local`: 로컬 개발 환경
 - `prod`: 프로덕션 (기본값)
 
+---
+
 ## 📖 문서 가이드
 
-프로젝트의 상세 가이드 문서는 `origin/docs/` 디렉토리에서 확인할 수 있습니다:
+프로젝트의 상세 가이드 문서는 `docs/` 디렉토리에서 확인할 수 있습니다:
 
 | 문서 | 설명 |
 |------|------|
-| [AUDIT_GUIDE.md](origin/docs/AUDIT_GUIDE.md) | 감사 로깅 시스템 사용 가이드 |
-| [I18N_USAGE_GUIDE.md](origin/docs/I18N_USAGE_GUIDE.md) | 다국어(i18n) 사용 가이드 |
-| [MODULE_COMMUNICATION_GUIDE.md](origin/docs/MODULE_COMMUNICATION_GUIDE.md) | 모듈 간 통신 가이드 |
-| [PERMISSION_USAGE_GUIDE.md](origin/docs/PERMISSION_USAGE_GUIDE.md) | 권한 체크 시스템 사용 가이드 |
-| [SPRING_MODULITH_GUIDE.md](origin/docs/SPRING_MODULITH_GUIDE.md) | Spring Modulith 가이드 |
+| [AUDIT_GUIDE.md](docs/AUDIT_GUIDE.md) | 감사 로깅 시스템 사용 가이드 |
+| [I18N_USAGE_GUIDE.md](docs/I18N_USAGE_GUIDE.md) | 다국어(i18n) 사용 가이드 |
+| [MODULE_COMMUNICATION_GUIDE.md](docs/MODULE_COMMUNICATION_GUIDE.md) | 모듈 간 통신 가이드 |
+| [MULTI_MODULE_GUIDE.md](docs/MULTI_MODULE_GUIDE.md) | 멀티 모듈 프로젝트 가이드 |
+| [PERMISSION_USAGE_GUIDE.md](docs/PERMISSION_USAGE_GUIDE.md) | 권한 체크 시스템 사용 가이드 |
+| [SPRING_MODULITH_GUIDE.md](docs/SPRING_MODULITH_GUIDE.md) | Spring Modulith 가이드 |
 
 ---
 
 ## 🔍 추가 정보
 
+### 새 모듈 추가 방법
+
+1. `modules/` 디렉토리에 새 모듈 생성
+2. `build.gradle.kts` 작성 (base-library-conventions 플러그인 적용)
+3. `settings.gradle.kts`에 모듈 추가
+4. 필요한 애플리케이션에서 의존성 추가
+
+> 상세 내용은 [MULTI_MODULE_GUIDE.md](docs/MULTI_MODULE_GUIDE.md) 참조
+
+### 새 애플리케이션 추가 방법
+
+1. 루트에 새 애플리케이션 디렉토리 생성 (예: `app-license/`)
+2. `build.gradle.kts` 작성 (spring-app-conventions 플러그인 적용)
+3. Application 클래스 및 application.yml 생성
+4. `settings.gradle.kts`에 애플리케이션 추가
+
+> 상세 내용은 [MULTI_MODULE_GUIDE.md](docs/MULTI_MODULE_GUIDE.md) 참조
+
 ### 공통 영역 수정
 
-- 공통 영역(common)에 대한 추가 수정은 회의를 통해 결정합니다.
+- 공통 영역(modules/common)에 대한 추가 수정은 회의를 통해 결정합니다.
 
 ### QueryDSL 사용
 
 QueryDSL Q클래스는 빌드 시 자동 생성됩니다:
 ```bash
-./gradlew build
+./gradlew compileJava
 ```
 
-생성된 Q클래스는 `build/generated/sources/annotationProcessor/java/main/`에 위치합니다.
+생성된 Q클래스는 각 모듈의 `build/generated/sources/annotationProcessor/java/main/`에 위치합니다.
 
 ### 보안 관련 사항
 
@@ -455,6 +570,11 @@ QueryDSL Q클래스는 빌드 시 자동 생성됩니다:
 - Java 17 사용 여부 확인: `java -version`
 - Gradle 캐시 정리: `./gradlew clean build --refresh-dependencies`
 
+**프로젝트 구조 확인**
+```bash
+./gradlew projects
+```
+
 ---
 
 ## 작성자
@@ -463,8 +583,8 @@ QueryDSL Q클래스는 빌드 시 자동 생성됩니다:
 
 ## 변경 이력
 
-| 버전  | 날짜         | 변경 내역                                            |
-|-----|------------|--------------------------------------------------|
-| 1.0 | 2025-11-11 | 초안 작성                                            |
-| 1.1 | 2025-12-17 | 프로젝트 구현 사항 업데이트<br>1. Spring Boot 4.0.0 적용<br>2. Spring Modulith 적용 |
-
+| 버전  | 날짜         | 변경 내역 |
+|-----|------------|---------|
+| 1.0 | 2025-11-11 | 초안 작성 |
+| 1.1 | 2025-12-17 | Spring Boot 4.0.0, Spring Modulith 적용 |
+| 2.0 | 2025-12-18 | Gradle 멀티 모듈 프로젝트로 전환<br>- modules/ (common, identity, core) 분리<br>- app-full, app-identity 애플리케이션 분리<br>- Convention Plugins 적용 (buildSrc) |
