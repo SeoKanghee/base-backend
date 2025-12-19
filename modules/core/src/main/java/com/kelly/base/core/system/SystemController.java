@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.kelly.base.common.CommonConstants.UrlInfo.URI_ROOT_SYSTEM;
+import static com.kelly.base.core.internal.Constants.UrlInfo.URI_ROOT_SYSTEM;
 
 /**
  * system controller

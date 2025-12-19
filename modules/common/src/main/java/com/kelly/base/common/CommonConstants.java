@@ -59,19 +59,6 @@ public final class CommonConstants {
     }
 
     /**
-     * URL 정의
-     */
-    @NoArgsConstructor(access = AccessLevel.PRIVATE)
-    public static final class UrlInfo {
-        public static final String URI_PREFIX_API = "/api";
-        public static final String WITH_SUB_PATHS = "/**";
-
-        public static final String URI_ROOT_AUTH = URI_PREFIX_API + "/auth";    // API - auth
-        public static final String URI_ROOT_ACCOUNTS = URI_PREFIX_API + "/accounts";    // API - accounts
-        public static final String URI_ROOT_SYSTEM = URI_PREFIX_API + "/system";    // API - system
-    }
-
-    /**
      * RoleCode 정의<p>
      * - DB schema 에 있는 값과 일치해야 함
      */

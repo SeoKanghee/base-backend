@@ -16,7 +16,7 @@
 - [🔧 주요 기능 상세](#🔧-주요-기능-상세)
 - [📚 API 문서](#📚-api-문서)
 - [🧪 테스트](#🧪-테스트)
-- [⚙️ 환경 설정](#️⚙️-환경-설정)
+- [⚙️ 환경 설정](#⚙️-환경-설정)
 - [📖 문서 가이드](#📖-문서-가이드)
 - [🔍 추가 정보](#🔍-추가-정보)
 
@@ -173,15 +173,9 @@ cd apps/identity && java -jar build/libs/app-identity.jar
 base-backend/
 ├── .env                              # 환경 설정 파일 (모든 앱 공유)
 ├── settings.gradle.kts               # 멀티 모듈 정의
-├── build.gradle.kts                  # 루트 빌드 설정
+├── build.gradle.kts                  # 루트 빌드 설정 (공통 설정 포함)
 ├── gradle/
 │   └── libs.versions.toml            # 버전 카탈로그
-│
-├── buildSrc/                         # Convention Plugins (공통 빌드 로직)
-│   ├── build.gradle.kts
-│   └── src/main/kotlin/
-│       ├── base-library-conventions.gradle.kts   # 라이브러리 모듈용
-│       └── spring-app-conventions.gradle.kts     # 애플리케이션용
 │
 ├── modules/                          # 재사용 가능한 라이브러리 모듈
 │   ├── common/                       # 공통 모듈
@@ -507,6 +501,26 @@ http://localhost:7480/monitor/health   # app-identity
 - `local`: 로컬 개발 환경
 - `prod`: 프로덕션 (기본값)
 
+### Native Vault 용 라이브러리
+
+- `common` 모듈에 서비스가 구현되어 있으나 해당 jar 에 포함되어 있지 않습니다.
+- 어플리케이션 별로 resources 폴더에 포함되어야 합니다.
+- 가능하면 어플리케이션 별로 다른 키를 사용하는 것을 추천합니다.
+
+```
+base-backend/
+│
+├── apps/
+│   ├── {app name}/
+│   │   ├── build.gradle.kts
+│   │   └── src/main/resources
+│   │       └── native
+│   │          ├── libnative_vault.dylib  # Linux
+│   │          ├── libnative_vault.so.    # macOS
+│   │          └── native_vault.dll       # Windows
+│   │
+```
+
 ---
 
 ## 📖 문서 가이드
@@ -521,6 +535,7 @@ http://localhost:7480/monitor/health   # app-identity
 | [MULTI_MODULE_GUIDE.md](docs/MULTI_MODULE_GUIDE.md) | 멀티 모듈 프로젝트 가이드 |
 | [PERMISSION_USAGE_GUIDE.md](docs/PERMISSION_USAGE_GUIDE.md) | 권한 체크 시스템 사용 가이드 |
 | [SPRING_MODULITH_GUIDE.md](docs/SPRING_MODULITH_GUIDE.md) | Spring Modulith 가이드 |
+| [SWAGGER_IMPLEMENTATION_GUIDE.md](docs/SWAGGER_IMPLEMENTATION_GUIDE.md) | 모듈별 Swagger 설정 가이드 |
 
 ---
 
@@ -529,7 +544,7 @@ http://localhost:7480/monitor/health   # app-identity
 ### 새 모듈 추가 방법
 
 1. `modules/` 디렉토리에 새 모듈 생성
-2. `build.gradle.kts` 작성 (base-library-conventions 플러그인 적용)
+2. `build.gradle.kts` 작성 (필요한 플러그인 및 의존성 정의)
 3. `settings.gradle.kts`에 모듈 추가
 4. 필요한 애플리케이션에서 의존성 추가
 
@@ -537,8 +552,8 @@ http://localhost:7480/monitor/health   # app-identity
 
 ### 새 애플리케이션 추가 방법
 
-1. 루트에 새 애플리케이션 디렉토리 생성 (예: `app-license/`)
-2. `build.gradle.kts` 작성 (spring-app-conventions 플러그인 적용)
+1. `apps/` 디렉토리에 새 애플리케이션 생성 (예: `apps/license/`)
+2. `build.gradle.kts` 작성 (Spring Boot 플러그인 및 모듈 의존성 정의)
 3. Application 클래스 및 application.yml 생성
 4. `settings.gradle.kts`에 애플리케이션 추가
 
@@ -556,13 +571,6 @@ QueryDSL Q클래스는 빌드 시 자동 생성됩니다:
 ```
 
 생성된 Q클래스는 각 모듈의 `build/generated/sources/annotationProcessor/java/main/`에 위치합니다.
-
-### 보안 관련 사항
-
-- Native Vault 라이브러리는 플랫폼별로 빌드가 필요합니다:
-   - Linux: `libnative_vault.so`
-   - macOS: `libnative_vault.dylib`
-   - Windows: `native_vault.dll`
 
 ### 문제 해결
 
@@ -587,4 +595,5 @@ QueryDSL Q클래스는 빌드 시 자동 생성됩니다:
 |-----|------------|---------|
 | 1.0 | 2025-11-11 | 초안 작성 |
 | 1.1 | 2025-12-17 | Spring Boot 4.0.0, Spring Modulith 적용 |
-| 2.0 | 2025-12-18 | Gradle 멀티 모듈 프로젝트로 전환<br>- modules/ (common, identity, core) 분리<br>- app-full, app-identity 애플리케이션 분리<br>- Convention Plugins 적용 (buildSrc) |
+| 2.0 | 2025-12-18 | Gradle 멀티 모듈 프로젝트로 전환<br>- modules/ (common, identity, core) 분리<br>- apps/ (app-full, app-identity) 분리 |
+| 2.1 | 2025-12-19 | 문서 최신화<br>- 프로젝트 구조 실제 반영<br>- 공통 빌드 설정 방식 명확화<br>- Swagger 작성 방법 추가<br>- native 라이브러리 참고 사항 작성 |
