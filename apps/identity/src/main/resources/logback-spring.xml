@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+    <!-- 일반 log : file 설정 -->
+    <property name="LOG_FILE" value="${LOG_FILE:-logs/${APPLICATION_NAME}.log}"/>
+    <property name="LOG_FILE_MAX_SIZE" value="${LOG_FILE_MAX_SIZE:-100MB}"/>
+    <property name="LOG_FILE_MAX_HISTORY" value="${LOG_FILE_MAX_HISTORY:-90}"/>
+    <property name="LOG_FILE_TOTAL_SIZE_CAP" value="${LOG_FILE_TOTAL_SIZE_CAP:-1GB}"/>
+
+    <!-- audit log : file 설정 -->
+    <property name="AUDIT_LOG_FILE" value="${AUDIT_LOG_FILE:-logs/${APPLICATION_NAME}-audit.log}"/>
+    <property name="AUDIT_LOG_FILE_MAX_SIZE" value="${AUDIT_LOG_FILE_MAX_SIZE:-100MB}"/>
+    <property name="AUDIT_LOG_FILE_MAX_HISTORY" value="${AUDIT_LOG_FILE_MAX_HISTORY:-730}"/>
+    <property name="AUDIT_LOG_FILE_TOTAL_SIZE_CAP" value="${AUDIT_LOG_FILE_TOTAL_SIZE_CAP:-1GB}"/>
+
+    <!-- 일반 log : pattern 설정 -->
+    <property name="CONSOLE_LOG_PATTERN"
+              value="%d{yy-MM-dd HH:mm:ss.SSS} %-5level ${PID:-} - [%thread] [%logger{100}:%line] - %msg%n"/>
+    <property name="FILE_LOG_PATTERN"
+              value="%d{yy-MM-dd HH:mm:ss.SSS} %-5level ${PID:-} - [%thread] [%logger{0}:%line] - %msg%n"/>
+
+    <!-- 일반 log : Console Appender -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN:-%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{100} - %msg%n}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- 일반 log : File Appender -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_FILE}</file>
+        <encoder>
+            <pattern>${FILE_LOG_PATTERN:-%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{0} - %msg%n}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_FILE}.%d{yyyy-MM-dd}.%i.gz</fileNamePattern>
+            <maxFileSize>${LOG_FILE_MAX_SIZE}</maxFileSize>
+            <maxHistory>${LOG_FILE_MAX_HISTORY}</maxHistory>
+            <totalSizeCap>${LOG_FILE_TOTAL_SIZE_CAP}</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+
+    <!-- audit log : File Appender -->
+    <appender name="AUDIT_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${AUDIT_LOG_FILE}</file>
+        <encoder>
+            <pattern>%msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${AUDIT_LOG_FILE}.%d{yyyy-MM-dd}.%i.gz</fileNamePattern>
+            <maxFileSize>${AUDIT_LOG_FILE_MAX_SIZE}</maxFileSize>
+            <maxHistory>${AUDIT_LOG_FILE_MAX_HISTORY}</maxHistory>
+            <totalSizeCap>${AUDIT_LOG_FILE_TOTAL_SIZE_CAP}</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+
+    <!-- audit log : appender 설정 ( 비동기로 동작하여 메인 로직 동작에 서로 영향이 없도록 정의 ) -->
+    <appender name="ASYNC_AUDIT" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="AUDIT_FILE"/>
+        <queueSize>8192</queueSize> <!-- neverBlock 이 true 이므로 8192 로 변경 (기본값 : 256)  -->
+        <discardingThreshold>0</discardingThreshold>    <!-- queue 의 사용량에 상관없이 log 유지 -->
+        <neverBlock>true</neverBlock>   <!-- log 생성이 성능에 영향을 주지 않도록 설정 ( 손실 가능 ) -->
+    </appender>
+
+    <!-- audit log : logger 설정 ( common/AuditLogService 의 logger 생성 name 확인 ) -->
+    <logger name="AUDIT_LOGGER" level="INFO" additivity="false">
+        <appender-ref ref="ASYNC_AUDIT"/>
+    </logger>
+
+    <!-- local profile - console + file -->
+    <springProfile name="local">
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="FILE"/>
+        </root>
+    </springProfile>
+
+    <!-- !local profile - file only -->
+    <springProfile name="!local">
+        <root level="INFO">
+            <appender-ref ref="FILE"/>
+        </root>
+    </springProfile>
+</configuration>
