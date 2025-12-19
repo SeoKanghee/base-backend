@@ -26,7 +26,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
-import static com.kelly.base.common.CommonConstants.UrlInfo.URI_ROOT_SYSTEM;
+import static com.kelly.base.core.internal.Constants.UrlInfo.URI_ROOT_SYSTEM;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 

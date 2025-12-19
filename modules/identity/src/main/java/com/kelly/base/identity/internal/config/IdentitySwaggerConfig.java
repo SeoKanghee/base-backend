@@ -4,7 +4,7 @@ import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import static com.kelly.base.common.CommonConstants.UrlInfo.*;
+import static com.kelly.base.identity.internal.Constants.UrlInfo.*;
 
 @Configuration
 public class IdentitySwaggerConfig {

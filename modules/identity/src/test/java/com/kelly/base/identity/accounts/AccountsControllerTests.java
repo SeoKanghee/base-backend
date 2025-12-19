@@ -14,7 +14,7 @@ import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static com.kelly.base.common.CommonConstants.UrlInfo.URI_ROOT_ACCOUNTS;
+import static com.kelly.base.identity.internal.Constants.UrlInfo.URI_ROOT_ACCOUNTS;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
